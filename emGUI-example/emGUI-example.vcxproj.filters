@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="emGUI">
+      <UniqueIdentifier>{7f59601c-f398-4cb5-9cef-e455ead25dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emGUI\Widgets">
+      <UniqueIdentifier>{02b4ff5d-4ac0-41be-82d6-8a480764c08b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emGUI\Images">
+      <UniqueIdentifier>{eb530a55-4e6c-46fb-ad3a-94753e11f5a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="emGUI\Fonts">
+      <UniqueIdentifier>{e53b6686-d4c9-4c5a-8c40-097cbbdc97dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -30,6 +42,51 @@
     <ClInclude Include="emGUI-example.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Interface.h">
+      <Filter>emGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widget.h">
+      <Filter>emGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Font\Font.h">
+      <Filter>emGUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Font\Font8.h">
+      <Filter>emGUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\Button.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\Console.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\KeyBoard.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\KeyRow.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\Label.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\PictureStack.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\ProgressBar.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\StatusBar.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\Window.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\emGUI.h">
+      <Filter>emGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -37,6 +94,48 @@
     </ClCompile>
     <ClCompile Include="emGUI-example.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Interface.c">
+      <Filter>emGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widget.c">
+      <Filter>emGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Font\Font.c">
+      <Filter>emGUI\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Cross.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\Button.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\Console.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\KeyBoard.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\KeyRow.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\Label.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\PictureStack.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\ProgressBar.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\StatusBar.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\Window.c">
+      <Filter>emGUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,5 +150,10 @@
     <Image Include="emGUI-example.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\emGUI\eWidgetType.def">
+      <Filter>emGUI</Filter>
+    </None>
   </ItemGroup>
 </Project>
