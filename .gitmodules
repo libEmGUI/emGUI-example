@@ -1,0 +1,4 @@
+[submodule "emGUI"]
+	path = emGUI
+	url = ../emGUI
+	branch = normalization
