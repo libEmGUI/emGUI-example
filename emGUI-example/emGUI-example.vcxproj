@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\emGUI\Widgets;..\emGUI;..\emGUI\Images;..\emGUI\Fonts;$(IncludePath)</IncludePath>
+    <IncludePath>..\emGUI;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -148,11 +148,11 @@
   <ItemGroup>
     <ClInclude Include="..\emGUI\emGUI.h" />
     <ClInclude Include="..\emGUI\Fonts\Font.h" />
-    <ClInclude Include="..\emGUI\Interface.h" />
-    <ClInclude Include="..\emGUI\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Button.h" />
+    <ClInclude Include="..\emGUI\Widgets\Interface.h" />
     <ClInclude Include="..\emGUI\Widgets\Label.h" />
     <ClInclude Include="..\emGUI\Widgets\StatusBar.h" />
+    <ClInclude Include="..\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
     <ClInclude Include="emGUI-example.h" />
     <ClInclude Include="Resource.h" />
@@ -162,11 +162,11 @@
   <ItemGroup>
     <ClCompile Include="..\emGUI\Fonts\Font.c" />
     <ClCompile Include="..\emGUI\Fonts\Font8.c" />
-    <ClCompile Include="..\emGUI\Interface.c" />
-    <ClCompile Include="..\emGUI\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Button.c" />
+    <ClCompile Include="..\emGUI\Widgets\Interface.c" />
     <ClCompile Include="..\emGUI\Widgets\Label.c" />
     <ClCompile Include="..\emGUI\Widgets\StatusBar.c" />
+    <ClCompile Include="..\emGUI\Widgets\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Window.c" />
     <ClCompile Include="emGUI-example.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -182,9 +182,6 @@
   <ItemGroup>
     <Image Include="emGUI-example.ico" />
     <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\emGUI\eWidgetType.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
