@@ -3,20 +3,39 @@
 
 #include "stdafx.h"
 #include "emGUI-example.h"
+#include "emGUI.h"
 #include <windows.h>
 #include <objidl.h>
 #include <gdiplus.h>
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
-VOID OnPaint(HDC hdc)
-{
-	Graphics graphics(hdc);
-	Pen      pen(Color(255, 0, 0, 255));
-	graphics.DrawLine(&pen, 0, 0, 200, 100);
+#define MAX_LOADSTRING 100
+
+LCD_Glue LCD;
+HDC hdc_tmp;
+xWidget* wdg;
+
+extern "C" {
+	void vFramebufferRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
+		Graphics graphics(hdc_tmp);
+		Pen      pen(Color(255, 0, 0, 255));
+		graphics.DrawRectangle(&pen, 0, 0, 200, 100);
+	}
+	void vFramebufferPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
+
+	}
+	void vFramebufferHLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
+
+	}
+	void vFramebufferVLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
+
+	}
+	void bFramebufferPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
+
+	}
 }
 
-#define MAX_LOADSTRING 100
 
 // Глобальные переменные:
 HINSTANCE hInst;                                // текущий экземпляр
@@ -42,8 +61,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
+	wdg = pxWidgetCreate(0, 0, 200, 200, NULL, false);
+	vWidgetSetTransparency(wdg, false);
+
 	// Initialize GDI+.
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+	LCD.vFramebufferRectangle = &vFramebufferRectangle;
+	vWidgetSetLCD(&LCD);
 
     // Инициализация глобальных строк
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -164,9 +189,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-			OnPaint(hdc);
-
+            hdc_tmp = BeginPaint(hWnd, &ps);
+			vWidgetInvalidate(wdg);
+			vWidgetDraw(wdg);
             // TODO: Добавьте сюда любой код прорисовки, использующий HDC...
             EndPaint(hWnd, &ps);
         }
