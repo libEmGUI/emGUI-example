@@ -3,6 +3,18 @@
 
 #include "stdafx.h"
 #include "emGUI-example.h"
+#include <windows.h>
+#include <objidl.h>
+#include <gdiplus.h>
+using namespace Gdiplus;
+#pragma comment (lib,"Gdiplus.lib")
+
+VOID OnPaint(HDC hdc)
+{
+	Graphics graphics(hdc);
+	Pen      pen(Color(255, 0, 0, 255));
+	graphics.DrawLine(&pen, 0, 0, 200, 100);
+}
 
 #define MAX_LOADSTRING 100
 
@@ -26,6 +38,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: разместите код здесь.
+
+	GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR           gdiplusToken;
+
+	// Initialize GDI+.
+	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
     // »нициализаци€ глобальных строк
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -52,6 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
+	GdiplusShutdown(gdiplusToken);
     return (int) msg.wParam;
 }
 
@@ -146,6 +165,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
+			OnPaint(hdc);
+
             // TODO: ƒобавьте сюда любой код прорисовки, использующий HDC...
             EndPaint(hWnd, &ps);
         }
