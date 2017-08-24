@@ -7,6 +7,39 @@
 #include <windows.h>
 #include <objidl.h>
 #include <gdiplus.h>
+
+const unsigned short cross_pic[] = {
+	18,26,
+	65535,61343,61343,61343,61310,59230,59197,57149,57117,52892,52891,52892,52892,52892,52892,54972,55004,61278,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,36087,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,36087,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,36087,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,36087,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,38135,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,36087,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,36087,38168,38200,40281,42361,54972,
+	65535,55037,55037,55037,29682,21164,29682,42427,42427,42427,42427,29682,21164,29682,42428,40281,42361,54972,
+	65535,55037,55037,55037,21164,65535,21164,29682,42427,42427,29682,21164,57051,21164,42427,40281,42361,54973,
+	65535,55037,55037,55037,21164,65535,65535,21164,29682,29682,21164,57083,57051,21164,42427,40281,42361,55005,
+	65535,55037,55037,55037,21164,65535,65535,65535,21164,21164,59164,57083,57051,21164,42427,40281,42361,55005,
+	65535,55037,55037,55037,29682,21164,65535,65535,63390,61277,59164,57083,21164,29682,42427,40281,42361,55005,
+	65535,55037,55037,55037,42426,29682,21164,65535,63390,61277,59164,21164,29682,42394,42427,40281,42361,55005,
+	65535,55037,55037,55037,29682,21164,65535,65535,63390,61277,59164,57083,21164,29682,42395,40281,42361,55005,
+	65535,55037,55037,55037,21164,65535,65535,65535,21164,21164,59164,57083,57051,21164,42395,40281,42361,55005,
+	65535,55037,55037,55037,21164,65535,65535,21164,29682,29682,21164,57083,57051,21164,42395,40281,42361,55004,
+	65535,55037,55037,55037,21164,65535,21164,29682,42426,42426,29682,21164,57051,21164,42395,40281,42361,55004,
+	65535,55037,55037,55037,29682,21164,29682,42426,42426,42426,42394,29682,21164,29682,42395,40281,42361,55004,
+	65535,55037,55037,55037,55005,52924,50812,48731,48699,38167,36087,36087,38135,38168,38200,40281,42361,55004,
+	65535,55037,55037,55037,55005,52925,50812,48731,48699,38167,36087,36087,38135,38168,38200,40281,42361,55004,
+	65535,55037,55037,55037,55005,52925,50812,48731,48699,38167,36087,36087,38167,38168,40248,42361,42425,55004,
+	65535,55037,55037,55037,55005,52925,50812,48731,48699,38167,36087,36087,38167,38168,40248,42361,42425,55004,
+	65535,55037,55037,55037,55005,52925,50812,48731,48699,38167,36087,36087,38167,38168,40248,42361,42425,55004,
+	65535,55037,55037,55037,55005,52925,50812,48731,48699,38167,36087,36087,38167,38168,40248,42361,42425,55004,
+	65535,59230,59230,59230,59198,57150,55037,55005,55004,46618,46586,46586,46586,46618,48699,48731,50811,55004
+};
+
+
+
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
@@ -16,14 +49,65 @@ LCD_Glue LCD;
 HDC hdc_tmp;
 xWidget* wdg;
 
+#define ILI9341_TFTWIDTH 240
+#define ILI9341_TFTHEIGHT 240
+
+ARGB convertColor(uint16_t color){
+	uint8_t usRed =   ((color >> 11) & 0b00011111);
+	uint8_t usGreen = ((color >> 5)  & 0b00111111);
+	uint8_t usBlue =  ((color & 0b00011111));
+
+
+		return (ARGB)((ARGB)0xFF000000 + usRed + usGreen + usBlue);
+
+}
+
+void drawPixel(uint16_t x, uint16_t y, uint16_t color) {
+	Graphics graphics(hdc_tmp);
+	SolidBrush solidBrush(Color(convertColor(color)));
+	graphics.FillRectangle(&solidBrush, x, y, 1, 1);
+}
 extern "C" {
 	void vFramebufferRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
 		Graphics graphics(hdc_tmp);
-		Pen      pen(Color(255, 0, 0, 255));
-		graphics.DrawRectangle(&pen, 0, 0, 200, 100);
+		Pen      pen(Color(0xFF00FF00));
+		graphics.DrawRectangle(&pen, usX0, usY0, usX1, usY1);
 	}
 	void vFramebufferPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
+		unsigned const char  *pubBuf = pubFont[(int)ASCI];
+		unsigned char charWidth = *pubBuf; //each symbol in NEO fonts contains width info in first byte.
+		unsigned char usHeight = *pubFont[0]; //each NEO font contains height info in first byte.
+		pubBuf++; //go to first pattern of font
+		uint16_t usXt, usYt;
+		usColor = 48699;
+		for (uint8_t column = 0; column < charWidth; column++) {
+			usXt = usX + column;
+			if (usXt >= ILI9341_TFTWIDTH)
+				break;
+			for (uint8_t row = 0; row < 8; row++) {
+				usYt = usY + row;
+				if (*pubBuf & (1 << row))
+					drawPixel(usXt, usYt, usColor);
+				else if (bFillBg)
+					drawPixel(usXt, usYt, usBackground);
+				if (usYt >= ILI9341_TFTHEIGHT)
+					break;
+			};
 
+			/* Hack for 16X NEO font */
+			if (usHeight == 16) {
+				for (uint8_t row = 0; row < 8; row++) {
+					usYt = usY + row + 8;
+					if (*(pubBuf + charWidth)& (1 << row))
+						drawPixel(usXt, usYt, usColor);
+					else if (bFillBg)
+						drawPixel(usXt, usYt, usBackground);
+					if (usYt >= ILI9341_TFTHEIGHT)
+						break;
+				};
+			}
+			pubBuf++;
+		}
 	}
 	void vFramebufferHLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
 
@@ -32,7 +116,15 @@ extern "C" {
 
 	}
 	void bFramebufferPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
+		int16_t i, j;
+		uint16_t x = 2;
 
+		for (j = 0; j < pusPicture[1]; j++) {
+			for (i = 0; i < pusPicture[0]; i++) {
+				drawPixel(sX0 + j, sY0 + i, pusPicture[x]);
+				x++;
+			}
+		}
 	}
 }
 
@@ -61,13 +153,33 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
-	wdg = pxWidgetCreate(0, 0, 200, 200, NULL, false);
+	wdg = pxWidgetCreate(0, 0, 240, 240, NULL, false);
 	vWidgetSetTransparency(wdg, false);
-
-	// Initialize GDI+.
+	auto l1 = pxLabelCreate(15, 15, 200, 60, "hypothetical rosters of players \
+		considered the best in the nation at their respective positions\
+		The National Collegiate Athletic Association, a college sports \
+		governing body, uses officially recognized All-America selectors \
+		to determine the consensus selections. These are based on a point \
+		system in which a player is awarded three points for every selector \
+		that names him to the first team, two points for the second team, \
+		and one point for the third team. The individual who receives the \
+		most points at his position is called a consensus All-American.[4] \
+		Over time, the sources used to determine the consensus selections \
+		have changed, and since 2002, the NCAA has used five selectors, \
+		the Associated Press (AP), American Football Coaches Association \
+		(AFCA), Football Writers Association of America (FWAA), The Sporting \
+		News (TSN), and the Walter Camp Football Foundation (WCFF),   \
+		to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, wdg);
+	auto b1 = pxButtonCreate(60, 100, cross_pic, wdg);
+	
+	// Initialize GDI+
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 	LCD.vFramebufferRectangle = &vFramebufferRectangle;
+	LCD.vFramebufferPutChar = &vFramebufferPutChar;
+	LCD.bFramebufferPicture = &bFramebufferPicture;
+	LCD.vFramebufferVLine = &vFramebufferVLine;
+	LCD.vFramebufferHLine = &vFramebufferHLine;
 	vWidgetSetLCD(&LCD);
 
     // Инициализация глобальных строк
