@@ -48,34 +48,10 @@
     <ClInclude Include="..\emGUI\Widget.h">
       <Filter>emGUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\emGUI\Font\Font.h">
-      <Filter>emGUI\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\emGUI\Font\Font8.h">
-      <Filter>emGUI\Fonts</Filter>
-    </ClInclude>
     <ClInclude Include="..\emGUI\Widgets\Button.h">
       <Filter>emGUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\Console.h">
-      <Filter>emGUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\KeyBoard.h">
-      <Filter>emGUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\KeyRow.h">
-      <Filter>emGUI\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\emGUI\Widgets\Label.h">
-      <Filter>emGUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h">
-      <Filter>emGUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\PictureStack.h">
-      <Filter>emGUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\ProgressBar.h">
       <Filter>emGUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\emGUI\Widgets\StatusBar.h">
@@ -86,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="..\emGUI\emGUI.h">
       <Filter>emGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Fonts\Font.h">
+      <Filter>emGUI\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,34 +80,10 @@
     <ClCompile Include="..\emGUI\Widget.c">
       <Filter>emGUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\emGUI\Font\Font.c">
-      <Filter>emGUI\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Images\Cross.c">
-      <Filter>emGUI\Images</Filter>
-    </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\Button.c">
       <Filter>emGUI\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\emGUI\Widgets\Console.c">
-      <Filter>emGUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Widgets\KeyBoard.c">
-      <Filter>emGUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Widgets\KeyRow.c">
-      <Filter>emGUI\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\Label.c">
-      <Filter>emGUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c">
-      <Filter>emGUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Widgets\PictureStack.c">
-      <Filter>emGUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Widgets\ProgressBar.c">
       <Filter>emGUI\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\StatusBar.c">
@@ -136,6 +91,12 @@
     </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\Window.c">
       <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Fonts\Font.c">
+      <Filter>emGUI\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Fonts\Font8.c">
+      <Filter>emGUI\Fonts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

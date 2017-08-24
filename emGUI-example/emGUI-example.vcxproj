@@ -147,18 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\emGUI\emGUI.h" />
-    <ClInclude Include="..\emGUI\Font\Font.h" />
-    <ClInclude Include="..\emGUI\Font\Font8.h" />
+    <ClInclude Include="..\emGUI\Fonts\Font.h" />
     <ClInclude Include="..\emGUI\Interface.h" />
     <ClInclude Include="..\emGUI\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Button.h" />
-    <ClInclude Include="..\emGUI\Widgets\Console.h" />
-    <ClInclude Include="..\emGUI\Widgets\KeyBoard.h" />
-    <ClInclude Include="..\emGUI\Widgets\KeyRow.h" />
     <ClInclude Include="..\emGUI\Widgets\Label.h" />
-    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h" />
-    <ClInclude Include="..\emGUI\Widgets\PictureStack.h" />
-    <ClInclude Include="..\emGUI\Widgets\ProgressBar.h" />
     <ClInclude Include="..\emGUI\Widgets\StatusBar.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
     <ClInclude Include="emGUI-example.h" />
@@ -167,18 +160,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\emGUI\Font\Font.c" />
-    <ClCompile Include="..\emGUI\Images\Cross.c" />
+    <ClCompile Include="..\emGUI\Fonts\Font.c" />
+    <ClCompile Include="..\emGUI\Fonts\Font8.c" />
     <ClCompile Include="..\emGUI\Interface.c" />
     <ClCompile Include="..\emGUI\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Button.c" />
-    <ClCompile Include="..\emGUI\Widgets\Console.c" />
-    <ClCompile Include="..\emGUI\Widgets\KeyBoard.c" />
-    <ClCompile Include="..\emGUI\Widgets\KeyRow.c" />
     <ClCompile Include="..\emGUI\Widgets\Label.c" />
-    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c" />
-    <ClCompile Include="..\emGUI\Widgets\PictureStack.c" />
-    <ClCompile Include="..\emGUI\Widgets\ProgressBar.c" />
     <ClCompile Include="..\emGUI\Widgets\StatusBar.c" />
     <ClCompile Include="..\emGUI\Widgets\Window.c" />
     <ClCompile Include="emGUI-example.cpp" />
