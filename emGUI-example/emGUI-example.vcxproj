@@ -146,6 +146,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\emGUI\Draw\Draw.h" />
     <ClInclude Include="..\emGUI\emGUI.h" />
     <ClInclude Include="..\emGUI\Fonts\Font.h" />
     <ClInclude Include="..\emGUI\Widgets\Button.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\emGUI\Draw\Draw.c" />
     <ClCompile Include="..\emGUI\Fonts\Font.c" />
     <ClCompile Include="..\emGUI\Fonts\Font8.c" />
     <ClCompile Include="..\emGUI\Widgets\Button.c" />

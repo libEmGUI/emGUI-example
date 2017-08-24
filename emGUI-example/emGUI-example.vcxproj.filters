@@ -25,6 +25,9 @@
     <Filter Include="emGUI\Fonts">
       <UniqueIdentifier>{e53b6686-d4c9-4c5a-8c40-097cbbdc97dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="emGUI\Draw">
+      <UniqueIdentifier>{38d000d5-139d-4c6a-871d-a6b31eca61a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -66,6 +69,9 @@
     <ClInclude Include="..\emGUI\Widgets\Widget.h">
       <Filter>emGUI\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Draw\Draw.h">
+      <Filter>emGUI\Draw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\Widget.c">
       <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Draw\Draw.c">
+      <Filter>emGUI\Draw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
