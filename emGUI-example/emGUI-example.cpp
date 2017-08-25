@@ -29,7 +29,6 @@ xWidget* wdg;
 HWND hWnd;
 xInterface * interface1;
 
-
 ARGB convertColor(uint16_t color){
 	uint8_t usRed =   ((color >> 11) & 0b00011111) * 8;
 	uint8_t usGreen = ((color >> 5)  & 0b00111111) * 4;
@@ -114,6 +113,11 @@ extern "C" {
 	}
 }
 
+bool onCloseWAHandler(xWidget *) {
+	vInterfaceOpenWindow(WINDOW_MENU);
+	return true;
+}
+
 xLabel * mouseMonitor;
 bool myHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
@@ -139,7 +143,11 @@ bool myHandler(xWidget *) {
 	mouseMonitor = pxLabelCreate(1, 200, 238, 0, "x:   y:   ", FONT_ASCII_8_X, 500, window);
 	auto b1 = pxButtonCreate(60, 100, rgb_test, window);
 	
-	
+	auto window2 = pxWindowCreate(WINDOW_ABOUT);
+	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
+
+	vWindowSetOnCloseRequestHandler(window2, &onCloseWAHandler);
+	vInterfaceOpenWindow(WINDOW_ABOUT);
 	vInterfaceOpenWindow(WINDOW_MENU);
 	return true;
 
@@ -260,14 +268,26 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // —охранить дескриптор экземпл€ра в глобальной переменной
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   // Calc windows size out of rect
+   RECT activeRECT;
+   activeRECT.left = 0;
+   activeRECT.top = 0;
+   activeRECT.right = ILI9341_TFTWIDTH;
+   activeRECT.bottom = ILI9341_TFTHEIGHT;
+   AdjustWindowRect(&activeRECT, dwStyle, true);
+   uint16_t width = activeRECT.right - activeRECT.left;
+   uint16_t height = activeRECT.bottom - activeRECT.top;
 
+   // OVERLAPPED WINDOW style but resize is disabled
+   DWORD dwStyle = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME
+
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, dwStyle,
+	   CW_USEDEFAULT, 0, width, height, nullptr, nullptr, hInstance, nullptr);
    if (!hWnd)
    {
       return FALSE;
    }
-
+   //AdjustWindowRect(hWnd, )
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
