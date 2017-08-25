@@ -10,6 +10,10 @@
 #include "pics.h"
 
 
+#include <cstdio>
+#include <iostream>
+
+using namespace std;
 
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
@@ -102,11 +106,11 @@ extern "C" {
 	}
 }
 
-
+xLabel * mouseMonitor;
 bool myHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
 	
-	auto l1 = pxLabelCreate(15, 15, 230, 60, "hypothetical rosters of players \
+	auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
   considered the best in the nation at their respective positions\
   The National Collegiate Athletic Association, a college sports \
   governing body, uses officially recognized All-America selectors \
@@ -121,6 +125,8 @@ bool myHandler(xWidget *) {
     (AFCA), Football Writers Association of America (FWAA), The Sporting \
     News (TSN), and the Walter Camp Football Foundation (WCFF),   \
     to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window);
+
+	mouseMonitor = pxLabelCreate(1, 200, 238, 0, "x:   y:   ", FONT_ASCII_8_X, 500, window);
 	auto b1 = pxButtonCreate(60, 100, rgb_test, window);
 	
 	
@@ -129,6 +135,15 @@ bool myHandler(xWidget *) {
 
 }
 
+void clickMouseEventHandler(uint16_t x, uint16_t y) {
+	char outString[25];
+	sprintf_s(outString, "x: %d y: %d\n", x, y);
+	pcLabelSetText(mouseMonitor, outString);
+
+	UpdateWindow(hWnd);
+	InvalidateRect(hWnd, NULL, TRUE);
+	SendMessage(hWnd, WM_PAINT, NULL, NULL);
+}
 
 // √лобальные переменные:
 HINSTANCE hInst;                                // текущий экземпл€р
@@ -301,6 +316,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+	case WM_LBUTTONDOWN:
+		clickMouseEventHandler(LOWORD(lParam), HIWORD(lParam));
+		return 0;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
