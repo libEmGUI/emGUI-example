@@ -50,6 +50,10 @@ extern "C" {
 		Graphics graphics(hdc_tmp);
 		Pen      pen(Color(convertColor(usColor)));
 		graphics.DrawRectangle(&pen, usX0, usY0, usX1- usX0, usY1-usY0);
+		if (bFill) {
+			SolidBrush solidBrush(Color(convertColor(usColor)));
+			graphics.FillRectangle(&solidBrush, usX0, usY0, usX1 - usX0, usY1 - usY0);
+		}
 	}
 	void vFramebufferPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
  		unsigned const char  *pubBuf = pubFont[(int)ASCI];
@@ -87,11 +91,15 @@ extern "C" {
 			pubBuf++;
 		}
 	}
-	void vFramebufferHLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
-
+	void vFramebufferVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
+		Graphics graphics(hdc_tmp);
+		Pen      pen(Color(convertColor(usColor)));
+		graphics.DrawLine(&pen, usX0, usY0, usX0, usY1);
 	}
-	void vFramebufferVLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
-
+	void vFramebufferHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
+		Graphics graphics(hdc_tmp);
+		Pen      pen(Color(convertColor(usColor)));
+		graphics.DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
 	void bFramebufferPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
 		int16_t i, j;
@@ -109,6 +117,8 @@ extern "C" {
 xLabel * mouseMonitor;
 bool myHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
+	vWindowSetHeader(window, "Wnd1");
+	vWidgetSetBgColor(window, 0xFF, false);
 	
 	auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
   considered the best in the nation at their respective positions\
@@ -135,15 +145,7 @@ bool myHandler(xWidget *) {
 
 }
 
-void clickMouseEventHandler(uint16_t x, uint16_t y) {
-	char outString[25];
-	sprintf_s(outString, "x: %d y: %d\n", x, y);
-	pcLabelSetText(mouseMonitor, outString);
 
-	UpdateWindow(hWnd);
-	InvalidateRect(hWnd, NULL, TRUE);
-	SendMessage(hWnd, WM_PAINT, NULL, NULL);
-}
 
 // √лобальные переменные:
 HINSTANCE hInst;                                // текущий экземпл€р
@@ -284,6 +286,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	xTouchEvent currentTouch;
     switch (message)
     {
     case WM_COMMAND:
@@ -307,8 +310,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             hdc_tmp = BeginPaint(hWnd, &ps);
-			vStatusBarSetWindowHeader("Hello there");
-			vInterfaceInvalidate();
+			//vInterfaceInvalidate();
 			vInterfaceDraw();
             EndPaint(hWnd, &ps);
         }
@@ -317,8 +319,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         break;
 	case WM_LBUTTONDOWN:
-		clickMouseEventHandler(LOWORD(lParam), HIWORD(lParam));
+		char outString[25];
+		sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
+		pcLabelSetText(mouseMonitor, outString);
+		currentTouch.eventTouchScreen = pushTs;
+		currentTouch.xTouchScreen = LOWORD(lParam);
+		currentTouch.yTouchScreen = HIWORD(lParam);
+		bInterfaceCheckTouchScreenEvent(&currentTouch);
+
+		InvalidateRect(hWnd, NULL, FALSE);
+		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
+		
+	case WM_LBUTTONUP:
+		currentTouch.eventTouchScreen = popTs;
+		currentTouch.xTouchScreen = LOWORD(lParam);
+		currentTouch.yTouchScreen = HIWORD(lParam);
+		bInterfaceCheckTouchScreenEvent(&currentTouch);
+
+		InvalidateRect(hWnd, NULL, FALSE);
+		SendMessage(hWnd, WM_PAINT, NULL, NULL);
+		return 0;
+	case WM_ERASEBKGND:
+		vInterfaceInvalidate();
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
