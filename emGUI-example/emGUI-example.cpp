@@ -19,7 +19,7 @@ using namespace Gdiplus;
 LCD_Glue LCD;
 HDC hdc_tmp;
 xWidget* wdg;
-
+HWND hWnd;
 #define ILI9341_TFTWIDTH 240
 #define ILI9341_TFTHEIGHT 240
 
@@ -32,8 +32,6 @@ ARGB convertColor(uint16_t color){
 	return answer;
 
 }
-
-
 
 void drawPixel(uint16_t x, uint16_t y, uint16_t color) {
 	Graphics graphics(hdc_tmp);
@@ -101,13 +99,7 @@ extern "C" {
 	}
 }
 
-void onPaint() {
-	static uint16_t x = 1;
-	static uint16_t y = 1;
-	x++;
-	y++;
-	drawPixel(x, y, 0xFF00);
-}
+
 // Глобальные переменные:
 HINSTANCE hInst;                                // текущий экземпляр
 WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
@@ -160,7 +152,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	LCD.vFramebufferVLine = &vFramebufferVLine;
 	LCD.vFramebufferHLine = &vFramebufferHLine;
 	vWidgetSetLCD(&LCD);
-
+	
     // Инициализация глобальных строк
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_EMGUIEXAMPLE, szWindowClass, MAX_LOADSTRING);
@@ -179,10 +171,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // Цикл основного сообщения:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
+
+		UpdateWindow(hWnd);
+		InvalidateRect(hWnd, NULL, TRUE);
+		SendMessage(hWnd, WM_PAINT, NULL, NULL);
+
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+
         }
     }
 
@@ -283,7 +281,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             hdc_tmp = BeginPaint(hWnd, &ps);
 			
-			onPaint();
+			
 			vWidgetInvalidate(wdg);
 			vWidgetDraw(wdg);
             // TODO: Добавьте сюда любой код прорисовки, использующий HDC...
