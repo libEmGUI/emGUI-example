@@ -274,12 +274,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    activeRECT.top = 0;
    activeRECT.right = ILI9341_TFTWIDTH;
    activeRECT.bottom = ILI9341_TFTHEIGHT;
-   AdjustWindowRect(&activeRECT, dwStyle, true);
+   AdjustWindowRect(&activeRECT, WS_OVERLAPPEDWINDOW, true);
    uint16_t width = activeRECT.right - activeRECT.left;
    uint16_t height = activeRECT.bottom - activeRECT.top;
 
    // OVERLAPPED WINDOW style but resize is disabled
-   DWORD dwStyle = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME
+   DWORD dwStyle = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME;
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, dwStyle,
 	   CW_USEDEFAULT, 0, width, height, nullptr, nullptr, hInstance, nullptr);
