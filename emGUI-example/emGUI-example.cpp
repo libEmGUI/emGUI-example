@@ -104,7 +104,8 @@ extern "C" {
 
 
 bool myHandler(xWidget *) {
-	//auto window = pxWindowCreate(WINDOW_MENU);
+	auto window = pxWindowCreate(WINDOW_MENU);
+	
 	auto l1 = pxLabelCreate(15, 15, 230, 60, "hypothetical rosters of players \
   considered the best in the nation at their respective positions\
   The National Collegiate Athletic Association, a college sports \
@@ -119,9 +120,11 @@ bool myHandler(xWidget *) {
     the Associated Press (AP), American Football Coaches Association \
     (AFCA), Football Writers Association of America (FWAA), The Sporting \
     News (TSN), and the Walter Camp Football Foundation (WCFF),   \
-    to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, interface1);
-	auto b1 = pxButtonCreate(60, 100, rgb_test, interface1);
-	//vInterfaceOpenWindow(WINDOW_MENU);
+    to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window);
+	auto b1 = pxButtonCreate(60, 100, rgb_test, window);
+	
+	
+	vInterfaceOpenWindow(WINDOW_MENU);
 	return true;
 
 }
@@ -290,6 +293,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             hdc_tmp = BeginPaint(hWnd, &ps);
 			vStatusBarSetWindowHeader("Hello there");
+			vInterfaceInvalidate();
 			vInterfaceDraw();
             EndPaint(hWnd, &ps);
         }
