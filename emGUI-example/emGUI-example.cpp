@@ -15,13 +15,16 @@ using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
 #define MAX_LOADSTRING 100
+#define ILI9341_TFTWIDTH 240
+#define ILI9341_TFTHEIGHT 240
+
 
 LCD_Glue LCD;
 HDC hdc_tmp;
 xWidget* wdg;
 HWND hWnd;
-#define ILI9341_TFTWIDTH 240
-#define ILI9341_TFTHEIGHT 240
+xInterface * interface1;
+
 
 ARGB convertColor(uint16_t color){
 	uint8_t usRed =   ((color >> 11) & 0b00011111) * 8;
@@ -45,12 +48,12 @@ extern "C" {
 		graphics.DrawRectangle(&pen, usX0, usY0, usX1- usX0, usY1-usY0);
 	}
 	void vFramebufferPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
-		unsigned const char  *pubBuf = pubFont[(int)ASCI];
+ 		unsigned const char  *pubBuf = pubFont[(int)ASCI];
 		unsigned char charWidth = *pubBuf; //each symbol in NEO fonts contains width info in first byte.
 		unsigned char usHeight = *pubFont[0]; //each NEO font contains height info in first byte.
 		pubBuf++; //go to first pattern of font
 		uint16_t usXt, usYt;
-	
+		
 		for (uint8_t column = 0; column < charWidth; column++) {
 			usXt = usX + column;
 			if (usXt >= ILI9341_TFTWIDTH)
@@ -100,6 +103,30 @@ extern "C" {
 }
 
 
+bool myHandler(xWidget *) {
+	//auto window = pxWindowCreate(WINDOW_MENU);
+	auto l1 = pxLabelCreate(15, 15, 230, 60, "hypothetical rosters of players \
+  considered the best in the nation at their respective positions\
+  The National Collegiate Athletic Association, a college sports \
+  governing body, uses officially recognized All-America selectors \
+  to determine the consensus selections. These are based on a point \
+  system in which a player is awarded three points for every selector \
+  that names him to the first team, two points for the second team, \
+    and one point for the third team. The individual who receives the \
+    most points at his position is called a consensus All-American.[4] \
+    Over time, the sources used to determine the consensus selections \
+    have changed, and since 2002, the NCAA has used five selectors, \
+    the Associated Press (AP), American Football Coaches Association \
+    (AFCA), Football Writers Association of America (FWAA), The Sporting \
+    News (TSN), and the Walter Camp Football Foundation (WCFF),   \
+    to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, interface1);
+	auto b1 = pxButtonCreate(60, 100, rgb_test, interface1);
+	//vInterfaceOpenWindow(WINDOW_MENU);
+	return true;
+
+}
+
+
 // Глобальные переменные:
 HINSTANCE hInst;                                // текущий экземпляр
 WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
@@ -124,25 +151,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
-	wdg = pxWidgetCreate(0, 0, 240, 240, NULL, false);
-	vWidgetSetTransparency(wdg, false);
-	auto l1 = pxLabelCreate(15, 15, 200, 60, "hypothetical rosters of players \
-		considered the best in the nation at their respective positions\
-		The National Collegiate Athletic Association, a college sports \
-		governing body, uses officially recognized All-America selectors \
-		to determine the consensus selections. These are based on a point \
-		system in which a player is awarded three points for every selector \
-		that names him to the first team, two points for the second team, \
-		and one point for the third team. The individual who receives the \
-		most points at his position is called a consensus All-American.[4] \
-		Over time, the sources used to determine the consensus selections \
-		have changed, and since 2002, the NCAA has used five selectors, \
-		the Associated Press (AP), American Football Coaches Association \
-		(AFCA), Football Writers Association of America (FWAA), The Sporting \
-		News (TSN), and the Walter Camp Football Foundation (WCFF),   \
-		to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, wdg);
-	auto b1 = pxButtonCreate(60, 100, rgb_test, wdg);
-	
+	interface1 = pxInterfaceCreate(&myHandler);
+	// vWidgetSetTransparency(interface1, false);
 	// Initialize GDI+
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
@@ -172,9 +182,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     while (GetMessage(&msg, nullptr, 0, 0))
     {
 
-		UpdateWindow(hWnd);
+		/*UpdateWindow(hWnd);
 		InvalidateRect(hWnd, NULL, TRUE);
-		SendMessage(hWnd, WM_PAINT, NULL, NULL);
+		SendMessage(hWnd, WM_PAINT, NULL, NULL);*/
 
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
         {
@@ -278,13 +288,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-
             hdc_tmp = BeginPaint(hWnd, &ps);
-			
-			
-			vWidgetInvalidate(wdg);
-			vWidgetDraw(wdg);
-            // TODO: Добавьте сюда любой код прорисовки, использующий HDC...
+			vStatusBarSetWindowHeader("Hello there");
+			vInterfaceDraw();
             EndPaint(hWnd, &ps);
         }
         break;
