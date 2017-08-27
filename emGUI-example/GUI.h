@@ -17,4 +17,6 @@ ARGB convertColor(uint16_t color);
 bool myHandler(xWidget *);
 bool initGUI();
 bool onCloseWAHandler(xWidget *);
+void drawPixel(uint16_t x, uint16_t y, uint16_t color);
+void setCurrentHDC(HDC a);
 #endif
