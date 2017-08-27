@@ -157,3 +157,7 @@ void setCurrentHDC(HDC a) {
 }
 
 
+void paintEventHandler() {
+	//vInterfaceInvalidate();
+	vInterfaceDraw();
+}

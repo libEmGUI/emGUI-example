@@ -56,7 +56,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	initGUI(); //TODO: check false
 
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
-
 	
     // Инициализация глобальных строк
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -192,8 +191,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             hdc_tmp = BeginPaint(hWnd, &ps);
 			setCurrentHDC(hdc_tmp);
-			//vInterfaceInvalidate();
-			vInterfaceDraw();
+			paintEventHandler();
             EndPaint(hWnd, &ps);
         }
         break;
