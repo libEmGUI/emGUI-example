@@ -14,10 +14,10 @@ using namespace Gdiplus;
 
 
 ARGB convertColor(uint16_t color);
-bool myHandler(xWidget *);
-bool initGUI();
-bool onCloseWAHandler(xWidget *);
-void drawPixel(uint16_t x, uint16_t y, uint16_t color);
-void setCurrentHDC(HDC a);
-void paintEventHandler();
+bool bGUIonInterfaceCreateHandler(xWidget *);
+bool bGUI_InitInterfce();
+bool bGUIOnWindowCloseHandler(xWidget *);
+void vGUIdrawPixel(uint16_t x, uint16_t y, uint16_t color);
+void vGUIsetCurrentHDC(HDC a);
+void vGUIpaintEventHandler();
 #endif

@@ -50,9 +50,9 @@ extern "C" {
 			for (uint8_t row = 0; row < 8; row++) {
 				usYt = usY + row;
 				if (*pubBuf & (1 << row))
-					drawPixel(usXt, usYt, usColor);
+					vGUIdrawPixel(usXt, usYt, usColor);
 				else if (bFillBg)
-					drawPixel(usXt, usYt, usBackground);
+					vGUIdrawPixel(usXt, usYt, usBackground);
 				if (usYt >= ILI9341_TFTHEIGHT)
 					break;
 			};
@@ -62,9 +62,9 @@ extern "C" {
 				for (uint8_t row = 0; row < 8; row++) {
 					usYt = usY + row + 8;
 					if (*(pubBuf + charWidth)& (1 << row))
-						drawPixel(usXt, usYt, usColor);
+						vGUIdrawPixel(usXt, usYt, usColor);
 					else if (bFillBg)
-						drawPixel(usXt, usYt, usBackground);
+						vGUIdrawPixel(usXt, usYt, usBackground);
 					if (usYt >= ILI9341_TFTHEIGHT)
 						break;
 				};
@@ -88,7 +88,7 @@ extern "C" {
 
 		for (j = 0; j < pusPicture[1]; j++) {
 			for (i = 0; i < pusPicture[0]; i++) {
-				drawPixel(sX0 + j, sY0 + i, pusPicture[x]);
+				vGUIdrawPixel(sX0 + j, sY0 + i, pusPicture[x]);
 				x++;
 			}
 		}
@@ -97,7 +97,7 @@ extern "C" {
 
 
 // Action on interface creatings
-bool myHandler(xWidget *) {
+bool bGUIonInterfaceCreateHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
 	vWindowSetHeader(window, "Wnd1");
 	vWidgetSetBgColor(window, 0xFF, false);
@@ -123,20 +123,20 @@ bool myHandler(xWidget *) {
 	auto window2 = pxWindowCreate(WINDOW_ABOUT);
 	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
 
-	vWindowSetOnCloseRequestHandler(window2, &onCloseWAHandler);
+	vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
 	vInterfaceOpenWindow(WINDOW_ABOUT);
 	vInterfaceOpenWindow(WINDOW_MENU);
 	return true;
 }
 
 
-bool onCloseWAHandler(xWidget *) {
+bool bGUIOnWindowCloseHandler(xWidget *) {
 	vInterfaceOpenWindow(WINDOW_MENU);
 	return true;
 }
 
-bool initGUI() {
-	interface1 = pxInterfaceCreate(&myHandler);
+bool bGUI_InitInterfce() {
+	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
 	LCD.vFramebufferRectangle = &vFramebufferRectangle;
 	LCD.vFramebufferPutChar = &vFramebufferPutChar;
 	LCD.bFramebufferPicture = &bFramebufferPicture;
@@ -146,18 +146,18 @@ bool initGUI() {
 	return true;
 }
 
-void drawPixel(uint16_t x, uint16_t y, uint16_t color){
+void vGUIdrawPixel(uint16_t x, uint16_t y, uint16_t color){
 	Graphics graphics(hdc_tmp);
 	SolidBrush solidBrush(Color(convertColor(color)));
 	graphics.FillRectangle(&solidBrush, x, y, 1, 1);
 }
 
-void setCurrentHDC(HDC a) {
+void vGUIsetCurrentHDC(HDC a) {
 	hdc_tmp = a;
 }
 
 
-void paintEventHandler() {
+void vGUIpaintEventHandler() {
 	//vInterfaceInvalidate();
 	vInterfaceDraw();
 }

@@ -53,7 +53,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
-	initGUI(); //TODO: check false
+	bGUI_InitInterfce(); //TODO: check false
 
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 	
@@ -190,8 +190,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             hdc_tmp = BeginPaint(hWnd, &ps);
-			setCurrentHDC(hdc_tmp);
-			paintEventHandler();
+			vGUIsetCurrentHDC(hdc_tmp);
+			vGUIpaintEventHandler();
             EndPaint(hWnd, &ps);
         }
         break;
