@@ -6,6 +6,7 @@
 #include <objidl.h>
 #include <gdiplus.h>
 #include "pics.h"
+#include <iostream>
 
 using namespace Gdiplus;
 
@@ -20,4 +21,6 @@ bool bGUIOnWindowCloseHandler(xWidget *);
 void vGUIdrawPixel(uint16_t x, uint16_t y, uint16_t color);
 void vGUIsetCurrentHDC(HDC a);
 void vGUIpaintEventHandler();
+void vGUIpushClickHandler(LPARAM lParam);
+void vGUIpopClickHandler(LPARAM lParam);
 #endif

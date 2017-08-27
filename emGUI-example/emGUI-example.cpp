@@ -147,7 +147,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
-   //AdjustWindowRect(hWnd, )
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
@@ -166,7 +165,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	xTouchEvent currentTouch;
     switch (message)
     {
     case WM_COMMAND:
@@ -199,24 +197,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         break;
 	case WM_LBUTTONDOWN:
-		char outString[25];
-		sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
-		pcLabelSetText(mouseMonitor, outString);
-		currentTouch.eventTouchScreen = pushTs;
-		currentTouch.xTouchScreen = LOWORD(lParam);
-		currentTouch.yTouchScreen = HIWORD(lParam);
-		bInterfaceCheckTouchScreenEvent(&currentTouch);
-
+		vGUIpushClickHandler(lParam);
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
 		
 	case WM_LBUTTONUP:
-		currentTouch.eventTouchScreen = popTs;
-		currentTouch.xTouchScreen = LOWORD(lParam);
-		currentTouch.yTouchScreen = HIWORD(lParam);
-		bInterfaceCheckTouchScreenEvent(&currentTouch);
-
+		vGUIpopClickHandler(lParam);
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;

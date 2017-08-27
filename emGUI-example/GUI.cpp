@@ -4,15 +4,16 @@
 */
 #include "GUI.h"
 
+using namespace std;
 using namespace Gdiplus;
 
 
 
 extern LCD_Glue LCD;
 extern xInterface * interface1;
-extern xWidget* wdg;
 extern xLabel * mouseMonitor;
 static HDC hdc_tmp;
+xTouchEvent currentTouch;
 
 // Convert color from emGUI to GDI format
 ARGB convertColor(uint16_t color) {
@@ -160,4 +161,21 @@ void vGUIsetCurrentHDC(HDC a) {
 void vGUIpaintEventHandler() {
 	//vInterfaceInvalidate();
 	vInterfaceDraw();
+}
+
+void vGUIpushClickHandler(LPARAM lParam) {
+	char outString[25];
+	sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
+	pcLabelSetText(mouseMonitor, outString);
+	currentTouch.eventTouchScreen = pushTs;
+	currentTouch.xTouchScreen = LOWORD(lParam);
+	currentTouch.yTouchScreen = HIWORD(lParam);
+	bInterfaceCheckTouchScreenEvent(&currentTouch);
+	
+}
+void vGUIpopClickHandler(LPARAM lParam) {
+	currentTouch.eventTouchScreen = popTs;
+	currentTouch.xTouchScreen = LOWORD(lParam);
+	currentTouch.yTouchScreen = HIWORD(lParam);
+	bInterfaceCheckTouchScreenEvent(&currentTouch);
 }
