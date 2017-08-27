@@ -9,9 +9,9 @@ using namespace Gdiplus;
 
 
 
-extern LCD_Glue LCD;
-extern xInterface * interface1;
-extern xLabel * mouseMonitor;
+static LCD_Glue LCD;
+static xInterface * interface1;
+static xLabel * mouseMonitor;
 static HDC hdc_tmp;
 xTouchEvent currentTouch;
 
@@ -178,4 +178,8 @@ void vGUIpopClickHandler(LPARAM lParam) {
 	currentTouch.xTouchScreen = LOWORD(lParam);
 	currentTouch.yTouchScreen = HIWORD(lParam);
 	bInterfaceCheckTouchScreenEvent(&currentTouch);
+}
+
+void vGUIeraseBackgroudHandler() {
+	vInterfaceInvalidate();
 }

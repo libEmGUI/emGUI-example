@@ -16,16 +16,9 @@ using namespace Gdiplus;
 
 
 
-LCD_Glue LCD;
-HDC hdc_tmp;
-xWidget* wdg;
-HWND hWnd;
-xInterface * interface1;
 
 
 
-
-xLabel * mouseMonitor;
 
 
 
@@ -33,6 +26,8 @@ xLabel * mouseMonitor;
 HINSTANCE hInst;                                // текущий экземпляр
 WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
+HWND hWnd;
+
 
 // Отправить объявления функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -187,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-            hdc_tmp = BeginPaint(hWnd, &ps);
+            HDC hdc_tmp = BeginPaint(hWnd, &ps);
 			vGUIsetCurrentHDC(hdc_tmp);
 			vGUIpaintEventHandler();
             EndPaint(hWnd, &ps);
@@ -208,7 +203,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
 	case WM_ERASEBKGND:
-		vInterfaceInvalidate();
+		vGUIeraseBackgroudHandler();
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
