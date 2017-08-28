@@ -22,4 +22,5 @@ void vGUIpaintEventHandler();
 void vGUIpushClickHandler(LPARAM lParam);
 void vGUIpopClickHandler(LPARAM lParam);
 void vGUIeraseBackgroudHandler();
+
 #endif

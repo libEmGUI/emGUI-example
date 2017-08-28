@@ -78,6 +78,9 @@
     <ClInclude Include="GUI.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\MenuButton.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="GUI.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\MenuButton.c">
+      <Filter>emGUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
