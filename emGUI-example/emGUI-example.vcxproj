@@ -156,6 +156,8 @@
     <ClInclude Include="..\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
     <ClInclude Include="emGUI-example.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="pics.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -163,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="..\emGUI\Draw\Draw.c" />
     <ClCompile Include="..\emGUI\Fonts\Font.c" />
+    <ClCompile Include="..\emGUI\Fonts\font16.c" />
     <ClCompile Include="..\emGUI\Fonts\Font8.c" />
     <ClCompile Include="..\emGUI\Widgets\Button.c" />
     <ClCompile Include="..\emGUI\Widgets\Interface.c" />
@@ -171,6 +174,7 @@
     <ClCompile Include="..\emGUI\Widgets\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Window.c" />
     <ClCompile Include="emGUI-example.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
