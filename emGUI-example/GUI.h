@@ -15,11 +15,9 @@ using namespace Gdiplus;
 
 
 ARGB convertColor(uint16_t color);
-bool bGUIonInterfaceCreateHandler(xWidget *);
 bool bGUI_InitInterfce();
 bool bGUIOnWindowCloseHandler(xWidget *);
-void vGUIdrawPixel(uint16_t x, uint16_t y, uint16_t color);
-void vGUIsetCurrentHDC(HDC a);
+void vGUIsetCurrentHDC(Graphics * gr);
 void vGUIpaintEventHandler();
 void vGUIpushClickHandler(LPARAM lParam);
 void vGUIpopClickHandler(LPARAM lParam);

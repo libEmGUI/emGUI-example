@@ -184,7 +184,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc_tmp = BeginPaint(hWnd, &ps);
-			vGUIsetCurrentHDC(hdc_tmp);
+			Graphics gr_tmp(hdc_tmp);
+			vGUIsetCurrentHDC(&gr_tmp);
 			vGUIpaintEventHandler();
             EndPaint(hWnd, &ps);
         }

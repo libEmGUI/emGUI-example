@@ -12,7 +12,7 @@ using namespace Gdiplus;
 static LCD_Glue LCD;
 static xInterface * interface1;
 static xLabel * mouseMonitor;
-static HDC hdc_tmp;
+static Graphics *graphics = NULL;
 xTouchEvent currentTouch;
 
 static int stride = 0;
@@ -31,14 +31,14 @@ ARGB convertColor(uint16_t color) {
 }
 
 
+
 extern "C" {
 	void vFramebufferRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
-		Graphics graphics(hdc_tmp);
 		Pen      pen(Color(convertColor(usColor)));
-		graphics.DrawRectangle(&pen, usX0, usY0, usX1 - usX0, usY1 - usY0);
+		graphics->DrawRectangle(&pen, usX0, usY0, usX1 - usX0, usY1 - usY0);
 		if (bFill) {
 			SolidBrush solidBrush(Color(convertColor(usColor)));
-			graphics.FillRectangle(&solidBrush, usX0, usY0, usX1 - usX0, usY1 - usY0);
+			graphics->FillRectangle(&solidBrush, usX0, usY0, usX1 - usX0, usY1 - usY0);
 		}
 	}
 	void vFramebufferPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
@@ -47,7 +47,8 @@ extern "C" {
 		unsigned char usHeight = *pubFont[0]; //each NEO font contains height info in first byte.
 		pubBuf++; //go to first pattern of font
 		uint16_t usXt, usYt;
-
+		SolidBrush fgBrush(Color(convertColor(usColor)));
+		SolidBrush bgBrush(Color(convertColor(usBackground)));
 		for (uint8_t column = 0; column < charWidth; column++) {
 			usXt = usX + column;
 			if (usXt >= ILI9341_TFTWIDTH)
@@ -55,9 +56,9 @@ extern "C" {
 			for (uint8_t row = 0; row < 8; row++) {
 				usYt = usY + row;
 				if (*pubBuf & (1 << row))
-					vGUIdrawPixel(usXt, usYt, usColor);
+					graphics->FillRectangle(&fgBrush, usXt, usYt, 1, 1);
 				else if (bFillBg)
-					vGUIdrawPixel(usXt, usYt, usBackground);
+					graphics->FillRectangle(&bgBrush, usXt, usYt, 1, 1);
 				if (usYt >= ILI9341_TFTHEIGHT)
 					break;
 			};
@@ -67,9 +68,9 @@ extern "C" {
 				for (uint8_t row = 0; row < 8; row++) {
 					usYt = usY + row + 8;
 					if (*(pubBuf + charWidth)& (1 << row))
-						vGUIdrawPixel(usXt, usYt, usColor);
+						graphics->FillRectangle(&fgBrush, usXt, usYt, 1, 1);
 					else if (bFillBg)
-						vGUIdrawPixel(usXt, usYt, usBackground);
+						graphics->FillRectangle(&bgBrush, usXt, usYt, 1, 1);
 					if (usYt >= ILI9341_TFTHEIGHT)
 						break;
 				};
@@ -78,33 +79,28 @@ extern "C" {
 		}
 	}
 	void vFramebufferVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
-		Graphics graphics(hdc_tmp);
 		Pen      pen(Color(convertColor(usColor)));
-		graphics.DrawLine(&pen, usX0, usY0, usX0, usY1);
+		graphics->DrawLine(&pen, usX0, usY0, usX0, usY1);
 	}
 	void vFramebufferHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
-		Graphics graphics(hdc_tmp);
 		Pen      pen(Color(convertColor(usColor)));
-		graphics.DrawLine(&pen, usX0, usY0, usX1, usY0);
+		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
 	void bFramebufferPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
-		Graphics graphics(hdc_tmp);
-		//BYTE * pxImg = &pusPicture;
 		BYTE * imgC = (BYTE *)pusPicture;
-		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t)*2);
+		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
 		static float angle = 0.0;
 		cross_pic_bitmap.RotateFlip(Rotate90FlipX);
-		graphics.DrawImage(&cross_pic_bitmap, sX0, sY0);
+		graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
 	}
-}
 
 
-// Action on interface creatings
-bool bGUIonInterfaceCreateHandler(xWidget *) {
-	auto window = pxWindowCreate(WINDOW_MENU);
-	vWindowSetHeader(window, "Wnd1");
-	vWidgetSetBgColor(window, 0xFF, false);
-	auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
+	// Action on interface creatings
+	bool bGUIonInterfaceCreateHandler(xWidget *) {
+		auto window = pxWindowCreate(WINDOW_MENU);
+		vWindowSetHeader(window, "Wnd1");
+		vWidgetSetBgColor(window, 0xFF, false);
+		auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
   considered the best in the nation at their respective positions\
   The National Collegiate Athletic Association, a college sports \
   governing body, uses officially recognized All-America selectors \
@@ -120,18 +116,18 @@ bool bGUIonInterfaceCreateHandler(xWidget *) {
     News (TSN), and the Walter Camp Football Foundation (WCFF),   \
     to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window);
 
-	mouseMonitor = pxLabelCreate(1, 200, 238, 0, "x:   y:   ", FONT_ASCII_8_X, 500, window);
-	auto b1 = pxButtonCreate(60, 100, rgb_test, window);
+		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "x:   y:   ", FONT_ASCII_8_X, 500, window);
+		auto b1 = pxButtonCreate(60, 100, rgb_test, window);
 
-	auto window2 = pxWindowCreate(WINDOW_ABOUT);
-	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
+		auto window2 = pxWindowCreate(WINDOW_ABOUT);
+		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
 
-	vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
-	vInterfaceOpenWindow(WINDOW_ABOUT);
-	vInterfaceOpenWindow(WINDOW_MENU);
-	return true;
+		vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
+		vInterfaceOpenWindow(WINDOW_ABOUT);
+		vInterfaceOpenWindow(WINDOW_MENU);
+		return true;
+	}
 }
-
 
 bool bGUIOnWindowCloseHandler(xWidget *) {
 	vInterfaceOpenWindow(WINDOW_MENU);
@@ -149,14 +145,9 @@ bool bGUI_InitInterfce() {
 	return true;
 }
 
-void vGUIdrawPixel(uint16_t x, uint16_t y, uint16_t color){
-	Graphics graphics(hdc_tmp);
-	SolidBrush solidBrush(Color(convertColor(color)));
-	graphics.FillRectangle(&solidBrush, x, y, 1, 1);
-}
 
-void vGUIsetCurrentHDC(HDC a) {
-	hdc_tmp = a;
+void vGUIsetCurrentHDC(Graphics *gr) {
+	graphics = gr;
 }
 
 
