@@ -14,7 +14,8 @@ using namespace Gdiplus;
 
 #define MAX_LOADSTRING 100
 
-
+//#define DEBUG_ZONE 250;  //Choose to get additional space for experiments
+#define DEBUG_ZONE 0;
 
 
 
@@ -127,7 +128,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    RECT activeRECT;
    activeRECT.left = 0;
    activeRECT.top = 0;
-   activeRECT.right = ILI9341_TFTWIDTH;
+   activeRECT.right = ILI9341_TFTWIDTH + DEBUG_ZONE;
    activeRECT.bottom = ILI9341_TFTHEIGHT;
    AdjustWindowRect(&activeRECT, WS_OVERLAPPEDWINDOW, true);
    uint16_t width = activeRECT.right - activeRECT.left;

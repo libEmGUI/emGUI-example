@@ -15,6 +15,10 @@ static xLabel * mouseMonitor;
 static HDC hdc_tmp;
 xTouchEvent currentTouch;
 
+static int stride = 0;
+BYTE * imgCross = (BYTE *)&rgb_test;
+BYTE * imgCross2 = (BYTE *)&rgb_test[23];
+
 // Convert color from emGUI to GDI format
 ARGB convertColor(uint16_t color) {
 	uint8_t usRed = ((color >> 11) & 0b00011111) * 8;
@@ -84,15 +88,13 @@ extern "C" {
 		graphics.DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
 	void bFramebufferPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
-		int16_t i, j;
-		uint16_t x = 2;
-
-		for (j = 0; j < pusPicture[1]; j++) {
-			for (i = 0; i < pusPicture[0]; i++) {
-				vGUIdrawPixel(sX0 + j, sY0 + i, pusPicture[x]);
-				x++;
-			}
-		}
+		Graphics graphics(hdc_tmp);
+		//BYTE * pxImg = &pusPicture;
+		BYTE * imgC = (BYTE *)pusPicture;
+		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t)*2);
+		static float angle = 0.0;
+		cross_pic_bitmap.RotateFlip(Rotate90FlipX);
+		graphics.DrawImage(&cross_pic_bitmap, sX0, sY0);
 	}
 }
 
@@ -166,7 +168,7 @@ void vGUIpaintEventHandler() {
 void vGUIpushClickHandler(LPARAM lParam) {
 	char outString[25];
 	sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
-	pcLabelSetText(mouseMonitor, outString);
+	//pcLabelSetText(mouseMonitor, outString);
 	currentTouch.eventTouchScreen = pushTs;
 	currentTouch.xTouchScreen = LOWORD(lParam);
 	currentTouch.yTouchScreen = HIWORD(lParam);
@@ -183,3 +185,5 @@ void vGUIpopClickHandler(LPARAM lParam) {
 void vGUIeraseBackgroudHandler() {
 	vInterfaceInvalidate();
 }
+
+
