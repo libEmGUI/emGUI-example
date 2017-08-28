@@ -9,7 +9,7 @@ using namespace Gdiplus;
 
 
 
-static LCD_Glue LCD;
+static xDraw_t LCD;
 static xInterface * interface1;
 static xLabel * mouseMonitor;
 static Graphics *graphics = NULL;
@@ -33,7 +33,7 @@ ARGB convertColor(uint16_t color) {
 
 
 extern "C" {
-	void vFramebufferRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
+	void vRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawRectangle(&pen, usX0, usY0, usX1 - usX0, usY1 - usY0);
 		if (bFill) {
@@ -41,7 +41,7 @@ extern "C" {
 			graphics->FillRectangle(&solidBrush, usX0, usY0, usX1 - usX0, usY1 - usY0);
 		}
 	}
-	void vFramebufferPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
+	void vPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
 		unsigned const char  *pubBuf = pubFont[(int)ASCI];
 		unsigned char charWidth = *pubBuf; //each symbol in NEO fonts contains width info in first byte.
 		unsigned char usHeight = *pubFont[0]; //each NEO font contains height info in first byte.
@@ -78,15 +78,15 @@ extern "C" {
 			pubBuf++;
 		}
 	}
-	void vFramebufferVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
+	void vVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawLine(&pen, usX0, usY0, usX0, usY1);
 	}
-	void vFramebufferHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
+	void vHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
-	void bFramebufferPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
+	void bPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
 		BYTE * imgC = (BYTE *)pusPicture;
 		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
 		static float angle = 0.0;
@@ -120,6 +120,7 @@ extern "C" {
 		auto b1 = pxButtonCreate(60, 100, rgb_test, window);
 
 		auto window2 = pxWindowCreate(WINDOW_ABOUT);
+		vWindowSetHeader(window2, "Wnd2");
 		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
 
 		vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
@@ -136,12 +137,12 @@ bool bGUIOnWindowCloseHandler(xWidget *) {
 
 bool bGUI_InitInterfce() {
 	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
-	LCD.vFramebufferRectangle = &vFramebufferRectangle;
-	LCD.vFramebufferPutChar = &vFramebufferPutChar;
-	LCD.bFramebufferPicture = &bFramebufferPicture;
-	LCD.vFramebufferVLine = &vFramebufferVLine;
-	LCD.vFramebufferHLine = &vFramebufferHLine;
-	vWidgetSetLCD(&LCD);
+	LCD.vRectangle = &vRectangle;
+	LCD.vPutChar = &vPutChar;
+	LCD.bPicture = &bPicture;
+	LCD.vVLine = &vVLine;
+	LCD.vHLine = &vHLine;
+	vDrawSetHandler(&LCD);
 	return true;
 }
 
