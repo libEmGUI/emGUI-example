@@ -5,7 +5,6 @@
 #include <windows.h>
 #include <objidl.h>
 #include <gdiplus.h>
-#include "pics.h"
 #include <iostream>
 
 using namespace Gdiplus;

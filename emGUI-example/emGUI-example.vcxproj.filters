@@ -28,6 +28,9 @@
     <Filter Include="emGUI\Draw">
       <UniqueIdentifier>{38d000d5-139d-4c6a-871d-a6b31eca61a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DemoImages">
+      <UniqueIdentifier>{6a17ff45-1bc2-43d2-8c3e-804495080de8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,9 +75,6 @@
     <ClInclude Include="..\emGUI\Draw\Draw.h">
       <Filter>emGUI\Draw</Filter>
     </ClInclude>
-    <ClInclude Include="pics.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="..\emGUI\Widgets\MenuButton.h">
       <Filter>emGUI\Widgets</Filter>
     </ClInclude>
@@ -86,6 +86,12 @@
     </ClInclude>
     <ClInclude Include="emGUI_opts.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Images\Images.h">
+      <Filter>emGUI\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoImages\pics.h">
+      <Filter>DemoImages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,24 @@
     </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\MenuButton.c">
       <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Label_bg.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoImages\pics.c">
+      <Filter>DemoImages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Close.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\No.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Refresh.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Yes.c">
+      <Filter>emGUI\Images</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
