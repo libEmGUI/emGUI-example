@@ -161,6 +161,21 @@
     <ClCompile Include="..\emGUI\Widgets\ModalDialog.c">
       <Filter>emGUI\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Cross.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Folder.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Help.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Magic.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Process.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="emGUI-example.rc">

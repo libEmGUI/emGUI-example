@@ -173,8 +173,13 @@
     <ClCompile Include="..\emGUI\Fonts\font16.c" />
     <ClCompile Include="..\emGUI\Fonts\Font8.c" />
     <ClCompile Include="..\emGUI\Images\Close.c" />
+    <ClCompile Include="..\emGUI\Images\Cross.c" />
+    <ClCompile Include="..\emGUI\Images\Folder.c" />
+    <ClCompile Include="..\emGUI\Images\Help.c" />
     <ClCompile Include="..\emGUI\Images\Label_bg.c" />
+    <ClCompile Include="..\emGUI\Images\Magic.c" />
     <ClCompile Include="..\emGUI\Images\No.c" />
+    <ClCompile Include="..\emGUI\Images\Process.c" />
     <ClCompile Include="..\emGUI\Images\Refresh.c" />
     <ClCompile Include="..\emGUI\Images\Yes.c" />
     <ClCompile Include="..\emGUI\Widgets\Button.c" />

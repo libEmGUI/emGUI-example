@@ -14,9 +14,9 @@ using namespace Gdiplus;
 
 #define MAX_LOADSTRING 100
 
-#define DEBUG_ZONE 250;  //Choose to get additional space for experiments
-//#define DEBUG_ZONE 0;
-
+#ifndef DEBUG_ZONE
+#define DEBUG_ZONE 0;
+#endif
 
 
 

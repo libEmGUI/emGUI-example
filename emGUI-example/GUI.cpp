@@ -99,7 +99,7 @@ extern "C" {
 		sprintf_s(outString, "pushed: %d times", i);
 		pcLabelSetText(mouseMonitor, outString);
 
-		iModalDialogOpen(MODAL_AUTO, "n", "dial1", "Press any key?");
+		iModalDialogOpen(MODAL_AUTO, "e", "dial1", "Error: jk");
 		iModalDialogOpen(MODAL_AUTO, "ny", "dial2", "choose button");
 		return true;
 	}
@@ -108,7 +108,7 @@ extern "C" {
 		auto window = pxWindowCreate(WINDOW_MENU);
 		
 		vWindowSetHeader(window, "Wnd1");
-		vWidgetSetBgColor(window, 0xFF, false);
+		vWidgetSetBgColor(window, 0xFFFF, false);
 		auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
 	The National Collegiate Athletic Association, a college sports \
@@ -126,14 +126,14 @@ extern "C" {
 	to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window);
 
 		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "x:   y:   ", FONT_ASCII_8_X, 500, window);
-		auto b1 = pxButtonCreate(1, 70, rgb_test, window);
+		//auto b1 = pxButtonCreate(1, 70, rgb_test, window);
 
 		auto window2 = pxWindowCreate(WINDOW_ABOUT);
 		vWindowSetHeader(window2, "Wnd2");
 		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
 		vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
 
-		auto menuBut = pxMenuButtonCreate(120, 70, rgb_test, "push me", &btn2Handler, window);
+		auto menuBut = pxMenuButtonCreate(70, 70, magic, "push me", &btn2Handler, window);
 		auto dialog1 = pxModalDialogWindowCreate();
 		vInterfaceOpenWindow(WINDOW_ABOUT);
 		vInterfaceOpenWindow(WINDOW_MENU);
