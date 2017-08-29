@@ -149,6 +149,7 @@
     <ClInclude Include="..\emGUI\Draw\Draw.h" />
     <ClInclude Include="..\emGUI\emGUI.h" />
     <ClInclude Include="..\emGUI\Fonts\Font.h" />
+    <ClInclude Include="..\emGUI\opts.h" />
     <ClInclude Include="..\emGUI\Widgets\Button.h" />
     <ClInclude Include="..\emGUI\Widgets\Interface.h" />
     <ClInclude Include="..\emGUI\Widgets\Label.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="..\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
     <ClInclude Include="emGUI-example.h" />
+    <ClInclude Include="emGUI_opts.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="pics.h" />
     <ClInclude Include="Resource.h" />

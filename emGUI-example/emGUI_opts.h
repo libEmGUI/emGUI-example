@@ -1,0 +1,5 @@
+#ifndef EMGUI_OPTS_H
+#define EMGUI_OPTS_H
+
+#define LCD_STATUS_BAR_HEIGHT 20
+#endif // !EMGUI_OPTS_H

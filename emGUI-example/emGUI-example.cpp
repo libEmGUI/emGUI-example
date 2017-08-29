@@ -128,8 +128,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    RECT activeRECT;
    activeRECT.left = 0;
    activeRECT.top = 0;
-   activeRECT.right = ILI9341_TFTWIDTH + DEBUG_ZONE;
-   activeRECT.bottom = ILI9341_TFTHEIGHT;
+   activeRECT.right = SCREEN_WIDTH + DEBUG_ZONE;
+   activeRECT.bottom = SCREEN_HEIGHT;
    AdjustWindowRect(&activeRECT, WS_OVERLAPPEDWINDOW, true);
    uint16_t width = activeRECT.right - activeRECT.left;
    uint16_t height = activeRECT.bottom - activeRECT.top;

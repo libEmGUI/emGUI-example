@@ -31,9 +31,6 @@ ARGB convertColor(uint16_t color) {
 }
 
 
-
-
-
 extern "C" {
 	void vRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
 		Pen      pen(Color(convertColor(usColor)));
@@ -53,7 +50,7 @@ extern "C" {
 		SolidBrush bgBrush(Color(convertColor(usBackground)));
 		for (uint8_t column = 0; column < charWidth; column++) {
 			usXt = usX + column;
-			if (usXt >= ILI9341_TFTWIDTH)
+			if (usXt >= SCREEN_WIDTH)
 				break;
 			for (uint8_t row = 0; row < 8; row++) {
 				usYt = usY + row;
@@ -61,7 +58,7 @@ extern "C" {
 					graphics->FillRectangle(&fgBrush, usXt, usYt, 1, 1);
 				else if (bFillBg)
 					graphics->FillRectangle(&bgBrush, usXt, usYt, 1, 1);
-				if (usYt >= ILI9341_TFTHEIGHT)
+				if (usYt >= SCREEN_HEIGHT)
 					break;
 			};
 
@@ -73,7 +70,7 @@ extern "C" {
 						graphics->FillRectangle(&fgBrush, usXt, usYt, 1, 1);
 					else if (bFillBg)
 						graphics->FillRectangle(&bgBrush, usXt, usYt, 1, 1);
-					if (usYt >= ILI9341_TFTHEIGHT)
+					if (usYt >= SCREEN_HEIGHT)
 						break;
 				};
 			}

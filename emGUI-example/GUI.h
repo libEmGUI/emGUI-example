@@ -10,8 +10,8 @@
 
 using namespace Gdiplus;
 
-#define ILI9341_TFTWIDTH 240
-#define ILI9341_TFTHEIGHT 240
+#define SCREEN_WIDTH LCD_SizeX
+#define SCREEN_HEIGHT LCD_SizeY
 
 
 ARGB convertColor(uint16_t color);

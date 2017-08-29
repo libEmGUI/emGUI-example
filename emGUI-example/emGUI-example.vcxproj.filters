@@ -75,11 +75,17 @@
     <ClInclude Include="pics.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\MenuButton.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\emGUI\Widgets\MenuButton.h">
-      <Filter>emGUI\Widgets</Filter>
+    <ClInclude Include="..\emGUI\opts.h">
+      <Filter>emGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="emGUI_opts.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
