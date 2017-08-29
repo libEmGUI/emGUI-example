@@ -93,6 +93,9 @@
     <ClInclude Include="DemoImages\pics.h">
       <Filter>DemoImages</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="..\emGUI\Images\Yes.c">
       <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c">
+      <Filter>emGUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

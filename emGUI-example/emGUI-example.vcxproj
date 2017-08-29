@@ -155,6 +155,7 @@
     <ClInclude Include="..\emGUI\Widgets\Interface.h" />
     <ClInclude Include="..\emGUI\Widgets\Label.h" />
     <ClInclude Include="..\emGUI\Widgets\MenuButton.h" />
+    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h" />
     <ClInclude Include="..\emGUI\Widgets\StatusBar.h" />
     <ClInclude Include="..\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="..\emGUI\Widgets\Interface.c" />
     <ClCompile Include="..\emGUI\Widgets\Label.c" />
     <ClCompile Include="..\emGUI\Widgets\MenuButton.c" />
+    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c" />
     <ClCompile Include="..\emGUI\Widgets\StatusBar.c" />
     <ClCompile Include="..\emGUI\Widgets\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Window.c" />

@@ -98,6 +98,9 @@ extern "C" {
 		i++;
 		sprintf_s(outString, "pushed: %d times", i);
 		pcLabelSetText(mouseMonitor, outString);
+
+		iModalDialogOpen(MODAL_AUTO, "n", "dial1", "Press any key?");
+		iModalDialogOpen(MODAL_AUTO, "ny", "dial2", "choose button");
 		return true;
 	}
 	// Action on interface creatings
@@ -131,7 +134,7 @@ extern "C" {
 		vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
 
 		auto menuBut = pxMenuButtonCreate(120, 70, rgb_test, "push me", &btn2Handler, window);
-
+		auto dialog1 = pxModalDialogWindowCreate();
 		vInterfaceOpenWindow(WINDOW_ABOUT);
 		vInterfaceOpenWindow(WINDOW_MENU);
 		return true;
