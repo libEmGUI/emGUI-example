@@ -21,9 +21,9 @@ BYTE * imgCross2 = (BYTE *)&rgb_test[23];
 
 // Convert color from emGUI to GDI format
 ARGB convertColor(uint16_t color) {
-	uint8_t usRed = ((color >> 11) & 0b00011111) * 8;
-	uint8_t usGreen = ((color >> 5) & 0b00111111) * 4;
-	uint8_t usBlue = ((color & 0b00011111)) * 8;
+	uint8_t usRed = ((color >> 11) & 0b00011111) * 800 / 97;
+	uint8_t usGreen = (uint32_t)((uint32_t)(color >> 5) & 0b0000111111) * 4000 / 985;
+	uint8_t usBlue = ((color & 0b00011111)) * 800 / 97;
 
 	ARGB answer = (ARGB)((ARGB)0xFF000000 | (usRed << 16) | (usGreen << 8) | usBlue);
 	return answer;
