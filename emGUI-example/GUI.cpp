@@ -110,13 +110,47 @@ extern "C" {
 		vInterfaceOpenWindow(WINDOW_ABOUT);
 		return true;
 	}
+
+	bool btnLabelHDLR(xWidget *) {
+		vInterfaceOpenWindow(WINDOW_NOTES);
+		return true;
+	}
+
+	bool btnFolderHDLR(xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ARCHIVE);
+		return true;
+	}
+
 	// Action on interface creatings
 	bool bGUIonInterfaceCreateHandler(xWidget *) {
 		auto window = pxWindowCreate(WINDOW_MENU);
-		
 		vWindowSetHeader(window, "Main menu");
-		vWidgetSetBgColor(window, 0xFFFF, false);
-		auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
+		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", FONT_ASCII_8_X, 500, window);
+		uint8_t offset = 15;
+
+		uint8_t row1 = offset;
+		uint8_t row2 = row1 + 60 + offset;
+		uint8_t row3 = row2 + 60 + offset;
+		uint8_t column1 = offset;
+		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
+		uint8_t column3 = SCREEN_WIDTH - offset - 60;
+		auto menuBut		= pxMenuButtonCreate(column1, row1, magic, "Do magic", &btnMagicHDLR, window);
+		auto menuButAbout	= pxMenuButtonCreate(column2, row1, help, "Info", &btnAboutHDLR, window);
+		auto menuButLabel	= pxMenuButtonCreate(column3, row1, process, "Test Label", &btnLabelHDLR, window);
+		auto menuButFolder  = pxMenuButtonCreate(column1, row2, folder, "Many windows", &btnFolderHDLR, window);
+
+		auto window2_about = pxWindowCreate(WINDOW_ABOUT);
+		vWindowSetHeader(window2_about, "About");
+
+		auto window_show_label = pxWindowCreate(WINDOW_NOTES);
+		vWindowSetHeader(window_show_label, "Big label");
+
+		auto window_show_folder = pxWindowCreate(WINDOW_ARCHIVE);
+		vWindowSetHeader(window_show_folder, "Labels");
+		auto menuButAbout2 = pxMenuButtonCreate(column1, row1, help, "Info", &btnAboutHDLR, window_show_folder);
+		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, process, "Test Label", &btnLabelHDLR, window_show_folder);
+
+		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
 	The National Collegiate Athletic Association, a college sports \
 	governing body, uses officially recognized All-America selectors \
@@ -130,22 +164,12 @@ extern "C" {
 	the Associated Press (AP), American Football Coaches Association \
 	(AFCA), Football Writers Association of America (FWAA), The Sporting \
 	News (TSN), and the Walter Camp Football Foundation (WCFF),   \
-	to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window);
+	to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window_show_label);
 
-		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", FONT_ASCII_8_X, 500, window);
-		//auto b1 = pxButtonCreate(1, 70, rgb_test, window);
+		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 200, window2_about);
 
-		auto window2 = pxWindowCreate(WINDOW_ABOUT);
-		vWindowSetHeader(window2, "About");
-		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
-		//vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
 		vWindowSetOnCloseRequestHandler(window, &bGUIOnWindowCloseHandlerMain);
-
-
-		auto menuBut = pxMenuButtonCreate(5, 70, magic, "Do magic", &btnMagicHDLR, window);
-		auto menuButAbout = pxMenuButtonCreate(75, 70, help, "Info", &btnAboutHDLR, window);
 		auto dialog1 = pxModalDialogWindowCreate();
-		
 		vInterfaceOpenWindow(WINDOW_MENU);
 		return true;
 	}
