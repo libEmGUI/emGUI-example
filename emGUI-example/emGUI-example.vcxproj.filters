@@ -155,9 +155,6 @@
     <ClCompile Include="..\emGUI\Images\Refresh.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
-    <ClCompile Include="..\emGUI\Images\Yes.c">
-      <Filter>emGUI\Images</Filter>
-    </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\ModalDialog.c">
       <Filter>emGUI\Widgets</Filter>
     </ClCompile>
@@ -174,6 +171,60 @@
       <Filter>emGUI\Images</Filter>
     </ClCompile>
     <ClCompile Include="..\emGUI\Images\Process.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Ban.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Bars.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Down.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Error.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Keyboard.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Left.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Mail.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Micochip.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\New_list.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Ok.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Open-folder.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Pin.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Star.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Tags.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Undo.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Up.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Warning.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Wrench.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
   </ItemGroup>

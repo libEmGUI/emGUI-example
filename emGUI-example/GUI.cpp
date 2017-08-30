@@ -182,7 +182,6 @@ void closeWindow() {
 
 bool bGUIOnWindowCloseHandlerMain(xWidget *) {
 	auto dial = iModalDialogOpen(MODAL_AUTO, "ny", "Close?", "");
-	vModalDialogSetHandler(dial, 'd', closeWindow);
 	vModalDialogSetHandler(dial, 'y', closeWindow);
 	return true;
 }

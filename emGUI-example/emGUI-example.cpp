@@ -126,6 +126,15 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    HWND hWnd = CreateWindowW(szWindowClass, 0, dwStyle,
 	   CW_USEDEFAULT, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
    SetWindowLong(hWnd, GWL_STYLE, WS_BORDER);     // stupid winapi maigic. You should reset all styles and set style again
+   RECT rc;
+
+   GetWindowRect(hWnd, &rc);
+
+   int xPos = (GetSystemMetrics(SM_CXSCREEN) - rc.right) / 2;
+   int yPos = (GetSystemMetrics(SM_CYSCREEN) - rc.bottom) / 2;
+
+   SetWindowPos(hWnd, 0, xPos, yPos, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+   
    if (!hWnd)
    {
       return FALSE;
