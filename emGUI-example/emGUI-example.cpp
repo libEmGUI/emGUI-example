@@ -48,9 +48,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
-	bGUI_InitInterfce(); //TODO: check false
-
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+	bGUI_InitInterfce(); //TODO: check false
 	
     // Инициализация глобальных строк
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);

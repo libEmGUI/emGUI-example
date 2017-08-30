@@ -240,5 +240,20 @@
     <Image Include="emGUI-example.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="DemoImages\close.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\no.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\ok.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\undo.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\wrench.png">
+      <Filter>DemoImages</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -19,7 +19,6 @@ void onCloseHDLR(void);
 ARGB convertColor(uint16_t color);
 bool bGUI_InitInterfce();
 bool bGUIOnWindowCloseHandlerMain(xWidget *);
-
 bool bGUIOnWindowCloseHandler(xWidget *);
 void vGUIsetCurrentHDC(Graphics * gr);
 void vGUIpaintEventHandler();

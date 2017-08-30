@@ -85,12 +85,46 @@ extern "C" {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
-	void bPicture(int16_t sX0, int16_t sY0, unsigned short const* pusPicture) {
-		BYTE * imgC = (BYTE *)pusPicture;
-		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
-		static float angle = 0.0;
-		cross_pic_bitmap.RotateFlip(Rotate90FlipX);
-		graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
+
+	uint16_t usGetPictureH(xPicture pusPicture) {
+		const WCHAR *pwcsName;
+		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
+		pwcsName = new WCHAR[nChars];
+		MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
+		Image img(pwcsName);
+		uint16_t H = img.GetHeight();
+		delete[] pwcsName;
+		return H;
+	}
+
+	uint16_t usGetPictureW(xPicture pusPicture) {
+		const WCHAR *pwcsName;
+		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
+		pwcsName = new WCHAR[nChars];
+		MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
+		Image img(pwcsName);
+		uint16_t W = img.GetWidth();
+		delete[] pwcsName;
+		return W;
+	}
+
+	void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
+		#ifndef OVERRIDE_DEFAULT_PICS
+			BYTE * imgC = (BYTE *)pusPicture;
+			Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
+			static float angle = 0.0;
+			cross_pic_bitmap.RotateFlip(Rotate90FlipX);
+			graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
+		#else
+			const WCHAR *pwcsName;
+			int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
+			pwcsName = new WCHAR[nChars];
+			MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
+			Image img(pwcsName);
+			graphics->DrawImage(&img, sX0, sY0);
+			delete[] pwcsName;
+		#endif
+
 	}
 
 	void doMagic() {
@@ -134,10 +168,10 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		auto menuBut		= pxMenuButtonCreate(column1, row1, magic, "Do magic", &btnMagicHDLR, window);
-		auto menuButAbout	= pxMenuButtonCreate(column2, row1, help, "Info", &btnAboutHDLR, window);
-		auto menuButLabel	= pxMenuButtonCreate(column3, row1, process, "Test Label", &btnLabelHDLR, window);
-		auto menuButFolder  = pxMenuButtonCreate(column1, row2, folder, "Many windows", &btnFolderHDLR, window);
+		/*auto menuBut		= pxMenuButtonCreate(column1, row1, PIC_LABEL_BG, "Do magic", &btnMagicHDLR, window);
+		auto menuButAbout	= pxMenuButtonCreate(column2, row1, PIC_LABEL_BG, "Info", &btnAboutHDLR, window);
+		auto menuButLabel	= pxMenuButtonCreate(column3, row1, PIC_LABEL_BG, "Test Label", &btnLabelHDLR, window);
+		auto menuButFolder  = pxMenuButtonCreate(column1, row2, PIC_LABEL_BG, "Many windows", &btnFolderHDLR, window);*/
 
 		auto window2_about = pxWindowCreate(WINDOW_ABOUT);
 		vWindowSetHeader(window2_about, "About");
@@ -147,8 +181,8 @@ extern "C" {
 
 		auto window_show_folder = pxWindowCreate(WINDOW_ARCHIVE);
 		vWindowSetHeader(window_show_folder, "Labels");
-		auto menuButAbout2 = pxMenuButtonCreate(column1, row1, help, "Info", &btnAboutHDLR, window_show_folder);
-		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, process, "Test Label", &btnLabelHDLR, window_show_folder);
+		/*auto menuButAbout2 = pxMenuButtonCreate(column1, row1, PIC_LABEL_BG, "Info", &btnAboutHDLR, window_show_folder);
+		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, PIC_LABEL_BG, "Test Label", &btnLabelHDLR, window_show_folder);*/
 
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
@@ -188,14 +222,16 @@ bool bGUIOnWindowCloseHandlerMain(xWidget *) {
 
 
 bool bGUI_InitInterfce() {
-	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
-
+	vDrawHandlerInit(&LCD);
 	LCD.vRectangle = &vRectangle;
 	LCD.vPutChar = &vPutChar;
 	LCD.bPicture = &bPicture;
 	LCD.vVLine = &vVLine;
 	LCD.vHLine = &vHLine;
+	LCD.usGetPictureH = &usGetPictureH;
+	LCD.usGetPictureW = &usGetPictureW;
 	vDrawSetHandler(&LCD);
+	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
 	return true;
 }
 

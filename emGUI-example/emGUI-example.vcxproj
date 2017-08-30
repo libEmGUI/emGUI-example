@@ -221,6 +221,11 @@
     <ResourceCompile Include="emGUI-example.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="DemoImages\close.png" />
+    <Image Include="DemoImages\no.png" />
+    <Image Include="DemoImages\ok.png" />
+    <Image Include="DemoImages\undo.png" />
+    <Image Include="DemoImages\wrench.png" />
     <Image Include="emGUI-example.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
