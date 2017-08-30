@@ -12,9 +12,14 @@ using namespace Gdiplus;
 #define SCREEN_WIDTH LCD_SizeX
 #define SCREEN_HEIGHT LCD_SizeY
 
+//events
+
+void onCloseHDLR(void);
 
 ARGB convertColor(uint16_t color);
 bool bGUI_InitInterfce();
+bool bGUIOnWindowCloseHandlerMain(xWidget *);
+
 bool bGUIOnWindowCloseHandler(xWidget *);
 void vGUIsetCurrentHDC(Graphics * gr);
 void vGUIpaintEventHandler();

@@ -125,7 +125,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    DWORD dwStyle = WS_BORDER; 
    HWND hWnd = CreateWindowW(szWindowClass, 0, dwStyle,
 	   CW_USEDEFAULT, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
-   SetWindowLong(hWnd, GWL_STYLE, 0);
+   SetWindowLong(hWnd, GWL_STYLE, WS_BORDER);     // stupid winapi maigic. You should reset all styles and set style again
    if (!hWnd)
    {
       return FALSE;

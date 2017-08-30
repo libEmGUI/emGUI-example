@@ -92,22 +92,29 @@ extern "C" {
 		cross_pic_bitmap.RotateFlip(Rotate90FlipX);
 		graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
 	}
-	bool btn2Handler(xWidget *) {
+
+	void doMagic() {
 		char outString[25];
 		static int i = 0;
 		i++;
-		sprintf_s(outString, "pushed: %d times", i);
+		sprintf_s(outString, "Magic count: %d times", i);
 		pcLabelSetText(mouseMonitor, outString);
+	}
+	bool btnMagicHDLR(xWidget *) {
+		auto dlg = iModalDialogOpen(MODAL_AUTO, "ny", "Magic Button", "Magic will happen. Are you sure?");
+		vModalDialogSetHandler(dlg, 'y', &doMagic);
+		return true;
+	}
 
-		iModalDialogOpen(MODAL_AUTO, "e", "dial1", "Error: jk");
-		iModalDialogOpen(MODAL_AUTO, "ny", "dial2", "choose button");
+	bool btnAboutHDLR(xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ABOUT);
 		return true;
 	}
 	// Action on interface creatings
 	bool bGUIonInterfaceCreateHandler(xWidget *) {
 		auto window = pxWindowCreate(WINDOW_MENU);
 		
-		vWindowSetHeader(window, "Wnd1");
+		vWindowSetHeader(window, "Main menu");
 		vWidgetSetBgColor(window, 0xFFFF, false);
 		auto l1 = pxLabelCreate(1, 1, 238, 60, "hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
@@ -125,26 +132,37 @@ extern "C" {
 	News (TSN), and the Walter Camp Football Foundation (WCFF),   \
 	to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window);
 
-		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "x:   y:   ", FONT_ASCII_8_X, 500, window);
+		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", FONT_ASCII_8_X, 500, window);
 		//auto b1 = pxButtonCreate(1, 70, rgb_test, window);
 
 		auto window2 = pxWindowCreate(WINDOW_ABOUT);
-		vWindowSetHeader(window2, "Wnd2");
+		vWindowSetHeader(window2, "About");
 		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 50, window2);
-		vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
+		//vWindowSetOnCloseRequestHandler(window2, &bGUIOnWindowCloseHandler);
+		vWindowSetOnCloseRequestHandler(window, &bGUIOnWindowCloseHandlerMain);
 
-		auto menuBut = pxMenuButtonCreate(70, 70, magic, "push me", &btn2Handler, window);
+
+		auto menuBut = pxMenuButtonCreate(5, 70, magic, "Do magic", &btnMagicHDLR, window);
+		auto menuButAbout = pxMenuButtonCreate(75, 70, help, "Info", &btnAboutHDLR, window);
 		auto dialog1 = pxModalDialogWindowCreate();
-		vInterfaceOpenWindow(WINDOW_ABOUT);
+		
 		vInterfaceOpenWindow(WINDOW_MENU);
 		return true;
 	}
 }
 
-bool bGUIOnWindowCloseHandler(xWidget *) {
-	vInterfaceOpenWindow(WINDOW_MENU);
+void closeWindow() {
+	HWND hWnd = GetActiveWindow();
+	DestroyWindow(hWnd);
+}
+
+bool bGUIOnWindowCloseHandlerMain(xWidget *) {
+	auto dial = iModalDialogOpen(MODAL_AUTO, "ny", "Close?", "");
+	vModalDialogSetHandler(dial, 'd', closeWindow);
+	vModalDialogSetHandler(dial, 'y', closeWindow);
 	return true;
 }
+
 
 bool bGUI_InitInterfce() {
 	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
