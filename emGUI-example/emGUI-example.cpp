@@ -34,7 +34,6 @@ HWND hWnd;
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -103,7 +102,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_EMGUIEXAMPLE));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_EMGUIEXAMPLE);
+	wcex.lpszMenuName = NULL;// MAKEINTRESOURCEW(IDC_EMGUIEXAMPLE);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -122,23 +121,11 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Сохранить дескриптор экземпляра в глобальной переменной
-
-   // Calc windows size out of rect
-   RECT activeRECT;
-   activeRECT.left = 0;
-   activeRECT.top = 0;
-   activeRECT.right = SCREEN_WIDTH + DEBUG_ZONE;
-   activeRECT.bottom = SCREEN_HEIGHT;
-   AdjustWindowRect(&activeRECT, WS_OVERLAPPEDWINDOW, true);
-   uint16_t width = activeRECT.right - activeRECT.left;
-   uint16_t height = activeRECT.bottom - activeRECT.top;
-
-   // OVERLAPPED WINDOW style but resize is disabled
-   DWORD dwStyle = WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME;
-
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, dwStyle,
-	   CW_USEDEFAULT, 0, width, height, nullptr, nullptr, hInstance, nullptr);
+   hInst = hInstance; // Сохранить дескриптор экземпляра в глобальной переме
+   DWORD dwStyle = WS_BORDER; 
+   HWND hWnd = CreateWindowW(szWindowClass, 0, dwStyle,
+	   CW_USEDEFAULT, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+   SetWindowLong(hWnd, GWL_STYLE, 0);
    if (!hWnd)
    {
       return FALSE;
@@ -163,23 +150,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Разобрать выбор в меню:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
+    /*case WM_COMMAND:
+        //{
+          //  int wmId = LOWORD(wParam);
+            //DestroyWindow(hWnd);
         }
-        break;
+        break;*/
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
@@ -212,22 +188,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-// Обработчик сообщений для окна "О программе".
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
-
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
-}
