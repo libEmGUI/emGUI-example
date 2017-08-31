@@ -85,7 +85,7 @@ extern "C" {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
-
+	#ifdef OVERRIDE_DEFAULT_PICS
 	uint16_t usGetPictureH(xPicture pusPicture) {
 		const WCHAR *pwcsName;
 		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
@@ -107,6 +107,7 @@ extern "C" {
 		delete[] pwcsName;
 		return W;
 	}
+	#endif
 
 	void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
 		#ifndef OVERRIDE_DEFAULT_PICS
@@ -228,8 +229,10 @@ bool bGUI_InitInterfce() {
 	LCD.bPicture = &bPicture;
 	LCD.vVLine = &vVLine;
 	LCD.vHLine = &vHLine;
-	LCD.usGetPictureH = &usGetPictureH;
-	LCD.usGetPictureW = &usGetPictureW;
+	#ifdef OVERRIDE_DEFAULT_PICS
+		LCD.usGetPictureH = &usGetPictureH;
+		LCD.usGetPictureW = &usGetPictureW;
+	#endif
 	vDrawSetHandler(&LCD);
 	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
 	return true;

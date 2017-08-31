@@ -5,10 +5,12 @@
 
 #define LCD_STATUS_BAR_HEIGHT 24
 
-#define XPICTURE_TYPE char*
+
 
 
 #define OVERRIDE_DEFAULT_PICS 1
+#define XPICTURE_TYPE char*
+
 
 #define STATUS_BAR_CROSS_PIC	"DemoImages/close.png"
  
