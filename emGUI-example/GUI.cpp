@@ -85,7 +85,7 @@ extern "C" {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
-	#ifdef OVERRIDE_DEFAULT_PICS
+	#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
 	uint16_t usGetPictureH(xPicture pusPicture) {
 		const WCHAR *pwcsName;
 		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
@@ -110,7 +110,7 @@ extern "C" {
 	#endif
 
 	void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
-		#ifndef OVERRIDE_DEFAULT_PICS
+		#ifndef EM_GUI_OVERRIDE_DEFAULT_PICS
 			BYTE * imgC = (BYTE *)pusPicture;
 			Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
 			static float angle = 0.0;
@@ -169,10 +169,10 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		/*auto menuBut		= pxMenuButtonCreate(column1, row1, PIC_LABEL_BG, "Do magic", &btnMagicHDLR, window);
-		auto menuButAbout	= pxMenuButtonCreate(column2, row1, PIC_LABEL_BG, "Info", &btnAboutHDLR, window);
-		auto menuButLabel	= pxMenuButtonCreate(column3, row1, PIC_LABEL_BG, "Test Label", &btnLabelHDLR, window);
-		auto menuButFolder  = pxMenuButtonCreate(column1, row2, PIC_LABEL_BG, "Many windows", &btnFolderHDLR, window);*/
+		auto menuBut		= pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Do magic", &btnMagicHDLR, window);
+		auto menuButAbout	= pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
+		auto menuButLabel	= pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
+		auto menuButFolder  = pxMenuButtonCreate(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", &btnFolderHDLR, window);
 
 		auto window2_about = pxWindowCreate(WINDOW_ABOUT);
 		vWindowSetHeader(window2_about, "About");
@@ -182,8 +182,8 @@ extern "C" {
 
 		auto window_show_folder = pxWindowCreate(WINDOW_ARCHIVE);
 		vWindowSetHeader(window_show_folder, "Labels");
-		/*auto menuButAbout2 = pxMenuButtonCreate(column1, row1, PIC_LABEL_BG, "Info", &btnAboutHDLR, window_show_folder);
-		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, PIC_LABEL_BG, "Test Label", &btnLabelHDLR, window_show_folder);*/
+		auto menuButAbout2 = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window_show_folder);
+		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window_show_folder);
 
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
@@ -229,7 +229,7 @@ bool bGUI_InitInterfce() {
 	LCD.bPicture = &bPicture;
 	LCD.vVLine = &vVLine;
 	LCD.vHLine = &vHLine;
-	#ifdef OVERRIDE_DEFAULT_PICS
+	#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
 		LCD.usGetPictureH = &usGetPictureH;
 		LCD.usGetPictureW = &usGetPictureW;
 	#endif
