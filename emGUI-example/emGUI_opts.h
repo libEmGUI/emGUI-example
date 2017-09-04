@@ -13,9 +13,6 @@
 
 #ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
 #define XPICTURE_TYPE char*
-#endif // EM_GUI_OVERRIDE_DEFAULT_PICS
-
-
 
 #define EM_GUI_PIC_CROSS		"DemoImages/close.png"
 #define EM_GUI_PIC_LABEL_BG		"DemoImages/wrench.png"
@@ -32,6 +29,7 @@
 #ifndef EM_GUI_PIC_RETURN 
 #define EM_GUI_PIC_RETURN				"DemoImages/undo.png"
 #endif
+#endif // EM_GUI_OVERRIDE_DEFAULT_PICS
 
 //#define EM_GUI_PIC_CROSS rgb_test
 
