@@ -150,7 +150,7 @@
     <ClInclude Include="..\emGUI\emGUI.h" />
     <ClInclude Include="..\emGUI\Fonts\Font.h" />
     <ClInclude Include="..\emGUI\Images\Images.h" />
-    <ClInclude Include="..\emGUI\opts.h" />
+    <ClInclude Include="..\emGUI\options\opts.h" />
     <ClInclude Include="..\emGUI\Widgets\Button.h" />
     <ClInclude Include="..\emGUI\Widgets\Interface.h" />
     <ClInclude Include="..\emGUI\Widgets\Label.h" />
@@ -174,14 +174,12 @@
     <ClCompile Include="..\emGUI\Fonts\Font8.c" />
     <ClCompile Include="..\emGUI\Images\Ban.c" />
     <ClCompile Include="..\emGUI\Images\Bars.c" />
-    <ClCompile Include="..\emGUI\Images\Close.c" />
     <ClCompile Include="..\emGUI\Images\Cross.c" />
     <ClCompile Include="..\emGUI\Images\Down.c" />
     <ClCompile Include="..\emGUI\Images\Error.c" />
     <ClCompile Include="..\emGUI\Images\Folder.c" />
     <ClCompile Include="..\emGUI\Images\Help.c" />
     <ClCompile Include="..\emGUI\Images\Keyboard.c" />
-    <ClCompile Include="..\emGUI\Images\Label_bg.c" />
     <ClCompile Include="..\emGUI\Images\Left.c" />
     <ClCompile Include="..\emGUI\Images\Magic.c" />
     <ClCompile Include="..\emGUI\Images\Mail.c" />

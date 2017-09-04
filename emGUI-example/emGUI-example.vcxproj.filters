@@ -81,9 +81,6 @@
     <ClInclude Include="GUI.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\emGUI\opts.h">
-      <Filter>emGUI</Filter>
-    </ClInclude>
     <ClInclude Include="emGUI_opts.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
@@ -95,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="..\emGUI\Widgets\ModalDialog.h">
       <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\options\opts.h">
+      <Filter>emGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,14 +140,8 @@
     <ClCompile Include="..\emGUI\Widgets\MenuButton.c">
       <Filter>emGUI\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\emGUI\Images\Label_bg.c">
-      <Filter>emGUI\Images</Filter>
-    </ClCompile>
     <ClCompile Include="DemoImages\pics.c">
       <Filter>DemoImages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\emGUI\Images\Close.c">
-      <Filter>emGUI\Images</Filter>
     </ClCompile>
     <ClCompile Include="..\emGUI\Images\No.c">
       <Filter>emGUI\Images</Filter>
