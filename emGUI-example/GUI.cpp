@@ -85,7 +85,7 @@ extern "C" {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
-	#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
+#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
 	uint16_t usGetPictureH(xPicture pusPicture) {
 		const WCHAR *pwcsName;
 		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
@@ -107,24 +107,24 @@ extern "C" {
 		delete[] pwcsName;
 		return W;
 	}
-	#endif
+#endif
 
 	void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
-		#ifndef EM_GUI_OVERRIDE_DEFAULT_PICS
-			BYTE * imgC = (BYTE *)pusPicture;
-			Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
-			static float angle = 0.0;
-			cross_pic_bitmap.RotateFlip(Rotate90FlipX);
-			graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
-		#else
-			const WCHAR *pwcsName;
-			int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
-			pwcsName = new WCHAR[nChars];
-			MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
-			Image img(pwcsName);
-			graphics->DrawImage(&img, sX0, sY0);
-			delete[] pwcsName;
-		#endif
+#ifndef EM_GUI_OVERRIDE_DEFAULT_PICS
+		BYTE * imgC = (BYTE *)pusPicture;
+		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
+		static float angle = 0.0;
+		cross_pic_bitmap.RotateFlip(Rotate90FlipX);
+		graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
+#else
+		const WCHAR *pwcsName;
+		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
+		pwcsName = new WCHAR[nChars];
+		MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
+		Image img(pwcsName);
+		graphics->DrawImage(&img, sX0, sY0);
+		delete[] pwcsName;
+#endif
 
 	}
 
@@ -169,10 +169,10 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		auto menuBut		= pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Do magic", &btnMagicHDLR, window);
-		auto menuButAbout	= pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
-		auto menuButLabel	= pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
-		auto menuButFolder  = pxMenuButtonCreate(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", &btnFolderHDLR, window);
+		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Do magic", &btnMagicHDLR, window);
+		auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
+		auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
+		auto menuButFolder = pxMenuButtonCreate(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", &btnFolderHDLR, window);
 
 		auto window2_about = pxWindowCreate(WINDOW_ABOUT);
 		vWindowSetHeader(window2_about, "About");
@@ -229,10 +229,10 @@ bool bGUI_InitInterfce() {
 	LCD.bPicture = &bPicture;
 	LCD.vVLine = &vVLine;
 	LCD.vHLine = &vHLine;
-	#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
-		LCD.usGetPictureH = &usGetPictureH;
-		LCD.usGetPictureW = &usGetPictureW;
-	#endif
+#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
+	LCD.usGetPictureH = &usGetPictureH;
+	LCD.usGetPictureW = &usGetPictureW;
+#endif
 	vDrawSetHandler(&LCD);
 	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
 	return true;
@@ -257,7 +257,7 @@ void vGUIpushClickHandler(LPARAM lParam) {
 	currentTouch.xTouchScreen = LOWORD(lParam);
 	currentTouch.yTouchScreen = HIWORD(lParam);
 	bInterfaceCheckTouchScreenEvent(&currentTouch);
-	
+
 }
 void vGUIpopClickHandler(LPARAM lParam) {
 	currentTouch.eventTouchScreen = popTs;
