@@ -122,8 +122,10 @@ extern "C" {
 		pwcsName = new WCHAR[nChars];
 		MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
 		Image img(pwcsName);
-		graphics->DrawImage(&img, sX0, sY0);
 		delete[] pwcsName;
+		Rect destRect(sX0, sY0, usGetPictureW(pusPicture), usGetPictureH(pusPicture));
+		graphics->DrawImage(&img, destRect);
+		
 #endif
 
 	}
@@ -170,6 +172,7 @@ extern "C" {
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
 		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Do magic", &btnMagicHDLR, window);
+		//bButtonSetPushPic(menuBut, mail);
 		auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
 		auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
 		auto menuButFolder = pxMenuButtonCreate(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", &btnFolderHDLR, window);
