@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\emGUI;$(IncludePath)</IncludePath>
+    <IncludePath>..\emGUI;.;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -149,13 +149,20 @@
     <ClInclude Include="..\emGUI\Draw\Draw.h" />
     <ClInclude Include="..\emGUI\emGUI.h" />
     <ClInclude Include="..\emGUI\Fonts\Font.h" />
+    <ClInclude Include="..\emGUI\Images\Images.h" />
+    <ClInclude Include="..\emGUI\options\opts.h" />
     <ClInclude Include="..\emGUI\Widgets\Button.h" />
     <ClInclude Include="..\emGUI\Widgets\Interface.h" />
     <ClInclude Include="..\emGUI\Widgets\Label.h" />
+    <ClInclude Include="..\emGUI\Widgets\MenuButton.h" />
+    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h" />
     <ClInclude Include="..\emGUI\Widgets\StatusBar.h" />
     <ClInclude Include="..\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
+    <ClInclude Include="DemoImages\pics.h" />
     <ClInclude Include="emGUI-example.h" />
+    <ClInclude Include="emGUI_opts.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -163,14 +170,44 @@
   <ItemGroup>
     <ClCompile Include="..\emGUI\Draw\Draw.c" />
     <ClCompile Include="..\emGUI\Fonts\Font.c" />
+    <ClCompile Include="..\emGUI\Fonts\font16.c" />
     <ClCompile Include="..\emGUI\Fonts\Font8.c" />
+    <ClCompile Include="..\emGUI\Images\Ban.c" />
+    <ClCompile Include="..\emGUI\Images\Bars.c" />
+    <ClCompile Include="..\emGUI\Images\Cross.c" />
+    <ClCompile Include="..\emGUI\Images\Down.c" />
+    <ClCompile Include="..\emGUI\Images\Error.c" />
+    <ClCompile Include="..\emGUI\Images\Folder.c" />
+    <ClCompile Include="..\emGUI\Images\Help.c" />
+    <ClCompile Include="..\emGUI\Images\Keyboard.c" />
+    <ClCompile Include="..\emGUI\Images\Left.c" />
+    <ClCompile Include="..\emGUI\Images\Magic.c" />
+    <ClCompile Include="..\emGUI\Images\Mail.c" />
+    <ClCompile Include="..\emGUI\Images\Micochip.c" />
+    <ClCompile Include="..\emGUI\Images\New_list.c" />
+    <ClCompile Include="..\emGUI\Images\No.c" />
+    <ClCompile Include="..\emGUI\Images\Ok.c" />
+    <ClCompile Include="..\emGUI\Images\Open-folder.c" />
+    <ClCompile Include="..\emGUI\Images\Pin.c" />
+    <ClCompile Include="..\emGUI\Images\Process.c" />
+    <ClCompile Include="..\emGUI\Images\Refresh.c" />
+    <ClCompile Include="..\emGUI\Images\Star.c" />
+    <ClCompile Include="..\emGUI\Images\Tags.c" />
+    <ClCompile Include="..\emGUI\Images\Undo.c" />
+    <ClCompile Include="..\emGUI\Images\Up.c" />
+    <ClCompile Include="..\emGUI\Images\Warning.c" />
+    <ClCompile Include="..\emGUI\Images\Wrench.c" />
     <ClCompile Include="..\emGUI\Widgets\Button.c" />
     <ClCompile Include="..\emGUI\Widgets\Interface.c" />
     <ClCompile Include="..\emGUI\Widgets\Label.c" />
+    <ClCompile Include="..\emGUI\Widgets\MenuButton.c" />
+    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c" />
     <ClCompile Include="..\emGUI\Widgets\StatusBar.c" />
     <ClCompile Include="..\emGUI\Widgets\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Window.c" />
+    <ClCompile Include="DemoImages\pics.c" />
     <ClCompile Include="emGUI-example.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -182,6 +219,11 @@
     <ResourceCompile Include="emGUI-example.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="DemoImages\close.png" />
+    <Image Include="DemoImages\no.png" />
+    <Image Include="DemoImages\ok.png" />
+    <Image Include="DemoImages\undo.png" />
+    <Image Include="DemoImages\wrench.png" />
     <Image Include="emGUI-example.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

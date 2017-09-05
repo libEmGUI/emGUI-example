@@ -28,6 +28,9 @@
     <Filter Include="emGUI\Draw">
       <UniqueIdentifier>{38d000d5-139d-4c6a-871d-a6b31eca61a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DemoImages">
+      <UniqueIdentifier>{6a17ff45-1bc2-43d2-8c3e-804495080de8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,6 +75,27 @@
     <ClInclude Include="..\emGUI\Draw\Draw.h">
       <Filter>emGUI\Draw</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\MenuButton.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="emGUI_opts.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Images\Images.h">
+      <Filter>emGUI\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoImages\pics.h">
+      <Filter>DemoImages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emGUI\options\opts.h">
+      <Filter>emGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -107,6 +131,96 @@
     <ClCompile Include="..\emGUI\Draw\Draw.c">
       <Filter>emGUI\Draw</Filter>
     </ClCompile>
+    <ClCompile Include="..\emGUI\Fonts\font16.c">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\MenuButton.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoImages\pics.c">
+      <Filter>DemoImages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\No.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Refresh.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Cross.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Folder.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Help.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Magic.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Process.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Ban.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Bars.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Down.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Error.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Keyboard.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Left.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Mail.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Micochip.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\New_list.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Ok.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Open-folder.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Pin.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Star.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Tags.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Undo.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Up.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Warning.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Wrench.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="emGUI-example.rc">
@@ -119,6 +233,21 @@
     </Image>
     <Image Include="emGUI-example.ico">
       <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="DemoImages\close.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\no.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\ok.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\undo.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\wrench.png">
+      <Filter>DemoImages</Filter>
     </Image>
   </ItemGroup>
 </Project>
