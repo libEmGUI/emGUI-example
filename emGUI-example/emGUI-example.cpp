@@ -16,9 +16,7 @@
 
 #define TIMEOUT 1000
 
-#include <spdlog/spdlog.h>
 
-using namespace std;
 
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
@@ -38,19 +36,9 @@ WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
 HWND hWnd;
 
-std::shared_ptr<spdlog::logger> logger = nullptr;
 
-typedef struct {
-	LPCWSTR portName;
-	bool exitFlag;
-	uint16_t data[100];
-	bool        bDataFilled;      ///< флажок, показывающий, что данные заполнены (сняты хотя бы в 1 проход)
-	uint32_t    ulElemCount;      ///< количество отсчётов в текущей сессии записи
-	uint32_t    ulCapacity;       ///< максимальное количество отсчётов в буфере
-	uint32_t    ulWritePos;       ///< позиция указателя записи в буфере
 
-	std::shared_ptr<spdlog::logger> logger;
-}serialThreadParams_t;
+
 
 
 // Отправить объявления функций, включенных в этот модуль кода:
@@ -132,12 +120,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	return (int)msg.wParam;
 }
 
-void HandleASuccessfulRead(char * lpBuf, WORD dwRead, uint16_t * data_array) {
+void HandleASuccessfulRead(char * lpBuf, WORD dwRead, serialThreadParams_t * params) {
 	for (int i= 0; i < dwRead; i++)
-		HandleAChar(lpBuf[i], data_array);
+		HandleAChar(lpBuf[i], params);
 }
 
-void HandleAChar(char sym, uint16_t * data_array) {
+void HandleAChar(char sym, serialThreadParams_t * params) {
 	static char buffer[100];
 	static uint8_t i = 0;
 	
@@ -152,7 +140,7 @@ void HandleAChar(char sym, uint16_t * data_array) {
 		for (int i = 0; i<100; i++)buffer[i] = 0;
 		try {
 			int data = std::stoi(temp);
-			handleData(data, data_array);
+			handleData(data, params);
 		}
 		catch (std::invalid_argument& e) {
 			;// logger->info("Invalid string for float parcing came from Serial");
@@ -160,8 +148,15 @@ void HandleAChar(char sym, uint16_t * data_array) {
 	}
 }
 
-void handleData(int data, uint16_t * data_array) {
+void handleData(int data, serialThreadParams_t * params) {
 	logger->info(data);
+	params->data[params->ulWritePos] = data;
+	if (params->ulWritePos < DATA_ARRAY_SIZE) {
+		params->ulWritePos++;
+	}
+	else {
+		params->ulWritePos = 0;
+	}
 }
 
 //
@@ -268,14 +263,14 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 		// Issue read operation.
 		while (ReadFile(serialPort, lpBuf, 1, &dwRead, &osReader)) {
 			// read completed immediately
-			logger->info("Read 1 byte");
-			HandleASuccessfulRead(lpBuf, dwRead, (uint16_t *)&prm->data);
+			//logger->info("Read 1 byte");
+			HandleASuccessfulRead(lpBuf, dwRead, prm);
 		}
 		if (GetLastError() != ERROR_IO_PENDING) {
 			logger->error("Got some error during read: {}", GetLastError());
 		}    // read not delayed?  Error in communications; report it.
 		else {
-			logger->info("Go to sleep");
+			//logger->info("Go to sleep");
 			Sleep(100);
 		}
 	}
