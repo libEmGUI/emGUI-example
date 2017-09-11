@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\emGUI;.;$(IncludePath)</IncludePath>
+    <IncludePath>..\emGUI;..\spdlog\include;.;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -222,6 +222,7 @@
     <Image Include="DemoImages\close.png" />
     <Image Include="DemoImages\no.png" />
     <Image Include="DemoImages\ok.png" />
+    <Image Include="DemoImages\parrot.png" />
     <Image Include="DemoImages\undo.png" />
     <Image Include="DemoImages\wrench.png" />
     <Image Include="emGUI-example.ico" />

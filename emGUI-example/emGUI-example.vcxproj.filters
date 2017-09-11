@@ -249,5 +249,8 @@
     <Image Include="DemoImages\wrench.png">
       <Filter>DemoImages</Filter>
     </Image>
+    <Image Include="DemoImages\parrot.png">
+      <Filter>DemoImages</Filter>
+    </Image>
   </ItemGroup>
 </Project>

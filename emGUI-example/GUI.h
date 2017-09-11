@@ -26,4 +26,6 @@ void vGUIpushClickHandler(LPARAM lParam);
 void vGUIpopClickHandler(LPARAM lParam);
 void vGUIeraseBackgroudHandler();
 
+void vGUIWriteToLabel(char * msg);
+
 #endif

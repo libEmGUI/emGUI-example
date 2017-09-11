@@ -19,6 +19,7 @@ static int stride = 0;
 BYTE * imgCross = (BYTE *)&rgb_test;
 BYTE * imgCross2 = (BYTE *)&rgb_test[23];
 
+
 // Convert color from emGUI to GDI format
 ARGB convertColor(uint16_t color) {
 	uint8_t usRed = ((color >> 11) & 0b00011111) * 800 / 97;
@@ -29,7 +30,9 @@ ARGB convertColor(uint16_t color) {
 	return answer;
 
 }
-
+void vGUIWriteToLabel(char* msg) {
+	pcLabelSetText(mouseMonitor, msg);
+}
 
 extern "C" {
 	void vRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
@@ -123,12 +126,22 @@ extern "C" {
 		MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
 		Image img(pwcsName);
 		delete[] pwcsName;
-		Rect destRect(sX0, sY0, usGetPictureW(pusPicture), usGetPictureH(pusPicture));
+		uint16_t we, he;
+		if (usGetPictureW(pusPicture) < 220 && usGetPictureH(pusPicture) < 220) {
+			we = usGetPictureW(pusPicture);
+			he = usGetPictureH(pusPicture);
+		} else {
+			we = 220;
+			he = 220;
+		}
+		Rect destRect(sX0, sY0, we, he);
 		graphics->DrawImage(&img, destRect);
 		
 #endif
 
 	}
+
+
 
 	void doMagic() {
 		char outString[25];
@@ -158,6 +171,11 @@ extern "C" {
 		return true;
 	}
 
+	bool showParrot(xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ECG);
+		return true;
+	}
+
 	// Action on interface creatings
 	bool bGUIonInterfaceCreateHandler(xWidget *) {
 		auto window = pxWindowCreate(WINDOW_MENU);
@@ -171,7 +189,7 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Do magic", &btnMagicHDLR, window);
+		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Show RGB", &showParrot, window);
 		//bButtonSetPushPic(menuBut, mail);
 		auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
 		auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
@@ -188,6 +206,9 @@ extern "C" {
 		auto menuButAbout2 = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window_show_folder);
 		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window_show_folder);
 
+		auto window_show_parrot = pxWindowCreate(WINDOW_ECG);
+		vWindowSetHeader(window_show_parrot, "Parrot");
+		auto parrot = pxMenuButtonCreate(10, 10, "DemoImages/parrot.png", "Parrot", NULL, window_show_parrot);
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
 	The National Collegiate Athletic Association, a college sports \
