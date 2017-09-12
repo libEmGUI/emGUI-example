@@ -3,16 +3,14 @@
 
 #include "stdafx.h"
 #include "emGUI-example.h"
-
 #include <cstdio>
 #include <iostream>
-
 #include <deque>
-
 #include <io.h>
-
 #include <fcntl.h>
 #include <process.h>
+#include "filt.h"
+
 #define SERIAL_READ_TIMEOUT 500 
 #define SERIAL_READ_BUF_SIZE 10
 
@@ -38,7 +36,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
 HWND hWnd;
 UINT_PTR uTimerId;
-
+Filter lpf(LPF, 51, 0.9, 0.10);
 // Отправить объявления функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -151,8 +149,8 @@ void HandleASuccessfulRead(char * lpBuf, WORD dwRead, serialThreadParams_t * par
 void handleData(int data, serialThreadParams_t * params) {
 	auto pd = params->data;
 
-	logger->info(data);
-	pd->psData[pd->ulWritePos] = data;
+	//logger->info(data);
+	pd->psData[pd->ulWritePos] = (int16_t)(lpf.do_sample(data)/10.);
 	pd->ulWritePos++;
 	if (pd->ulWritePos >= pd->ulElemCount) {
 		pd->ulWritePos = 0;
@@ -226,8 +224,11 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 	auto prm = (serialThreadParams_t *)pArguments;
 	if (!prm)
 		return 1;
-
 	auto logger = prm->logger;
+
+	
+	if (lpf.get_error_flag() != 0) // abort in an appropriate manner
+		logger->error("Filter not created");
 	serialPort = CreateFile(prm->portName,
 		GENERIC_READ | GENERIC_WRITE,
 		0,

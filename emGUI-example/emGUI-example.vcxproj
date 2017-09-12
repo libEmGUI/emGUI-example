@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\emGUI;..\spdlog\include;.;$(IncludePath)</IncludePath>
+    <IncludePath>..\FIR-filter-class;..\emGUI;..\spdlog\include;.;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -160,6 +160,7 @@
     <ClInclude Include="..\emGUI\Widgets\StatusBar.h" />
     <ClInclude Include="..\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\emGUI\Widgets\Window.h" />
+    <ClInclude Include="..\FIR-filter-class\filt.h" />
     <ClInclude Include="DemoImages\pics.h" />
     <ClInclude Include="emGUI-example.h" />
     <ClInclude Include="emGUI_opts.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="..\emGUI\Widgets\StatusBar.c" />
     <ClCompile Include="..\emGUI\Widgets\Widget.c" />
     <ClCompile Include="..\emGUI\Widgets\Window.c" />
+    <ClCompile Include="..\FIR-filter-class\filt.cpp" />
     <ClCompile Include="DemoImages\pics.c" />
     <ClCompile Include="emGUI-example.cpp" />
     <ClCompile Include="GUI.cpp" />

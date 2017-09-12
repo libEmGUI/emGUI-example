@@ -219,7 +219,7 @@ extern "C" {
 		plotLead.bWriteEnabled = false;
 		plotLead.sMedian = 0;
 		plotLead.sName = "Test";
-		plotLead.ulElemCount = AFE_DATA_RATE * 4;
+		plotLead.ulElemCount = AFE_DATA_RATE * 10;
 		plotLead.psData = (short *)malloc(sizeof(*plotLead.psData)*plotLead.ulElemCount);
 		plotLead.ulWritePos = 0;
 
