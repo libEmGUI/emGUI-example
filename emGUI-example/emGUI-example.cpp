@@ -215,7 +215,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
-	uTimerId = SetTimer(hWnd, 1, 200, NULL);
+	uTimerId = SetTimer(hWnd, 1, 30, NULL);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -246,7 +246,7 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 	{
 		logger->error("getting state error");
 	}
-	dcbSerialParams.BaudRate = CBR_9600;
+	dcbSerialParams.BaudRate = CBR_115200;
 	dcbSerialParams.ByteSize = 8;
 	dcbSerialParams.StopBits = ONESTOPBIT;
 	dcbSerialParams.Parity = NOPARITY;
@@ -256,15 +256,13 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 	}
 
 
-	static DWORD dwRead;
-	static BOOL fWaitingOnRead = FALSE;
-	static OVERLAPPED osReader = { 0 };
-	static DWORD dwRes;
-	static char lpBuf[10];
+	DWORD dwRead;
+	DWORD dwRes;
+	char lpBuf[10];
 	logger->info("Starting serial read thread from {}", (char *) prm->portName);
 
 	// Issue read operation.
-	while (ReadFile(serialPort, lpBuf, 1, &dwRead, NULL) && !prm->exitFlag) {
+	while (ReadFile(serialPort, lpBuf, sizeof(lpBuf), &dwRead, NULL) && !prm->exitFlag) {
 		// read completed immediately
 		//logger->info("Read 1 byte");
 		HandleASuccessfulRead(lpBuf, dwRead, prm);
