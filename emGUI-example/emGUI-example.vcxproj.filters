@@ -191,9 +191,6 @@
     <ClCompile Include="..\emGUI\Images\Mail.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
-    <ClCompile Include="..\emGUI\Images\Micochip.c">
-      <Filter>emGUI\Images</Filter>
-    </ClCompile>
     <ClCompile Include="..\emGUI\Images\New_list.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
@@ -226,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="..\emGUI\Widgets\Plot.c">
       <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Microchip.c">
+      <Filter>emGUI\Images</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

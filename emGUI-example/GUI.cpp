@@ -19,6 +19,11 @@ static int stride = 0;
 BYTE * imgCross = (BYTE *)&rgb_test;
 BYTE * imgCross2 = (BYTE *)&rgb_test[23];
 
+static xPlotData_t plotLead;
+
+xPlotData_t * pxGUIGetPlotData() {
+	return &plotLead;
+}
 
 // Convert color from emGUI to GDI format
 ARGB convertColor(uint16_t color) {
@@ -82,10 +87,12 @@ extern "C" {
 	}
 	void vVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
+		if (usY0 == usY1) usY1++;
 		graphics->DrawLine(&pen, usX0, usY0, usX0, usY1);
 	}
 	void vHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
+		if (usX0 == usX1) usX1++;
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
 #ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
@@ -142,7 +149,6 @@ extern "C" {
 	}
 
 
-
 	void doMagic() {
 		char outString[25];
 		static int i = 0;
@@ -189,7 +195,7 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Show RGB", &showParrot, window);
+		auto menuBut = pxMenuButtonCreate(column1, row1, microchip, "Curr. mon.", &showParrot, window);
 		//bButtonSetPushPic(menuBut, mail);
 		auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
 		auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
@@ -206,9 +212,19 @@ extern "C" {
 		auto menuButAbout2 = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window_show_folder);
 		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window_show_folder);
 
-		auto window_show_parrot = pxWindowCreate(WINDOW_ECG);
-		vWindowSetHeader(window_show_parrot, "Parrot");
-		auto parrot = pxMenuButtonCreate(10, 10, "DemoImages/parrot.png", "Parrot", NULL, window_show_parrot);
+		auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
+		vWindowSetHeader(window_show_ampermeter, "Ampermeter, uA");
+
+		plotLead.bDataFilled = false;
+		plotLead.bWriteEnabled = false;
+		plotLead.sMedian = 0;
+		plotLead.sName = "Test";
+		plotLead.ulElemCount = 1000;
+		plotLead.psData = (short *)malloc(sizeof(*plotLead.psData)*plotLead.ulElemCount);
+		plotLead.ulWritePos = 0;
+
+
+		xPlot * plot = pxPlotCreate(0, 0, 240, 200, window_show_ampermeter, &plotLead);
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
 	The National Collegiate Athletic Association, a college sports \

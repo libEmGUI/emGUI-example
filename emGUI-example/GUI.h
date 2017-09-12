@@ -14,8 +14,6 @@ using namespace Gdiplus;
 
 //events
 
-void onCloseHDLR(void);
-
 ARGB convertColor(uint16_t color);
 bool bGUI_InitInterfce();
 bool bGUIOnWindowCloseHandlerMain(xWidget *);
@@ -27,5 +25,7 @@ void vGUIpopClickHandler(LPARAM lParam);
 void vGUIeraseBackgroudHandler();
 
 void vGUIWriteToLabel(char * msg);
+
+xPlotData_t * pxGUIGetPlotData();
 
 #endif

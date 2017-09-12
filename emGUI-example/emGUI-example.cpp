@@ -7,6 +7,8 @@
 #include <cstdio>
 #include <iostream>
 
+#include <deque>
+
 #include <io.h>
 
 #include <fcntl.h>
@@ -35,11 +37,7 @@ HINSTANCE hInst;                                // текущий экземпл€р
 WCHAR szTitle[MAX_LOADSTRING];                  // “екст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // им€ класса главного окна
 HWND hWnd;
-
-
-
-
-
+UINT_PTR uTimerId;
 
 // ќтправить объ€влени€ функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -72,6 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	threadParams.portName = L"COM9";
 	threadParams.exitFlag = false;
 	threadParams.logger = logger;
+	threadParams.data = pxGUIGetPlotData();
 
 	// TODO: разместите код здесь.
 	serialThread = (HANDLE)_beginthreadex(
@@ -121,41 +120,42 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 void HandleASuccessfulRead(char * lpBuf, WORD dwRead, serialThreadParams_t * params) {
-	for (int i= 0; i < dwRead; i++)
-		HandleAChar(lpBuf[i], params);
-}
+	static std::deque<char> buf;
 
-void HandleAChar(char sym, serialThreadParams_t * params) {
-	static char buffer[100];
-	static uint8_t i = 0;
-	
-	if (sym != '\n') {
-		buffer[i] = sym;
-		i++;
-	}
-	else {
-		string temp(buffer);
-		//buffer[i] = '\0';
-		i = 0;
-		for (int i = 0; i<100; i++)buffer[i] = 0;
-		try {
-			int data = std::stoi(temp);
-			handleData(data, params);
+	for (int i = 0; i < dwRead; i++)
+		buf.push_back(lpBuf[i]);
+
+	static std::string line;
+
+	while (buf.size() > 0) {
+		char sym = buf.front();
+		buf.pop_front();
+		if (sym == '\n' || sym == '\r') {
+			if (line.length() > 0) {
+				try {
+					int data = std::stoi(line);
+					handleData(data, params);
+				}
+				catch (std::invalid_argument& e) {
+					logger->error("Invalid string parsing");
+				}
+				line = "";
+			}
+			continue;
 		}
-		catch (std::invalid_argument& e) {
-			;// logger->info("Invalid string for float parcing came from Serial");
-		}
+		line += sym;
 	}
+
 }
 
 void handleData(int data, serialThreadParams_t * params) {
+	auto pd = params->data;
+
 	logger->info(data);
-	params->data[params->ulWritePos] = data;
-	if (params->ulWritePos < DATA_ARRAY_SIZE) {
-		params->ulWritePos++;
-	}
-	else {
-		params->ulWritePos = 0;
+	pd->psData[pd->ulWritePos] = data;
+	pd->ulWritePos++;
+	if (pd->ulWritePos >= pd->ulElemCount) {
+		pd->ulWritePos = 0;
 	}
 }
 
@@ -215,6 +215,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
+	uTimerId = SetTimer(hWnd, 1, 200, NULL);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -232,11 +233,28 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 		0,
 		0,
 		OPEN_EXISTING,
-		FILE_FLAG_OVERLAPPED,
+		0,
 		NULL);
 	if (serialPort == INVALID_HANDLE_VALUE) {
 		return 2;
 	}
+
+	// Serial port settings
+	DCB dcbSerialParams = { 0 };
+	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+	if (!GetCommState(serialPort, &dcbSerialParams))
+	{
+		logger->error("getting state error");
+	}
+	dcbSerialParams.BaudRate = CBR_9600;
+	dcbSerialParams.ByteSize = 8;
+	dcbSerialParams.StopBits = ONESTOPBIT;
+	dcbSerialParams.Parity = NOPARITY;
+	if (!SetCommState(serialPort, &dcbSerialParams))
+	{
+		logger->error("error setting serial port state");
+	}
+
 
 	static DWORD dwRead;
 	static BOOL fWaitingOnRead = FALSE;
@@ -244,36 +262,14 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 	static DWORD dwRes;
 	static char lpBuf[10];
 	logger->info("Starting serial read thread from {}", (char *) prm->portName);
-	Sleep(100);
 
-	while (!prm->exitFlag) {
-		if (serialPort == INVALID_HANDLE_VALUE) {
-			logger->error("Port otvalilsa");
-		}
-
-		// Create the overlapped event. Must be closed before exiting
-		// to avoid a handle leak.
-		osReader.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-
-		if (osReader.hEvent == NULL) { 
-			logger->error("hEvent not created");
-		}// Error creating overlapped event; abort.
-
-		
-		// Issue read operation.
-		while (ReadFile(serialPort, lpBuf, 1, &dwRead, &osReader)) {
-			// read completed immediately
-			//logger->info("Read 1 byte");
-			HandleASuccessfulRead(lpBuf, dwRead, prm);
-		}
-		if (GetLastError() != ERROR_IO_PENDING) {
-			logger->error("Got some error during read: {}", GetLastError());
-		}    // read not delayed?  Error in communications; report it.
-		else {
-			//logger->info("Go to sleep");
-			Sleep(100);
-		}
+	// Issue read operation.
+	while (ReadFile(serialPort, lpBuf, 1, &dwRead, NULL) && !prm->exitFlag) {
+		// read completed immediately
+		//logger->info("Read 1 byte");
+		HandleASuccessfulRead(lpBuf, dwRead, prm);
 	}
+
 	logger->info("Leaving serial read thread");
 	CloseHandle(serialPort);
 	serialPort = INVALID_HANDLE_VALUE;
@@ -311,6 +307,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_DESTROY:
+		KillTimer(hWnd, uTimerId);
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
@@ -318,7 +315,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
-
+	case WM_TIMER:
+		InvalidateRect(hWnd, NULL, FALSE);
+		SendMessage(hWnd, WM_PAINT, NULL, NULL);
+		return 0;
 	case WM_LBUTTONUP:
 		vGUIpopClickHandler(lParam);
 		InvalidateRect(hWnd, NULL, FALSE);

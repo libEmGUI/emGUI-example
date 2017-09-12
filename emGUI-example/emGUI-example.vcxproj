@@ -184,7 +184,7 @@
     <ClCompile Include="..\emGUI\Images\Left.c" />
     <ClCompile Include="..\emGUI\Images\Magic.c" />
     <ClCompile Include="..\emGUI\Images\Mail.c" />
-    <ClCompile Include="..\emGUI\Images\Micochip.c" />
+    <ClCompile Include="..\emGUI\Images\Microchip.c" />
     <ClCompile Include="..\emGUI\Images\New_list.c" />
     <ClCompile Include="..\emGUI\Images\No.c" />
     <ClCompile Include="..\emGUI\Images\Ok.c" />
