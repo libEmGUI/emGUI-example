@@ -96,6 +96,9 @@
     <ClInclude Include="..\emGUI\options\opts.h">
       <Filter>emGUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\Plot.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="..\emGUI\Images\Wrench.c">
       <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\Plot.c">
+      <Filter>emGUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
