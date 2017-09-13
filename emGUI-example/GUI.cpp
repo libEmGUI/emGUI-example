@@ -218,7 +218,7 @@ extern "C" {
 
 		plotLead.bDataFilled = false;
 		plotLead.bWriteEnabled = false;
-		plotLead.sMedian = 0;
+		plotLead.sDataDCOffset = -500;
 		plotLead.sName = "Test";
 		plotLead.ulElemCount = AFE_DATA_RATE * 10;
 		plotLead.psData = (short *)malloc(sizeof(*plotLead.psData)*plotLead.ulElemCount);
@@ -226,6 +226,7 @@ extern "C" {
 
 
 		xPlot * plot = pxPlotCreate(0, 0, LCD_SizeX, LCD_SizeY - LCD_STATUS_BAR_HEIGHT-20, window_show_ampermeter, &plotLead);
+		vPlotSetScale(plot, 250);
 		currentMonitor = pxLabelCreate(10, LCD_SizeY - LCD_STATUS_BAR_HEIGHT - 20, LCD_SizeX, 20, "I: _ (0.1 mA)", FONT_ASCII_8_X, 100, window_show_ampermeter);
 		vLabelSetTextAlign(currentMonitor, LABEL_ALIGN_CENTER);
 		vLabelSetVerticalAlign(currentMonitor, LABEL_ALIGN_MIDDLE);
