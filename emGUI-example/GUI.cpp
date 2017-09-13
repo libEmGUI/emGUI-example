@@ -21,6 +21,7 @@ BYTE * imgCross = (BYTE *)&rgb_test;
 BYTE * imgCross2 = (BYTE *)&rgb_test[23];
 
 static xPlotData_t plotLead;
+static extraParams_t extraP;
 
 xPlotData_t * pxGUIGetPlotData() {
 	return &plotLead;
@@ -271,7 +272,7 @@ void vGUIUpdateCurrentMonitor() {
 	//char outString[25];
 	//sprintf_s(outString, "I: %d mA)", data);
 	//pcLabelSetText(currentMonitor, outString);
-	iLabelPrintf(currentMonitor, "I: %d.%d (mA)", data / 10, data % 10);
+	iLabelPrintf(currentMonitor, "I_Avg: %.2f; I: %d.%d (mA)", extraP.averageCurrent / 10.f, data / 10, data % 10);
 }
 
 bool bGUI_InitInterfce() {
@@ -322,4 +323,7 @@ void vGUIeraseBackgroudHandler() {
 	vInterfaceInvalidate();
 }
 
+extraParams_t * pxGUIGetExtraParams() {
+	return &extraP;
+}
 

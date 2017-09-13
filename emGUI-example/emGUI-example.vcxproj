@@ -165,6 +165,7 @@
     <ClInclude Include="emGUI-example.h" />
     <ClInclude Include="emGUI_opts.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="IIR_filter.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="DemoImages\pics.c" />
     <ClCompile Include="emGUI-example.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="IIR_filter.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

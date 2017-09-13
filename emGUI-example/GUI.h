@@ -12,6 +12,10 @@ using namespace Gdiplus;
 #define SCREEN_WIDTH LCD_SizeX
 #define SCREEN_HEIGHT LCD_SizeY
 
+typedef struct {
+	float averageCurrent;
+}extraParams_t;
+
 //events
 
 ARGB convertColor(uint16_t color);
@@ -27,5 +31,6 @@ void vGUIUpdateCurrentMonitor();
 void vGUIWriteToLabel(char * msg);
 
 xPlotData_t * pxGUIGetPlotData();
+extraParams_t * pxGUIGetExtraParams();
 
 #endif

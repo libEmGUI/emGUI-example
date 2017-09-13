@@ -15,6 +15,7 @@ typedef struct {
 	bool exitFlag;
 	xPlotData_t * data;
 	std::shared_ptr<spdlog::logger> logger;
+	extraParams_t *extraParams;
 }serialThreadParams_t;
 void handleData(int data, serialThreadParams_t * params);
 void HandleAChar(char sym, serialThreadParams_t * params);

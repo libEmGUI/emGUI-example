@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <process.h>
 #include "filt.h"
+#include "IIR_filter.h"
 
 #define SERIAL_READ_TIMEOUT 500 
 #define SERIAL_READ_BUF_SIZE 10
@@ -27,8 +28,7 @@ using namespace Gdiplus;
 #define DEBUG_ZONE 0;
 #endif
 
-HANDLE serialPort;
-HANDLE serialThread;
+
 unsigned int  dwThreadId;
 // √лобальные переменные:
 HINSTANCE hInst;                                // текущий экземпл€р
@@ -36,7 +36,11 @@ WCHAR szTitle[MAX_LOADSTRING];                  // “екст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // им€ класса главного окна
 HWND hWnd;
 UINT_PTR uTimerId;
+HANDLE serialPort;
+HANDLE serialThread;
 Filter lpf(LPF, 51, AFE_DATA_RATE / 1000.f, 0.05);
+IIR_filter iir_f(1.f/AFE_DATA_RATE);
+
 // ќтправить объ€влени€ функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -69,6 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	threadParams.exitFlag = false;
 	threadParams.logger = logger;
 	threadParams.data = pxGUIGetPlotData();
+	threadParams.extraParams = pxGUIGetExtraParams();
 
 	// TODO: разместите код здесь.
 	serialThread = (HANDLE)_beginthreadex(
@@ -150,7 +155,9 @@ void handleData(int data, serialThreadParams_t * params) {
 	auto pd = params->data;
 
 	//logger->info(data);
-	pd->psData[pd->ulWritePos] = (int16_t)(lpf.do_sample(data));
+	auto fData = (int16_t)(lpf.do_sample(data));
+	pd->psData[pd->ulWritePos] = fData;
+	params->extraParams->averageCurrent = iir_f.do_sample(fData);
 	vGUIUpdateCurrentMonitor();
 	pd->ulWritePos++;
 	if (pd->ulWritePos >= pd->ulElemCount) {
