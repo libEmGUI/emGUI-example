@@ -9,10 +9,6 @@ IIR_filter::IIR_filter(double coef)
 }
 
 double IIR_filter::do_sample(double data) {
-
-	/*void vIIR(float *fFilt, float *fNew, float fFF) {
-		*fFilt = *fFilt + fFF*(data - *fFilt);
-	}*/
 	double delta = data - lastValue;
 	double answer = lastValue + delta * getCoef();
 	lastValue = answer;
