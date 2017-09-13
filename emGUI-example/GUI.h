@@ -23,7 +23,7 @@ void vGUIpaintEventHandler();
 void vGUIpushClickHandler(LPARAM lParam);
 void vGUIpopClickHandler(LPARAM lParam);
 void vGUIeraseBackgroudHandler();
-
+void vGUIUpdateCurrentMonitor();
 void vGUIWriteToLabel(char * msg);
 
 xPlotData_t * pxGUIGetPlotData();

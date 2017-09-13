@@ -36,7 +36,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
 HWND hWnd;
 UINT_PTR uTimerId;
-Filter lpf(LPF, 51, 0.9, 0.10);
+Filter lpf(LPF, 51, AFE_DATA_RATE / 1000.f, 0.10);
 // Отправить объявления функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -150,7 +150,8 @@ void handleData(int data, serialThreadParams_t * params) {
 	auto pd = params->data;
 
 	//logger->info(data);
-	pd->psData[pd->ulWritePos] = (int16_t)(lpf.do_sample(data)/10.);
+	pd->psData[pd->ulWritePos] = (int16_t)(lpf.do_sample(data));
+	vGUIUpdateCurrentMonitor();
 	pd->ulWritePos++;
 	if (pd->ulWritePos >= pd->ulElemCount) {
 		pd->ulWritePos = 0;

@@ -12,6 +12,7 @@ using namespace Gdiplus;
 static xDraw_t LCD;
 static xInterface * interface1;
 static xLabel * mouseMonitor;
+static xLabel * currentMonitor;
 static Graphics *graphics = NULL;
 xTouchEvent currentTouch;
 
@@ -224,7 +225,10 @@ extern "C" {
 		plotLead.ulWritePos = 0;
 
 
-		xPlot * plot = pxPlotCreate(0, 0, 240, 200, window_show_ampermeter, &plotLead);
+		xPlot * plot = pxPlotCreate(0, 0, LCD_SizeX, LCD_SizeY - LCD_STATUS_BAR_HEIGHT-20, window_show_ampermeter, &plotLead);
+		currentMonitor = pxLabelCreate(10, LCD_SizeY - LCD_STATUS_BAR_HEIGHT - 20, LCD_SizeX, 20, "I: _ (0.1 mA)", FONT_ASCII_8_X, 100, window_show_ampermeter);
+		vLabelSetTextAlign(currentMonitor, LABEL_ALIGN_CENTER);
+		vLabelSetVerticalAlign(currentMonitor, LABEL_ALIGN_MIDDLE);
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
 	The National Collegiate Athletic Association, a college sports \
@@ -261,6 +265,13 @@ bool bGUIOnWindowCloseHandlerMain(xWidget *) {
 	return true;
 }
 
+void vGUIUpdateCurrentMonitor() {
+	auto data = plotLead.psData[plotLead.ulWritePos];
+	//char outString[25];
+	//sprintf_s(outString, "I: %d mA)", data);
+	//pcLabelSetText(currentMonitor, outString);
+	iLabelPrintf(currentMonitor, "I: %d.%d (mA)", data / 10, data % 10);
+}
 
 bool bGUI_InitInterfce() {
 	vDrawHandlerInit(&LCD);
