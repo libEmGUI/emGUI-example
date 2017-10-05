@@ -157,6 +157,7 @@ void handleData(int data, serialThreadParams_t * params) {
 	//logger->info(data);
 	auto fData = (int16_t)(lpf.do_sample(data));
 	pd->psData[pd->ulWritePos] = fData;
+	logger->info(fData);
 	params->extraParams->averageCurrent = iir_f.do_sample(fData);
 	vGUIUpdateCurrentMonitor();
 	pd->ulWritePos++;
