@@ -272,7 +272,7 @@ void vGUIUpdateCurrentMonitor() {
 	//char outString[25];
 	//sprintf_s(outString, "I: %d mA)", data);
 	//pcLabelSetText(currentMonitor, outString);
-	iLabelPrintf(currentMonitor, "I_Avg: %.2f; I: %d.%d (mA)", extraP.averageCurrent / 10.f, data / 10, data % 10);
+	iLabelPrintf(currentMonitor, "I_Avg: %.1f; I: %d.%d (mA)", extraP.averageCurrent / 10.f, data / 10, abs(data % 10));
 }
 
 bool bGUI_InitInterfce() {
