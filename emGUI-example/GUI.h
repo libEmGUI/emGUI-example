@@ -12,9 +12,11 @@ using namespace Gdiplus;
 #define SCREEN_WIDTH LCD_SizeX
 #define SCREEN_HEIGHT LCD_SizeY
 
-//events
+typedef struct {
+	float averageCurrent;
+}extraParams_t;
 
-void onCloseHDLR(void);
+//events
 
 ARGB convertColor(uint16_t color);
 bool bGUI_InitInterfce();
@@ -25,5 +27,10 @@ void vGUIpaintEventHandler();
 void vGUIpushClickHandler(LPARAM lParam);
 void vGUIpopClickHandler(LPARAM lParam);
 void vGUIeraseBackgroudHandler();
+void vGUIUpdateCurrentMonitor();
+void vGUIWriteToLabel(char * msg);
+
+xPlotData_t * pxGUIGetPlotData();
+extraParams_t * pxGUIGetExtraParams();
 
 #endif

@@ -96,6 +96,15 @@
     <ClInclude Include="..\emGUI\options\opts.h">
       <Filter>emGUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\emGUI\Widgets\Plot.h">
+      <Filter>emGUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FIR-filter-class\filt.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="IIR_filter.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -188,9 +197,6 @@
     <ClCompile Include="..\emGUI\Images\Mail.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
-    <ClCompile Include="..\emGUI\Images\Micochip.c">
-      <Filter>emGUI\Images</Filter>
-    </ClCompile>
     <ClCompile Include="..\emGUI\Images\New_list.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
@@ -221,6 +227,18 @@
     <ClCompile Include="..\emGUI\Images\Wrench.c">
       <Filter>emGUI\Images</Filter>
     </ClCompile>
+    <ClCompile Include="..\emGUI\Widgets\Plot.c">
+      <Filter>emGUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emGUI\Images\Microchip.c">
+      <Filter>emGUI\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="..\FIR-filter-class\filt.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="IIR_filter.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="emGUI-example.rc">
@@ -247,6 +265,9 @@
       <Filter>DemoImages</Filter>
     </Image>
     <Image Include="DemoImages\wrench.png">
+      <Filter>DemoImages</Filter>
+    </Image>
+    <Image Include="DemoImages\parrot.png">
       <Filter>DemoImages</Filter>
     </Image>
   </ItemGroup>

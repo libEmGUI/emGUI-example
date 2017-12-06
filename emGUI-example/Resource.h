@@ -13,6 +13,9 @@
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
 #endif
+
+#define ID_WND_TIMER 111
+
 // Следующие стандартные значения для новых объектов
 //
 #ifdef APSTUDIO_INVOKED

@@ -3,11 +3,21 @@
 
 #include "stdafx.h"
 #include "emGUI-example.h"
-#include "GUI.h"
 #include <cstdio>
 #include <iostream>
+#include <deque>
+#include <io.h>
+#include <fcntl.h>
+#include <process.h>
+#include "filt.h"
+#include "IIR_filter.h"
 
-using namespace std;
+#define SERIAL_READ_TIMEOUT 500 
+#define SERIAL_READ_BUF_SIZE 10
+
+#define TIMEOUT 1000
+
+
 
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
@@ -19,16 +29,17 @@ using namespace Gdiplus;
 #endif
 
 
-
-
-
-
+unsigned int  dwThreadId;
 // √лобальные переменные:
 HINSTANCE hInst;                                // текущий экземпл€р
 WCHAR szTitle[MAX_LOADSTRING];                  // “екст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // им€ класса главного окна
 HWND hWnd;
-
+UINT_PTR uTimerId;
+HANDLE serialPort;
+HANDLE serialThread;
+Filter lpf(LPF, 51, AFE_DATA_RATE / 1000.f, 0.05);
+IIR_filter iir_f(1.f/AFE_DATA_RATE);
 
 // ќтправить объ€влени€ функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -42,9 +53,36 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+	
+
+	try
+	{
+		// Create basic file logger (not rotated)
+		logger = spdlog::basic_logger_mt("basic_logger", "app.log");
+	}
+	catch (const spdlog::spdlog_ex& ex)
+	{
+		std::cout << "Log initialization failed: " << ex.what() << std::endl;
+	}
+	
+	logger->info("Hello!");
+
+	serialThreadParams_t threadParams;
+
+	threadParams.portName = L"COM9";
+	threadParams.exitFlag = false;
+	threadParams.logger = logger;
+	threadParams.data = pxGUIGetPlotData();
+	threadParams.extraParams = pxGUIGetExtraParams();
 
 	// TODO: разместите код здесь.
-
+	serialThread = (HANDLE)_beginthreadex(
+		NULL,                   // default security attributes
+		0,                      // use default stack size  
+		&SecondThreadFunc,       // thread function name
+		&threadParams,                   // argument to thread function 
+		0,                      // use default creation flags 
+		&dwThreadId);   // returns the thread identifier 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
 
@@ -76,12 +114,58 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 	}
-
+	logger->info("Leaving main thread");
+	threadParams.exitFlag = true;
+	WaitForSingleObject(serialThread, INFINITE);
+	logger->info("Serial thread should be dead!");
 	GdiplusShutdown(gdiplusToken);
 	return (int)msg.wParam;
 }
 
+void HandleASuccessfulRead(char * lpBuf, WORD dwRead, serialThreadParams_t * params) {
+	static std::deque<char> buf;
 
+	for (int i = 0; i < dwRead; i++)
+		buf.push_back(lpBuf[i]);
+
+	static std::string line;
+
+	while (buf.size() > 0) {
+		char sym = buf.front();
+		buf.pop_front();
+		if (sym == '\n' || sym == '\r') {
+			if (line.length() > 0) {
+				try {
+					int data = std::stoi(line);
+					handleData(data, params);
+				}
+				catch (std::invalid_argument& e) {
+					logger->error("Invalid string parsing");
+				}
+				line = "";
+			}
+			continue;
+		}
+		line += sym;
+	}
+
+}
+
+void handleData(int data, serialThreadParams_t * params) {
+	auto pd = params->data;
+
+	//logger->info(data);
+	auto fData = (int16_t)(lpf.do_sample(data));
+	pd->psData[pd->ulWritePos] = fData;
+	logger->info(fData);
+	params->extraParams->averageCurrent = iir_f.do_sample(fData);
+	vGUIUpdateCurrentMonitor();
+	pd->ulWritePos++;
+	if (pd->ulWritePos >= pd->ulElemCount) {
+		pd->ulWritePos = 0;
+		pd->bDataFilled = true;
+	}
+}
 
 //
 //  ‘”Ќ ÷»я: MyRegisterClass()
@@ -139,12 +223,68 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
+	uTimerId = SetTimer(hWnd, 1, 30, NULL);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
 	return TRUE;
 }
 
+unsigned __stdcall SecondThreadFunc(void* pArguments) {
+	auto prm = (serialThreadParams_t *)pArguments;
+	if (!prm)
+		return 1;
+	auto logger = prm->logger;
+
+	
+	if (lpf.get_error_flag() != 0) // abort in an appropriate manner
+		logger->error("Filter not created");
+	serialPort = CreateFile(prm->portName,
+		GENERIC_READ | GENERIC_WRITE,
+		0,
+		0,
+		OPEN_EXISTING,
+		0,
+		NULL);
+	if (serialPort == INVALID_HANDLE_VALUE) {
+		return 2;
+	}
+
+	// Serial port settings
+	DCB dcbSerialParams = { 0 };
+	dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
+	if (!GetCommState(serialPort, &dcbSerialParams))
+	{
+		logger->error("getting state error");
+	}
+	dcbSerialParams.BaudRate = CBR_115200;
+	dcbSerialParams.ByteSize = 8;
+	dcbSerialParams.StopBits = ONESTOPBIT;
+	dcbSerialParams.Parity = NOPARITY;
+	if (!SetCommState(serialPort, &dcbSerialParams))
+	{
+		logger->error("error setting serial port state");
+	}
+
+
+	DWORD dwRead;
+	DWORD dwRes;
+	char lpBuf[10];
+	logger->info("Starting serial read thread from {}", (char *) prm->portName);
+
+	// Issue read operation.
+	while (ReadFile(serialPort, lpBuf, sizeof(lpBuf), &dwRead, NULL) && !prm->exitFlag) {
+		// read completed immediately
+		//logger->info("Read 1 byte");
+		HandleASuccessfulRead(lpBuf, dwRead, prm);
+	}
+
+	logger->info("Leaving serial read thread");
+	CloseHandle(serialPort);
+	serialPort = INVALID_HANDLE_VALUE;
+	;// throw TTYException();
+	return 0;
+}
 //
 //  ‘”Ќ ÷»я: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -176,6 +316,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_DESTROY:
+		KillTimer(hWnd, uTimerId);
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
@@ -183,7 +324,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
-
+	case WM_TIMER:
+		InvalidateRect(hWnd, NULL, FALSE);
+		SendMessage(hWnd, WM_PAINT, NULL, NULL);
+		return 0;
 	case WM_LBUTTONUP:
 		vGUIpopClickHandler(lParam);
 		InvalidateRect(hWnd, NULL, FALSE);

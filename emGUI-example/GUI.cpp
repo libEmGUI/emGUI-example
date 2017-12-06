@@ -12,12 +12,20 @@ using namespace Gdiplus;
 static xDraw_t LCD;
 static xInterface * interface1;
 static xLabel * mouseMonitor;
+static xLabel * currentMonitor;
 static Graphics *graphics = NULL;
 xTouchEvent currentTouch;
 
 static int stride = 0;
 BYTE * imgCross = (BYTE *)&rgb_test;
 BYTE * imgCross2 = (BYTE *)&rgb_test[23];
+
+static xPlotData_t plotLead;
+static extraParams_t extraP;
+
+xPlotData_t * pxGUIGetPlotData() {
+	return &plotLead;
+}
 
 // Convert color from emGUI to GDI format
 ARGB convertColor(uint16_t color) {
@@ -29,7 +37,9 @@ ARGB convertColor(uint16_t color) {
 	return answer;
 
 }
-
+void vGUIWriteToLabel(char* msg) {
+	pcLabelSetText(mouseMonitor, msg);
+}
 
 extern "C" {
 	void vRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
@@ -79,10 +89,12 @@ extern "C" {
 	}
 	void vVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
+		if (usY0 == usY1) usY1++;
 		graphics->DrawLine(&pen, usX0, usY0, usX0, usY1);
 	}
 	void vHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
+		if (usX0 == usX1) usX1++;
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
 #ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
@@ -123,12 +135,21 @@ extern "C" {
 		MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, (LPWSTR)pwcsName, nChars);
 		Image img(pwcsName);
 		delete[] pwcsName;
-		Rect destRect(sX0, sY0, usGetPictureW(pusPicture), usGetPictureH(pusPicture));
+		uint16_t we, he;
+		if (usGetPictureW(pusPicture) < 220 && usGetPictureH(pusPicture) < 220) {
+			we = usGetPictureW(pusPicture);
+			he = usGetPictureH(pusPicture);
+		} else {
+			we = 220;
+			he = 220;
+		}
+		Rect destRect(sX0, sY0, we, he);
 		graphics->DrawImage(&img, destRect);
 		
 #endif
 
 	}
+
 
 	void doMagic() {
 		char outString[25];
@@ -158,6 +179,11 @@ extern "C" {
 		return true;
 	}
 
+	bool showParrot(xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ECG);
+		return true;
+	}
+
 	// Action on interface creatings
 	bool bGUIonInterfaceCreateHandler(xWidget *) {
 		auto window = pxWindowCreate(WINDOW_MENU);
@@ -171,7 +197,7 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_MAGIC, "Do magic", &btnMagicHDLR, window);
+		auto menuBut = pxMenuButtonCreate(column1, row1, microchip, "Curr. mon.", &showParrot, window);
 		//bButtonSetPushPic(menuBut, mail);
 		auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
 		auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
@@ -188,6 +214,23 @@ extern "C" {
 		auto menuButAbout2 = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window_show_folder);
 		auto menuButLabel2 = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window_show_folder);
 
+		auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
+		vWindowSetHeader(window_show_ampermeter, "Ampermeter, uA");
+
+		plotLead.bDataFilled = false;
+		plotLead.bWriteEnabled = false;
+		plotLead.sDataDCOffset = -500;
+		plotLead.sName = "Test";
+		plotLead.ulElemCount = AFE_DATA_RATE * 10;
+		plotLead.psData = (short *)malloc(sizeof(*plotLead.psData)*plotLead.ulElemCount);
+		plotLead.ulWritePos = 0;
+
+
+		xPlot * plot = pxPlotCreate(0, 0, LCD_SizeX, LCD_SizeY - LCD_STATUS_BAR_HEIGHT-20, window_show_ampermeter, &plotLead);
+		vPlotSetScale(plot, 250);
+		currentMonitor = pxLabelCreate(10, LCD_SizeY - LCD_STATUS_BAR_HEIGHT - 20, LCD_SizeX, 20, "I: _ (0.1 mA)", FONT_ASCII_8_X, 100, window_show_ampermeter);
+		vLabelSetTextAlign(currentMonitor, LABEL_ALIGN_CENTER);
+		vLabelSetVerticalAlign(currentMonitor, LABEL_ALIGN_MIDDLE);
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 	considered the best in the nation at their respective positions\
 	The National Collegiate Athletic Association, a college sports \
@@ -224,6 +267,13 @@ bool bGUIOnWindowCloseHandlerMain(xWidget *) {
 	return true;
 }
 
+void vGUIUpdateCurrentMonitor() {
+	auto data = plotLead.psData[plotLead.ulWritePos];
+	//char outString[25];
+	//sprintf_s(outString, "I: %d mA)", data);
+	//pcLabelSetText(currentMonitor, outString);
+	iLabelPrintf(currentMonitor, "I_Avg: %.1f; I: %d.%d (mA)", extraP.averageCurrent / 10.f, data / 10, abs(data % 10));
+}
 
 bool bGUI_InitInterfce() {
 	vDrawHandlerInit(&LCD);
@@ -273,4 +323,7 @@ void vGUIeraseBackgroudHandler() {
 	vInterfaceInvalidate();
 }
 
+extraParams_t * pxGUIGetExtraParams() {
+	return &extraP;
+}
 
