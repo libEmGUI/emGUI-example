@@ -9,13 +9,14 @@
 #include <io.h>
 #include <fcntl.h>
 #include <process.h>
-#include "filt.h"
+#include "FIR-filter-class/filt.h"
 #include "IIR_filter.h"
 
 #define SERIAL_READ_TIMEOUT 500 
 #define SERIAL_READ_BUF_SIZE 10
 
 #define TIMEOUT 1000
+#define AFE_DATA_RATE 700
 
 
 
