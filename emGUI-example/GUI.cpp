@@ -22,7 +22,7 @@
 #define pgm_read_pointer(addr) ((void *)pgm_read_word(addr))
 #endif
 
-#include "Adafruit-GFX/Fonts/FreeSans12pt7b.h"
+#include "Adafruit-GFX/Fonts/FreeSans9pt7b.h"
 
 using namespace std;
 using namespace Gdiplus;
@@ -191,8 +191,6 @@ extern "C" {
 	
 	static void vPutChar(uint16_t usX, uint16_t usY, char ASCII, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
 
-		Pen      pen(Color(convertColor(usColor)));
-
 		const GFXfont *gfxFont = pubFont;
 		ASCII -= (uint8_t)pgm_read_byte(&gfxFont->first);
 		GFXglyph *glyph = &(((GFXglyph *)pgm_read_pointer(&gfxFont->glyph))[ASCII]);
@@ -208,27 +206,30 @@ extern "C" {
 		auto x = usX;
 		auto y = usY + usFontGetH(pubFont) * 3 / 4 - 1;
 
+		Bitmap bm(w,h,PixelFormat16bppRGB565);
+		Graphics g(&bm);
+
+		g.Clear(convertColor(usBackground));
+
 		for (yy = 0; yy<h; yy++) {
 			for (xx = 0; xx<w; xx++) {
 				if (!(bit++ & 7)) {
 					bits = pgm_read_byte(&bitmap[bo++]);
 				}
 				if (bits & 0x80) {
-					
-					auto x0 = x + xo + xx;
-					auto y0 = y + yo + yy;
-					LCD.vHLine(x0, y + yo + yy, x0, usColor);
-					graphics->DrawLine(&pen, x0, y0, x0 + 1, y0);
-					
+					bm.SetPixel(xx, yy, usColor);
 				}
 				bits <<= 1;
 			}
 		}
 
+		Rect destRect(x+xo, y+yo, w, h);
+		graphics->DrawImage(&bm, destRect);
+
 	}
 
 	xFont getDefaultFont() {
-		return &FreeSans12pt7b;
+		return &FreeSans9pt7b;
 	}
 
 	void doMagic() {
