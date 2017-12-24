@@ -1,7 +1,7 @@
-[submodule "emGUI"]
-	path = emGUI
-	url = ../emGUI
-	branch = normalization
 [submodule "spdlog"]
 	path = spdlog
 	url = ../../gabime/spdlog.git
+[submodule "libraries/emGUI"]
+	path = libraries/emGUI
+	url = ../emGUI
+	branch = arduino-fixes
