@@ -4,10 +4,28 @@
 */
 #include "GUI.h"
 
+#define PROGMEM
+
+#ifndef pgm_read_byte
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+#endif
+#ifndef pgm_read_word
+#define pgm_read_word(addr) (*(const unsigned short *)(addr))
+#endif
+#ifndef pgm_read_dword
+#define pgm_read_dword(addr) (*(const unsigned long *)(addr))
+#endif
+
+#if !defined(__INT_MAX__) || (__INT_MAX__ > 0xFFFF)
+#define pgm_read_pointer(addr) ((void *)pgm_read_dword(addr))
+#else
+#define pgm_read_pointer(addr) ((void *)pgm_read_word(addr))
+#endif
+
+#include "Adafruit-GFX/Fonts/FreeSans9pt7b.h"
+
 using namespace std;
 using namespace Gdiplus;
-
-
 
 static xDraw_t LCD;
 static xInterface * interface1;
@@ -17,8 +35,6 @@ static Graphics *graphics = NULL;
 xTouchEvent currentTouch;
 
 static int stride = 0;
-BYTE * imgCross = (BYTE *)&rgb_test;
-BYTE * imgCross2 = (BYTE *)&rgb_test[23];
 
 static xPlotData_t plotLead;
 static extraParams_t extraP;
@@ -42,7 +58,7 @@ void vGUIWriteToLabel(char* msg) {
 }
 
 extern "C" {
-	void vRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
+	static void vRectangle(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usY1, uint16_t usColor, bool bFill) {
 		Pen      pen(Color(convertColor(usColor)));
 		graphics->DrawRectangle(&pen, usX0, usY0, usX1 - usX0, usY1 - usY0);
 		if (bFill) {
@@ -50,55 +66,19 @@ extern "C" {
 			graphics->FillRectangle(&solidBrush, usX0, usY0, usX1 - usX0, usY1 - usY0);
 		}
 	}
-	void vPutChar(uint16_t usX, uint16_t usY, char ASCI, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
-		unsigned const char  *pubBuf = pubFont[(int)ASCI];
-		unsigned char charWidth = *pubBuf; //each symbol in NEO fonts contains width info in first byte.
-		unsigned char usHeight = *pubFont[0]; //each NEO font contains height info in first byte.
-		pubBuf++; //go to first pattern of font
-		uint16_t usXt, usYt;
-		SolidBrush fgBrush(Color(convertColor(usColor)));
-		SolidBrush bgBrush(Color(convertColor(usBackground)));
-		for (uint8_t column = 0; column < charWidth; column++) {
-			usXt = usX + column;
-			if (usXt >= SCREEN_WIDTH)
-				break;
-			for (uint8_t row = 0; row < 8; row++) {
-				usYt = usY + row;
-				if (*pubBuf & (1 << row))
-					graphics->FillRectangle(&fgBrush, usXt, usYt, 1, 1);
-				else if (bFillBg)
-					graphics->FillRectangle(&bgBrush, usXt, usYt, 1, 1);
-				if (usYt >= SCREEN_HEIGHT)
-					break;
-			};
 
-			/* Hack for 16X NEO font */
-			if (usHeight == 16) {
-				for (uint8_t row = 0; row < 8; row++) {
-					usYt = usY + row + 8;
-					if (*(pubBuf + charWidth)& (1 << row))
-						graphics->FillRectangle(&fgBrush, usXt, usYt, 1, 1);
-					else if (bFillBg)
-						graphics->FillRectangle(&bgBrush, usXt, usYt, 1, 1);
-					if (usYt >= SCREEN_HEIGHT)
-						break;
-				};
-			}
-			pubBuf++;
-		}
-	}
-	void vVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
+	static void vVLine(uint16_t usX0, uint16_t usY0, uint16_t usY1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
 		if (usY0 == usY1) usY1++;
 		graphics->DrawLine(&pen, usX0, usY0, usX0, usY1);
 	}
-	void vHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
+	static void vHLine(uint16_t usX0, uint16_t usY0, uint16_t usX1, uint16_t usColor) {
 		Pen      pen(Color(convertColor(usColor)));
 		if (usX0 == usX1) usX1++;
 		graphics->DrawLine(&pen, usX0, usY0, usX1, usY0);
 	}
-#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
-	uint16_t usGetPictureH(xPicture pusPicture) {
+
+	static uint16_t usGetPictureH(xPicture pusPicture) {
 		const WCHAR *pwcsName;
 		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
 		pwcsName = new WCHAR[nChars];
@@ -109,7 +89,7 @@ extern "C" {
 		return H;
 	}
 
-	uint16_t usGetPictureW(xPicture pusPicture) {
+	static uint16_t usGetPictureW(xPicture pusPicture) {
 		const WCHAR *pwcsName;
 		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
 		pwcsName = new WCHAR[nChars];
@@ -119,16 +99,9 @@ extern "C" {
 		delete[] pwcsName;
 		return W;
 	}
-#endif
 
-	void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
-#ifndef EM_GUI_OVERRIDE_DEFAULT_PICS
-		BYTE * imgC = (BYTE *)pusPicture;
-		Bitmap cross_pic_bitmap(pusPicture[0], pusPicture[1], pusPicture[0] * sizeof(uint16_t), PixelFormat16bppRGB565, imgC + sizeof(uint16_t) * 2);
-		static float angle = 0.0;
-		cross_pic_bitmap.RotateFlip(Rotate90FlipX);
-		graphics->DrawImage(&cross_pic_bitmap, sX0, sY0);
-#else
+	static void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
+
 		const WCHAR *pwcsName;
 		int nChars = MultiByteToWideChar(CP_ACP, 0, pusPicture, -1, NULL, 0);
 		pwcsName = new WCHAR[nChars];
@@ -145,11 +118,119 @@ extern "C" {
 		}
 		Rect destRect(sX0, sY0, we, he);
 		graphics->DrawImage(&img, destRect);
-		
-#endif
 
 	}
 
+	static uint16_t usFontGetH(xFont pubFont) {
+		const GFXfont *gfxFont = pubFont;
+		uint8_t  height = pgm_read_byte(&gfxFont->yAdvance);
+		return (uint16_t)height;
+	}
+
+	static xPicture prvGetPicture(const char * picName) {
+		if (strcmp(picName, "cross") == 0)
+			return EM_GUI_PIC_CROSS;
+
+		if (strcmp(picName, "No") == 0)
+			return EM_GUI_PIC_NO;
+
+		if (strcmp(picName, "Cancel") == 0)
+			return EM_GUI_PIC_REFRESH;
+
+		if (strcmp(picName, "OK") == 0)
+			return EM_GUI_PIC_YES;
+
+		return EM_GUI_PIC_CROSS;
+	}
+
+	static xModalDialogPictureSet prvGetPicSet(char cType) {
+		xModalDialogPictureSet xPicSet;
+		switch (cType) {
+		case 'n':
+			xPicSet.strLabel = "No";
+			break;
+		case 'c':
+			xPicSet.strLabel = "Cancel";
+			break;
+		case 'o':
+			xPicSet.strLabel = "OK";
+			break;
+		default:
+			xPicSet.strLabel = "OK";
+			break;
+		}
+
+		xPicSet.xPicMain = prvGetPicture(xPicSet.strLabel);
+
+		return xPicSet;
+	}
+
+	static uint16_t ucFontGetCharW(char cChar, xFont pubFont) {
+		const GFXfont *gfxFont = pubFont;
+		cChar -= (uint8_t)pgm_read_byte(&gfxFont->first);
+		GFXglyph *glyph = &(((GFXglyph *)pgm_read_pointer(&gfxFont->glyph))[cChar]);
+
+		uint8_t  w = pgm_read_byte(&glyph->xAdvance);
+		return (uint16_t)w;
+	}
+
+	static uint16_t usFontGetStrW(char const * pcStr, xFont pubFont) {
+		uint16_t usWidth = 0;
+
+		while (*pcStr) {
+			usWidth += ucFontGetCharW(*pcStr, pubFont);
+			pcStr++;
+		}
+		return usWidth;
+	}
+
+	static uint16_t usFontGetStrH(const char * pcStr, xFont pubFont) {
+		//TODO: implement multistring height.
+		return usFontGetH(pubFont);
+	}
+	
+	static void vPutChar(uint16_t usX, uint16_t usY, char ASCII, xFont pubFont, uint16_t usColor, uint16_t usBackground, bool bFillBg) {
+
+		const GFXfont *gfxFont = pubFont;
+		ASCII -= (uint8_t)pgm_read_byte(&gfxFont->first);
+		GFXglyph *glyph = &(((GFXglyph *)pgm_read_pointer(&gfxFont->glyph))[ASCII]);
+		uint8_t  *bitmap = (uint8_t *)pgm_read_pointer(&gfxFont->bitmap);
+
+		uint16_t bo = pgm_read_word(&glyph->bitmapOffset);
+		uint8_t  w = pgm_read_byte(&glyph->width),
+			h = pgm_read_byte(&glyph->height);
+		int8_t   xo = pgm_read_byte(&glyph->xOffset),
+			yo = pgm_read_byte(&glyph->yOffset);
+		uint8_t  xx, yy, bits = 0, bit = 0;
+
+		auto x = usX;
+		auto y = usY + usFontGetH(pubFont) * 3 / 4 - 1;
+
+		Bitmap bm(w,h,PixelFormat16bppRGB565);
+		Graphics g(&bm);
+
+		g.Clear(convertColor(usBackground));
+
+		for (yy = 0; yy<h; yy++) {
+			for (xx = 0; xx<w; xx++) {
+				if (!(bit++ & 7)) {
+					bits = pgm_read_byte(&bitmap[bo++]);
+				}
+				if (bits & 0x80) {
+					bm.SetPixel(xx, yy, usColor);
+				}
+				bits <<= 1;
+			}
+		}
+
+		Rect destRect(x+xo, y+yo, w, h);
+		graphics->DrawImage(&bm, destRect);
+
+	}
+
+	xFont getDefaultFont() {
+		return &FreeSans9pt7b;
+	}
 
 	void doMagic() {
 		char outString[25];
@@ -159,7 +240,7 @@ extern "C" {
 		pcLabelSetText(mouseMonitor, outString);
 	}
 	bool btnMagicHDLR(xWidget *) {
-		auto dlg = iModalDialogOpen(MODAL_AUTO, "ny", "Magic Button", "Magic will happen. Are you sure?");
+		auto dlg = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Magic Button", "Magic will happen. Are you sure?");
 		vModalDialogSetHandler(dlg, 'y', &doMagic);
 		return true;
 	}
@@ -188,7 +269,7 @@ extern "C" {
 	bool bGUIonInterfaceCreateHandler(xWidget *) {
 		auto window = pxWindowCreate(WINDOW_MENU);
 		vWindowSetHeader(window, "Main menu");
-		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", FONT_ASCII_8_X, 500, window);
+		mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", LCD.xGetDefaultFont(), 500, window);
 		uint8_t offset = 15;
 
 		uint8_t row1 = offset;
@@ -197,7 +278,7 @@ extern "C" {
 		uint8_t column1 = offset;
 		uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 		uint8_t column3 = SCREEN_WIDTH - offset - 60;
-		auto menuBut = pxMenuButtonCreate(column1, row1, microchip, "Curr. mon.", &showParrot, window);
+		auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_WRENCH, "Curr. mon.", &showParrot, window);
 		//bButtonSetPushPic(menuBut, mail);
 		auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
 		auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
@@ -226,9 +307,9 @@ extern "C" {
 		plotLead.ulWritePos = 0;
 
 
-		xPlot * plot = pxPlotCreate(0, 0, LCD_SizeX, LCD_SizeY - LCD_STATUS_BAR_HEIGHT-20, window_show_ampermeter, &plotLead);
+		xPlot * plot = pxPlotCreate(0, 0, EMGUI_LCD_WIDTH, EMGUI_LCD_HEIGHT - EMGUI_STATUS_BAR_HEIGHT -20, window_show_ampermeter, &plotLead);
 		vPlotSetScale(plot, 250);
-		currentMonitor = pxLabelCreate(10, LCD_SizeY - LCD_STATUS_BAR_HEIGHT - 20, LCD_SizeX, 20, "I: _ (0.1 mA)", FONT_ASCII_8_X, 100, window_show_ampermeter);
+		currentMonitor = pxLabelCreate(10, EMGUI_LCD_HEIGHT - EMGUI_STATUS_BAR_HEIGHT - 20, EMGUI_LCD_WIDTH, 20, "I: _ (0.1 mA)", LCD.xGetDefaultFont(), 100, window_show_ampermeter);
 		vLabelSetTextAlign(currentMonitor, LABEL_ALIGN_CENTER);
 		vLabelSetVerticalAlign(currentMonitor, LABEL_ALIGN_MIDDLE);
 		auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
@@ -245,9 +326,9 @@ extern "C" {
 	the Associated Press (AP), American Football Coaches Association \
 	(AFCA), Football Writers Association of America (FWAA), The Sporting \
 	News (TSN), and the Walter Camp Football Foundation (WCFF),   \
-	to determine consensus All-Americans.[5]", FONT_ASCII_8_X, 1010, window_show_label);
+	to determine consensus All-Americans.[5]", LCD.xGetDefaultFont(), 1010, window_show_label);
 
-		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", FONT_ASCII_8_X, 200, window2_about);
+		auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", LCD.xGetDefaultFont(), 200, window2_about);
 
 		vWindowSetOnCloseRequestHandler(window, &bGUIOnWindowCloseHandlerMain);
 		auto dialog1 = pxModalDialogWindowCreate();
@@ -262,38 +343,47 @@ void closeWindow() {
 }
 
 bool bGUIOnWindowCloseHandlerMain(xWidget *) {
-	auto dial = iModalDialogOpen(MODAL_AUTO, "ny", "Close?", "");
+	auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "");
 	vModalDialogSetHandler(dial, 'y', closeWindow);
 	return true;
 }
 
 void vGUIUpdateCurrentMonitor() {
 	auto data = plotLead.psData[plotLead.ulWritePos];
-	//char outString[25];
-	//sprintf_s(outString, "I: %d mA)", data);
-	//pcLabelSetText(currentMonitor, outString);
 	iLabelPrintf(currentMonitor, "I_Avg: %.1f; I: %d.%d (mA)", extraP.averageCurrent / 10.f, data / 10, abs(data % 10));
 }
 
 bool bGUI_InitInterfce() {
 	vDrawHandlerInit(&LCD);
-	LCD.vRectangle = &vRectangle;
-	LCD.vPutChar = &vPutChar;
-	LCD.bPicture = &bPicture;
-	LCD.vVLine = &vVLine;
-	LCD.vHLine = &vHLine;
-#ifdef EM_GUI_OVERRIDE_DEFAULT_PICS
-	LCD.usGetPictureH = &usGetPictureH;
-	LCD.usGetPictureW = &usGetPictureW;
-#endif
+	LCD.vRectangle = vRectangle;
+	LCD.vPutChar = vPutChar;
+	LCD.bPicture = bPicture;
+	LCD.vVLine = vVLine;
+	LCD.vHLine = vHLine;
+	LCD.usGetPictureH = usGetPictureH;
+	LCD.usGetPictureW = usGetPictureW;
+
+	LCD.usFontGetH = usFontGetH;
+	LCD.ucFontGetCharW = ucFontGetCharW;
+	LCD.usFontGetStrW = usFontGetStrW;
+	LCD.usFontGetStrH = usFontGetStrH;
+	LCD.xGetDialogPictureSet = prvGetPicSet;
+	LCD.xGetPicture = prvGetPicture;
+	LCD.xGetDefaultFont = getDefaultFont;
+
 	vDrawSetHandler(&LCD);
-	interface1 = pxInterfaceCreate(&bGUIonInterfaceCreateHandler);
+	interface1 = pxInterfaceCreate(bGUIonInterfaceCreateHandler);
 	return true;
 }
 
 
 void vGUIsetCurrentHDC(Graphics *gr) {
 	graphics = gr;
+	//graphics->SetCompositingMode(CompositingModeSourceCopy);
+	graphics->SetCompositingQuality(CompositingQualityHighSpeed);
+	graphics->SetPixelOffsetMode(PixelOffsetModeNone);
+	graphics->SetSmoothingMode(SmoothingModeNone);
+	graphics->SetInterpolationMode(InterpolationModeDefault);
 }
 
 

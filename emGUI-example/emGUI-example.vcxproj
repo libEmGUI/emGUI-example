@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\FIR-filter-class;..\emGUI;..\spdlog\include;.;$(IncludePath)</IncludePath>
+    <IncludePath>.;..\libraries\;..\libraries\spdlog\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -146,22 +146,75 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\emGUI\Draw\Draw.h" />
-    <ClInclude Include="..\emGUI\emGUI.h" />
-    <ClInclude Include="..\emGUI\Fonts\Font.h" />
-    <ClInclude Include="..\emGUI\Images\Images.h" />
-    <ClInclude Include="..\emGUI\options\opts.h" />
-    <ClInclude Include="..\emGUI\Widgets\Button.h" />
-    <ClInclude Include="..\emGUI\Widgets\Interface.h" />
-    <ClInclude Include="..\emGUI\Widgets\Label.h" />
-    <ClInclude Include="..\emGUI\Widgets\MenuButton.h" />
-    <ClInclude Include="..\emGUI\Widgets\ModalDialog.h" />
-    <ClInclude Include="..\emGUI\Widgets\Plot.h" />
-    <ClInclude Include="..\emGUI\Widgets\StatusBar.h" />
-    <ClInclude Include="..\emGUI\Widgets\Widget.h" />
-    <ClInclude Include="..\emGUI\Widgets\Window.h" />
-    <ClInclude Include="..\FIR-filter-class\filt.h" />
-    <ClInclude Include="DemoImages\pics.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMono12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMono18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMono24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMono9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBold12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBold18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBold24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBold9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBoldOblique12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBoldOblique18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBoldOblique24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoBoldOblique9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoOblique12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoOblique18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoOblique24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeMonoOblique9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSans12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSans18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSans24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSans9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBold12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBold18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBold24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBold9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBoldOblique12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBoldOblique18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBoldOblique24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansBoldOblique9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansOblique12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansOblique18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansOblique24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSansOblique9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerif12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerif18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerif24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerif9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBold12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBold18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBold24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBold9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBoldItalic12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBoldItalic18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBoldItalic24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifBoldItalic9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifItalic12pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifItalic18pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifItalic24pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\FreeSerifItalic9pt7b.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\Org_01.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\Picopixel.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\TomThumb.h" />
+    <ClInclude Include="..\libraries\Adafruit-GFX\gfxfont.h" />
+    <ClInclude Include="..\libraries\emGUI\Draw\Draw.h" />
+    <ClInclude Include="..\libraries\emGUI\emGUI.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Button.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Console.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Interface.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\KeyBoard.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\KeyRow.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Label.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\MenuButton.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\ModalDialog.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\PictureStack.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Plot.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\ProgressBar.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\StatusBar.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Widget.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\Window.h" />
+    <ClInclude Include="..\libraries\FIR-filter-class\filt.h" />
     <ClInclude Include="emGUI-example.h" />
     <ClInclude Include="emGUI_opts.h" />
     <ClInclude Include="GUI.h" />
@@ -171,46 +224,22 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\emGUI\Draw\Draw.c" />
-    <ClCompile Include="..\emGUI\Fonts\Font.c" />
-    <ClCompile Include="..\emGUI\Fonts\font16.c" />
-    <ClCompile Include="..\emGUI\Fonts\Font8.c" />
-    <ClCompile Include="..\emGUI\Images\Ban.c" />
-    <ClCompile Include="..\emGUI\Images\Bars.c" />
-    <ClCompile Include="..\emGUI\Images\Cross.c" />
-    <ClCompile Include="..\emGUI\Images\Down.c" />
-    <ClCompile Include="..\emGUI\Images\Error.c" />
-    <ClCompile Include="..\emGUI\Images\Folder.c" />
-    <ClCompile Include="..\emGUI\Images\Help.c" />
-    <ClCompile Include="..\emGUI\Images\Keyboard.c" />
-    <ClCompile Include="..\emGUI\Images\Left.c" />
-    <ClCompile Include="..\emGUI\Images\Magic.c" />
-    <ClCompile Include="..\emGUI\Images\Mail.c" />
-    <ClCompile Include="..\emGUI\Images\Microchip.c" />
-    <ClCompile Include="..\emGUI\Images\New_list.c" />
-    <ClCompile Include="..\emGUI\Images\No.c" />
-    <ClCompile Include="..\emGUI\Images\Ok.c" />
-    <ClCompile Include="..\emGUI\Images\Open-folder.c" />
-    <ClCompile Include="..\emGUI\Images\Pin.c" />
-    <ClCompile Include="..\emGUI\Images\Process.c" />
-    <ClCompile Include="..\emGUI\Images\Refresh.c" />
-    <ClCompile Include="..\emGUI\Images\Star.c" />
-    <ClCompile Include="..\emGUI\Images\Tags.c" />
-    <ClCompile Include="..\emGUI\Images\Undo.c" />
-    <ClCompile Include="..\emGUI\Images\Up.c" />
-    <ClCompile Include="..\emGUI\Images\Warning.c" />
-    <ClCompile Include="..\emGUI\Images\Wrench.c" />
-    <ClCompile Include="..\emGUI\Widgets\Button.c" />
-    <ClCompile Include="..\emGUI\Widgets\Interface.c" />
-    <ClCompile Include="..\emGUI\Widgets\Label.c" />
-    <ClCompile Include="..\emGUI\Widgets\MenuButton.c" />
-    <ClCompile Include="..\emGUI\Widgets\ModalDialog.c" />
-    <ClCompile Include="..\emGUI\Widgets\Plot.c" />
-    <ClCompile Include="..\emGUI\Widgets\StatusBar.c" />
-    <ClCompile Include="..\emGUI\Widgets\Widget.c" />
-    <ClCompile Include="..\emGUI\Widgets\Window.c" />
-    <ClCompile Include="..\FIR-filter-class\filt.cpp" />
-    <ClCompile Include="DemoImages\pics.c" />
+    <ClCompile Include="..\libraries\emGUI\Draw\Draw.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Button.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Console.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Interface.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\KeyBoard.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\KeyRow.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Label.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\MenuButton.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\ModalDialog.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\PictureStack.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Plot.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\ProgressBar.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\StatusBar.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Widget.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\Window.c" />
+    <ClCompile Include="..\libraries\FIR-filter-class\filt.cpp" />
     <ClCompile Include="emGUI-example.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="IIR_filter.cpp" />
@@ -225,12 +254,6 @@
     <ResourceCompile Include="emGUI-example.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DemoImages\close.png" />
-    <Image Include="DemoImages\no.png" />
-    <Image Include="DemoImages\ok.png" />
-    <Image Include="DemoImages\parrot.png" />
-    <Image Include="DemoImages\undo.png" />
-    <Image Include="DemoImages\wrench.png" />
     <Image Include="emGUI-example.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

@@ -1,7 +1,10 @@
-[submodule "emGUI"]
-	path = emGUI
+[submodule "libraries/emGUI"]
+	path = libraries/emGUI
 	url = ../emGUI
-	branch = normalization
-[submodule "spdlog"]
-	path = spdlog
+	branch = arduino-fixes
+[submodule "libraries/spdlog"]
+	path = libraries/spdlog
 	url = ../../gabime/spdlog.git
+[submodule "libraries/Adafruit-GFX"]
+	path = libraries/Adafruit-GFX
+	url = ../../adafruit/Adafruit-GFX-Library.git
