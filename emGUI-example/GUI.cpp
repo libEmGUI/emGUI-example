@@ -128,19 +128,22 @@ extern "C" {
 	}
 
 	static xPicture prvGetPicture(const char * picName) {
-		if (strcmp(picName, "cross") == 0)
-			return EM_GUI_PIC_CROSS;
+		if (strcmp(picName, "SB_CROSS.pic") == 0)
+			return "DemoImages/cross16px.bmp";
 
 		if (strcmp(picName, "No") == 0)
-			return EM_GUI_PIC_NO;
+			return "DemoImages/no.png";
+
+		if (strcmp(picName, "Service") == 0)
+			return "DemoImages/service.bmp";
 
 		if (strcmp(picName, "Cancel") == 0)
-			return EM_GUI_PIC_REFRESH;
+			return "DemoImages/undo.png";
 
 		if (strcmp(picName, "OK") == 0)
-			return EM_GUI_PIC_YES;
+			return "DemoImages/ok.png";
 
-		return EM_GUI_PIC_CROSS;
+		return "DemoImages/cross16px.bmp";
 	}
 
 	static xModalDialogPictureSet prvGetPicSet(char cType) {

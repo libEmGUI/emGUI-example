@@ -48,9 +48,6 @@
     <ClInclude Include="GUI.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="emGUI_opts.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="IIR_filter.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
@@ -260,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\TomThumb.h">
       <Filter>Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="emGUI_port_opts.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\options\opts.h">
+      <Filter>libraries\emGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -200,6 +200,7 @@
     <ClInclude Include="..\libraries\Adafruit-GFX\gfxfont.h" />
     <ClInclude Include="..\libraries\emGUI\Draw\Draw.h" />
     <ClInclude Include="..\libraries\emGUI\emGUI.h" />
+    <ClInclude Include="..\libraries\emGUI\options\opts.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Button.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Console.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Interface.h" />
@@ -216,7 +217,7 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\Window.h" />
     <ClInclude Include="..\libraries\FIR-filter-class\filt.h" />
     <ClInclude Include="emGUI-example.h" />
-    <ClInclude Include="emGUI_opts.h" />
+    <ClInclude Include="emGUI_port_opts.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="IIR_filter.h" />
     <ClInclude Include="Resource.h" />
