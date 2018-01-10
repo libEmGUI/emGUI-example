@@ -264,6 +264,9 @@
     <ClInclude Include="..\libraries\emGUI\options\opts.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
+    <ClInclude Include="emGUIGlue.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -325,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="..\libraries\FIR-filter-class\filt.cpp">
       <Filter>libraries\FIR-filter-class</Filter>
+    </ClCompile>
+    <ClCompile Include="emGUIGlue.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "emGUI-example.h"
+#include "emGUIGlue.h"
 #include <cstdio>
 #include <iostream>
 #include <deque>
@@ -105,6 +106,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_EMGUIEXAMPLE));
 
 	MSG msg;
+
+	pxInterfaceCreate(bGUIonInterfaceCreateHandler);
 
 	// Цикл основного сообщения:
 	while (GetMessage(&msg, nullptr, 0, 0))
@@ -312,7 +315,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc_tmp = BeginPaint(hWnd, &ps);
 		Graphics gr_tmp(hdc_tmp);
 		vGUIsetCurrentHDC(&gr_tmp);
-		vGUIpaintEventHandler();
+		vInterfaceDraw();
 		EndPaint(hWnd, &ps);
 	}
 	break;
@@ -335,7 +338,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
 	case WM_ERASEBKGND:
-		vGUIeraseBackgroudHandler();
+		vInterfaceInvalidate();
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

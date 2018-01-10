@@ -217,6 +217,7 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\Window.h" />
     <ClInclude Include="..\libraries\FIR-filter-class\filt.h" />
     <ClInclude Include="emGUI-example.h" />
+    <ClInclude Include="emGUIGlue.h" />
     <ClInclude Include="emGUI_port_opts.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="IIR_filter.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="..\libraries\emGUI\Widgets\Window.c" />
     <ClCompile Include="..\libraries\FIR-filter-class\filt.cpp" />
     <ClCompile Include="emGUI-example.cpp" />
+    <ClCompile Include="emGUIGlue.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="IIR_filter.cpp" />
     <ClCompile Include="stdafx.cpp">
