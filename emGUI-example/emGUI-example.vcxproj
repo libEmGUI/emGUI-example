@@ -207,7 +207,6 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\KeyBoard.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\KeyRow.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Label.h" />
-    <ClInclude Include="..\libraries\emGUI\Widgets\MenuButton.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\ModalDialog.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\PictureStack.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Plot.h" />
@@ -233,7 +232,6 @@
     <ClCompile Include="..\libraries\emGUI\Widgets\KeyBoard.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\KeyRow.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Label.c" />
-    <ClCompile Include="..\libraries\emGUI\Widgets\MenuButton.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\ModalDialog.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\PictureStack.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Plot.c" />

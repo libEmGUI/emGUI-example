@@ -41,26 +41,6 @@ bool btnMagicHDLR(xWidget *) {
 	return true;
 }
 
-bool btnAboutHDLR(xWidget *) {
-	vInterfaceOpenWindow(WINDOW_ABOUT);
-	return true;
-}
-
-bool btnLabelHDLR(xWidget *) {
-	vInterfaceOpenWindow(WINDOW_NOTES);
-	return true;
-}
-
-bool btnFolderHDLR(xWidget *) {
-	vInterfaceOpenWindow(WINDOW_ARCHIVE);
-	return true;
-}
-
-bool showParrot(xWidget *) {
-	vInterfaceOpenWindow(WINDOW_ECG);
-	return true;
-}
-
 // Action on interface creatings
 bool bGUIonInterfaceCreateHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
@@ -74,11 +54,30 @@ bool bGUIonInterfaceCreateHandler(xWidget *) {
 	uint8_t column1 = offset;
 	uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 	uint8_t column3 = SCREEN_WIDTH - offset - 60;
-	auto menuBut = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_WRENCH, "Curr. mon.", &showParrot, window);
-	//bButtonSetPushPic(menuBut, mail);
-	auto menuButAbout = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window);
-	auto menuButLabel = pxMenuButtonCreate(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window);
-	auto menuButFolder = pxMenuButtonCreate(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", &btnFolderHDLR, window);
+	auto menuBut = pxButtonCreateFromImageWithText(column1, row1, EM_GUI_PIC_WRENCH, "Curr. mon.", window);
+	vButtonSetOnClickHandler(menuBut, 
+		[](xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ECG);
+		return true;
+	});
+	auto menuButAbout = pxButtonCreateFromImageWithText(column2, row1, EM_GUI_PIC_HELP, "Info", window);
+	vButtonSetOnClickHandler(menuButAbout,
+		[](xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ABOUT);
+		return true;
+	});
+	auto menuButLabel = pxButtonCreateFromImageWithText(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", window);
+	vButtonSetOnClickHandler(menuButLabel,
+		[](xWidget *) {
+		vInterfaceOpenWindow(WINDOW_NOTES);
+		return true;
+	});
+	auto menuButFolder = pxButtonCreateFromImageWithText(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", window);
+	vButtonSetOnClickHandler(menuButFolder,
+		[](xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ARCHIVE);
+		return true;
+	});
 
 	auto window2_about = pxWindowCreate(WINDOW_ABOUT);
 	vWindowSetHeader(window2_about, "About");
@@ -88,8 +87,18 @@ bool bGUIonInterfaceCreateHandler(xWidget *) {
 
 	auto window_show_folder = pxWindowCreate(WINDOW_ARCHIVE);
 	vWindowSetHeader(window_show_folder, "Labels");
-	auto menuButAbout2 = pxMenuButtonCreate(column1, row1, EM_GUI_PIC_HELP, "Info", &btnAboutHDLR, window_show_folder);
-	auto menuButLabel2 = pxMenuButtonCreate(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", &btnLabelHDLR, window_show_folder);
+	auto menuButAbout2 = pxButtonCreateFromImageWithText(column1, row1, EM_GUI_PIC_HELP, "Info", window_show_folder);
+	vButtonSetOnClickHandler(menuButAbout2,
+		[](xWidget *) {
+		vInterfaceOpenWindow(WINDOW_ABOUT);
+		return true;
+	});
+	auto menuButLabel2 = pxButtonCreateFromImageWithText(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", window_show_folder);
+	vButtonSetOnClickHandler(menuButLabel2,
+		[](xWidget *) {
+		vInterfaceOpenWindow(WINDOW_NOTES);
+		return true;
+	});
 
 	auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
 	vWindowSetHeader(window_show_ampermeter, "Ampermeter, uA");

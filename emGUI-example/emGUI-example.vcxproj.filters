@@ -72,9 +72,6 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\Label.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\MenuButton.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\ModalDialog.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
@@ -300,9 +297,6 @@
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\Label.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\MenuButton.c">
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\ModalDialog.c">

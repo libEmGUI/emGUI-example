@@ -7,6 +7,8 @@
 #define EMGUI_XPICTURE_TYPE char*
 #define EMGUI_XFONT_TYPE    const GFXfont *
 
+#define EMGUI_DEBUG 1
+
 #define EM_GUI_PIC_WRENCH		"DemoImages/wrench.png"
 #define EM_GUI_PIC_OPENFOLDER	"DemoImages/folder.png"
 #define EM_GUI_PIC_PROCESS		"DemoImages/process.png"
