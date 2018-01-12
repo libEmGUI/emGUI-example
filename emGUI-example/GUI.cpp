@@ -5,8 +5,6 @@
 #include "GUI.h"
 
 #include <windows.h>
-#include <objidl.h>
-#include <gdiplus.h>
 #include <iostream>
 
 #include "emGUIGlue.h"
@@ -16,8 +14,6 @@ using namespace Gdiplus;
 
 static xLabel * mouseMonitor;
 static xLabel * currentMonitor;
-
-xTouchEvent currentTouch;
 
 static int stride = 0;
 
@@ -141,37 +137,18 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 	return true;
 }
 
-void closeWindow() {
-	HWND hWnd = GetActiveWindow();
-	DestroyWindow(hWnd);
-}
-
 bool bGUIOnWindowCloseHandlerMain(xWidget *) {
 	auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "");
-	vModalDialogSetHandler(dial, 'y', closeWindow);
+	vModalDialogSetHandler(dial, 'y', []() {
+		HWND hWnd = GetActiveWindow();
+		DestroyWindow(hWnd);
+	});
 	return true;
 }
 
 void vGUIUpdateCurrentMonitor() {
 	auto data = plotLead.psData[plotLead.ulWritePos];
 	iLabelPrintf(currentMonitor, "I_Avg: %.1f; I: %d.%d (mA)", extraP.averageCurrent / 10.f, data / 10, abs(data % 10));
-}
-
-void vGUIpushClickHandler(LPARAM lParam) {
-	char outString[25];
-	sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
-	//pcLabelSetText(mouseMonitor, outStri);
-	currentTouch.eventTouchScreen = pushTs;
-	currentTouch.xTouchScreen = LOWORD(lParam);
-	currentTouch.yTouchScreen = HIWORD(lParam);
-	bInterfaceCheckTouchScreenEvent(&currentTouch);
-
-}
-void vGUIpopClickHandler(LPARAM lParam) {
-	currentTouch.eventTouchScreen = popTs;
-	currentTouch.xTouchScreen = LOWORD(lParam);
-	currentTouch.yTouchScreen = HIWORD(lParam);
-	bInterfaceCheckTouchScreenEvent(&currentTouch);
 }
 
 extraParams_t * pxGUIGetExtraParams() {

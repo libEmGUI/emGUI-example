@@ -3,8 +3,6 @@
 
 #include "emGUI/emGUI.h"
 
-#include <windows.h>
-
 typedef struct {
 	float averageCurrent;
 }extraParams_t;
@@ -23,8 +21,6 @@ typedef enum {
 bool bGUI_InitInterfce();
 bool bGUIOnWindowCloseHandlerMain(xWidget *);
 bool bGUIOnWindowCloseHandler(xWidget *);
-void vGUIpushClickHandler(LPARAM lParam);
-void vGUIpopClickHandler(LPARAM lParam);
 void vGUIUpdateCurrentMonitor();
 bool bGUIonInterfaceCreateHandler(xWidget *);
 

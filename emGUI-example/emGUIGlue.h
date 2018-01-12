@@ -11,4 +11,7 @@
 
 xFont xGetDefaultFont();
 
+
+void vGUIpushClickHandler(LPARAM lParam);
+void vGUIpopClickHandler(LPARAM lParam);
 void vGUIsetCurrentHDC(Gdiplus::Graphics * gr);

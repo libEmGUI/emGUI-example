@@ -7,6 +7,7 @@
 using namespace Gdiplus;
 
 static Graphics *graphics = NULL;
+xTouchEvent currentTouch;
 
 #define PROGMEM
 
@@ -252,4 +253,21 @@ void vGUIsetCurrentHDC(Graphics *gr) {
 	graphics->SetPixelOffsetMode(PixelOffsetModeNone);
 	graphics->SetSmoothingMode(SmoothingModeNone);
 	graphics->SetInterpolationMode(InterpolationModeDefault);
+}
+
+void vGUIpushClickHandler(LPARAM lParam) {
+	char outString[25];
+	sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
+	//pcLabelSetText(mouseMonitor, outStri);
+	currentTouch.eventTouchScreen = pushTs;
+	currentTouch.xTouchScreen = LOWORD(lParam);
+	currentTouch.yTouchScreen = HIWORD(lParam);
+	bInterfaceCheckTouchScreenEvent(&currentTouch);
+
+}
+void vGUIpopClickHandler(LPARAM lParam) {
+	currentTouch.eventTouchScreen = popTs;
+	currentTouch.xTouchScreen = LOWORD(lParam);
+	currentTouch.yTouchScreen = HIWORD(lParam);
+	bInterfaceCheckTouchScreenEvent(&currentTouch);
 }
