@@ -35,12 +35,12 @@ using namespace Gdiplus;
 static xDraw_t LCD;
 
 // Convert color from emGUI to GDI format
-static ARGB convertColor(uint16_t color) {
+static ARGB convertColor(uint16_t color, uint8_t alpha = 0xFF) {
 	uint8_t usRed = ((color >> 11) & 0b00011111) * 800 / 97;
 	uint8_t usGreen = (uint32_t)((uint32_t)(color >> 5) & 0b0000111111) * 4000 / 985;
 	uint8_t usBlue = ((color & 0b00011111)) * 800 / 97;
 
-	ARGB answer = (ARGB)((ARGB)0xFF000000 | (usRed << 16) | (usGreen << 8) | usBlue);
+	ARGB answer = (ARGB)((ARGB)(alpha << 24) | (usRed << 16) | (usGreen << 8) | usBlue);
 	return answer;
 
 }
@@ -197,10 +197,11 @@ static void vPutChar(uint16_t usX, uint16_t usY, char ASCII, xFont pubFont, uint
 	auto x = usX;
 	auto y = usY + usFontGetH(pubFont) * 3 / 4 - 1;
 
-	Bitmap bm(w, h, PixelFormat16bppRGB565);
+	Bitmap bm(w, h, PixelFormat32bppARGB);
 	Graphics g(&bm);
 
-	g.Clear(convertColor(usBackground));
+	if(bFillBg)
+		g.Clear(convertColor(usBackground));
 
 	for (yy = 0; yy < h; yy++) {
 		for (xx = 0; xx < w; xx++) {
@@ -208,7 +209,7 @@ static void vPutChar(uint16_t usX, uint16_t usY, char ASCII, xFont pubFont, uint
 				bits = pgm_read_byte(&bitmap[bo++]);
 			}
 			if (bits & 0x80) {
-				bm.SetPixel(xx, yy, usColor);
+				bm.SetPixel(xx, yy, convertColor(usColor));
 			}
 			bits <<= 1;
 		}
