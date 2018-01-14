@@ -143,7 +143,7 @@ bool bGUIOnWindowCloseHandlerMain(xWidget *) {
 		HWND hWnd = GetActiveWindow();
 		DestroyWindow(hWnd);
 	});
-	return true;
+	return false;
 }
 
 void vGUIUpdateCurrentMonitor() {
