@@ -31,7 +31,7 @@ xPlotData_t * pxGUIGetPlotData() {
 bool bGUIonWindowManagerCreateHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
 	vWindowSetHeader(window, "Main menu");
-	mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", xGetDefaultFont(), 500, window);
+	mouseMonitor = pxLabelCreate(1, 190, 238, 0, "Magic count: 0", xGetDefaultFont(), 500, window);
 	uint8_t offset = 15;
 
 	uint8_t row1 = offset;
