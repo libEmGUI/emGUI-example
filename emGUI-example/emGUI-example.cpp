@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "emGUI-example.h"
+#include "emGUIGlue.h"
 #include <cstdio>
 #include <iostream>
 #include <deque>
@@ -106,6 +107,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg;
 
+	pxWindowManagerCreate(bGUIonWindowManagerCreateHandler);
+
 	// Цикл основного сообщения:
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
@@ -140,7 +143,7 @@ void HandleASuccessfulRead(char * lpBuf, WORD dwRead, serialThreadParams_t * par
 					int data = std::stoi(line);
 					handleData(data, params);
 				}
-				catch (std::invalid_argument& e) {
+				catch (std::invalid_argument&) {
 					logger->error("Invalid string parsing");
 				}
 				line = "";
@@ -159,7 +162,7 @@ void handleData(int data, serialThreadParams_t * params) {
 	auto fData = (int16_t)(lpf.do_sample(data));
 	pd->psData[pd->ulWritePos] = fData;
 	logger->info(fData);
-	params->extraParams->averageCurrent = iir_f.do_sample(fData);
+	params->extraParams->averageCurrent = (float) iir_f.do_sample(fData);
 	vGUIUpdateCurrentMonitor();
 	pd->ulWritePos++;
 	if (pd->ulWritePos >= pd->ulElemCount) {
@@ -269,7 +272,6 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 
 
 	DWORD dwRead;
-	DWORD dwRes;
 	char lpBuf[10];
 	logger->info("Starting serial read thread from {}", (char *) prm->portName);
 
@@ -312,10 +314,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc_tmp = BeginPaint(hWnd, &ps);
 		Graphics gr_tmp(hdc_tmp);
 		vGUIsetCurrentHDC(&gr_tmp);
-		vGUIpaintEventHandler();
+		vWindowManagerDraw();
 		EndPaint(hWnd, &ps);
 	}
 	break;
+	case WM_KEYDOWN:
+		vGUIHandleKeypress(wParam);
+		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, uTimerId);
 		PostQuitMessage(0);
@@ -335,7 +340,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
 	case WM_ERASEBKGND:
-		vGUIeraseBackgroudHandler();
+		vWindowManagerInvalidate();
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

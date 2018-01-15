@@ -28,6 +28,12 @@
     <Filter Include="libraries\Adafruit-GFX">
       <UniqueIdentifier>{2ef005da-2b4c-4f95-a87c-1d3703dd2240}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libraries\emGUI\Unused">
+      <UniqueIdentifier>{da7a8bfd-560e-4bee-9158-10b81c3074e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\emGUI\tools">
+      <UniqueIdentifier>{1afd82c7-14ab-47be-89b7-81bb9f95c94d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -48,46 +54,19 @@
     <ClInclude Include="GUI.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="emGUI_opts.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="IIR_filter.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Draw\Draw.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\Button.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\Console.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\Interface.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\KeyBoard.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\KeyRow.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\Label.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\MenuButton.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\ModalDialog.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\PictureStack.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\Plot.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\ProgressBar.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\StatusBar.h">
@@ -261,6 +240,36 @@
     <ClInclude Include="..\libraries\Adafruit-GFX\Fonts\TomThumb.h">
       <Filter>Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="emGUI_port_opts.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\options\opts.h">
+      <Filter>libraries\emGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="emGUIGlue.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\Console.h">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\KeyBoard.h">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\KeyRow.h">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\PictureStack.h">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\ProgressBar.h">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Draw\Draw.h">
+      <Filter>libraries\emGUI\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\WindowManager.h">
+      <Filter>libraries\emGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -275,40 +284,16 @@
     <ClCompile Include="IIR_filter.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Draw\Draw.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\Button.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\Console.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\Interface.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\KeyBoard.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\KeyRow.c">
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\Label.c">
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\MenuButton.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\ModalDialog.c">
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\PictureStack.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\Plot.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\ProgressBar.c">
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\StatusBar.c">
@@ -322,6 +307,30 @@
     </ClCompile>
     <ClCompile Include="..\libraries\FIR-filter-class\filt.cpp">
       <Filter>libraries\FIR-filter-class</Filter>
+    </ClCompile>
+    <ClCompile Include="emGUIGlue.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\Console.c">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\KeyBoard.c">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\KeyRow.c">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\PictureStack.c">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\ProgressBar.c">
+      <Filter>libraries\emGUI\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Draw\Draw.c">
+      <Filter>libraries\emGUI\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\WindowManager.c">
+      <Filter>libraries\emGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
