@@ -141,7 +141,7 @@ bool MainWindowCloseRequestHdl(xWidget *) {
 		return true; // dialog can close on this button
 	});
 
-	return true; //suppress window close!
+	return false; //suppress window close!
 }
 
 void vGUIUpdateCurrentMonitor() {
@@ -157,6 +157,15 @@ void vGUIHandleKeypress(WPARAM keycode) {
 
 	string q;
 
+	switch (keycode) {
+	case VK_ESCAPE:
+		vWindowManagerCloseActiveWindow();
+		return;
+	}
+	
+	/*if (keycode != 'R')
+		return;
+
 	q += (char) keycode;
 	q += " was pressed. Bring main menu back?";
 
@@ -169,6 +178,6 @@ void vGUIHandleKeypress(WPARAM keycode) {
 
 		vWindowManagerOpenWindow(WINDOW_MENU);
 		return true; // dialog can close on this button
-	});
+	});*/
 }
 
