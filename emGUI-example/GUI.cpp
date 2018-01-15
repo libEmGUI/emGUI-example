@@ -97,6 +97,14 @@ bool bGUIonInterfaceCreateHandler(xWidget *) {
 	});
 
 	auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
+	vWindowSetOnOpenRequestHandler(window_show_ampermeter, [](xWidget *) {
+		auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "");
+		vModalDialogSetHandler(dial, 'y', []() {
+			HWND hWnd = GetActiveWindow();
+			DestroyWindow(hWnd);
+		});
+		return true;
+	});
 	vWindowSetHeader(window_show_ampermeter, "Ampermeter, uA");
 
 	plotLead.bDataFilled = false;
