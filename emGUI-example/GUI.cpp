@@ -140,7 +140,7 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", xGetDefaultFont(), 200, window2_about);
 
 	vWindowSetOnCloseRequestHandler(window, &bGUIOnWindowCloseHandlerMain);
-	auto dialog1 = pxModalDialogWindowCreate();
+
 	vWindowManagerOpenWindow(WINDOW_MENU);
 	return true;
 }
