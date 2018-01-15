@@ -3,6 +3,8 @@
 
 #include "emGUI/emGUI.h"
 
+#include <Windows.h>
+
 typedef struct {
 	float averageCurrent;
 }extraParams_t;
@@ -23,6 +25,8 @@ bool MainWindowCloseRequestHdl(xWidget *);
 bool bGUIOnWindowCloseHandler(xWidget *);
 void vGUIUpdateCurrentMonitor();
 bool bGUIonWindowManagerCreateHandler(xWidget *);
+
+void vGUIHandleKeypress(WPARAM keycode);
 
 xPlotData_t * pxGUIGetPlotData();
 extraParams_t * pxGUIGetExtraParams();

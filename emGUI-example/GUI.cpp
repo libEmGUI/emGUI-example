@@ -129,7 +129,7 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 }
 
 bool MainWindowCloseRequestHdl(xWidget *) {
-	auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "You are about to close main app! Are you sure?");
+	auto dial = iModalDialogOpen(0, "ny", "Close?", "You are about to close main app! Are you sure?");
 	
 	vModalDialogSetHandler(dial, NULL, [](char cBtn, void* ctx) -> bool {
 
@@ -141,7 +141,7 @@ bool MainWindowCloseRequestHdl(xWidget *) {
 		return true; // dialog can close on this button
 	});
 
-	return false; //suppress window close!
+	return true; //suppress window close!
 }
 
 void vGUIUpdateCurrentMonitor() {
@@ -151,5 +151,24 @@ void vGUIUpdateCurrentMonitor() {
 
 extraParams_t * pxGUIGetExtraParams() {
 	return &extraP;
+}
+
+void vGUIHandleKeypress(WPARAM keycode) {
+
+	string q;
+
+	q += (char) keycode;
+	q += " was pressed. Bring main menu back?";
+
+	auto dial = iModalDialogOpen(0, "ny", "Restore?", q.c_str());
+
+	vModalDialogSetHandler(dial, NULL, [](char cBtn, void* ctx) -> bool {
+
+		if (cBtn != 'y')
+			return true;  // dialog can close on this button
+
+		vWindowManagerOpenWindow(WINDOW_MENU);
+		return true; // dialog can close on this button
+	});
 }
 

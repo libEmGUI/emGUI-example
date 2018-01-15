@@ -318,6 +318,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 	}
 	break;
+	case WM_KEYDOWN:
+		vGUIHandleKeypress(wParam);
+		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, uTimerId);
 		PostQuitMessage(0);
