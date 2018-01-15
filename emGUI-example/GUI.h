@@ -19,7 +19,7 @@ typedef enum {
 //events
 
 bool bGUI_InitInterfce();
-bool bGUIOnWindowCloseHandlerMain(xWidget *);
+bool MainWindowCloseRequestHdl(xWidget *);
 bool bGUIOnWindowCloseHandler(xWidget *);
 void vGUIUpdateCurrentMonitor();
 bool bGUIonWindowManagerCreateHandler(xWidget *);

@@ -6,6 +6,7 @@
 
 #include <windows.h>
 #include <iostream>
+#include <memory>
 
 #include "emGUIGlue.h"
 
@@ -20,21 +21,10 @@ static int stride = 0;
 static xPlotData_t plotLead;
 static extraParams_t extraP;
 
+static std::shared_ptr<std::wstring> ctx;
+
 xPlotData_t * pxGUIGetPlotData() {
 	return &plotLead;
-}
-
-void doMagic() {
-	char outString[25];
-	static int i = 0;
-	i++;
-	sprintf_s(outString, "Magic count: %d times", i);
-	pcLabelSetText(mouseMonitor, outString);
-}
-bool btnMagicHDLR(xWidget *) {
-	auto dlg = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Magic Button", "Magic will happen. Are you sure?");
-	vModalDialogSetHandler(dlg, 'y', &doMagic);
-	return true;
 }
 
 // Action on interface creatings
@@ -98,10 +88,27 @@ bool bGUIonWindowManagerCreateHandler(xWidget *) {
 
 	auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
 	vWindowSetOnOpenRequestHandler(window_show_ampermeter, [](xWidget *) {
-		auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "");
-		vModalDialogSetHandler(dial, 'y', []() {
+
+		ctx = std::make_shared<std::wstring>(L"Context amp");
+
+		auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "You are about to close main app! Are you sure?");
+		vModalDialogSetHandler(dial, &ctx, [](char cBtn, void* ctx) -> bool {
+
+			shared_ptr<wstring> *ctx_restore = (shared_ptr<wstring> *) ctx;
+
+			MessageBox(
+				NULL,
+				ctx_restore->get()->c_str(),
+				L"Confirm Save As",
+				MB_ICONEXCLAMATION | MB_YESNO
+			);
+
+			if (cBtn != 'y')
+				return true;
 			HWND hWnd = GetActiveWindow();
 			DestroyWindow(hWnd);
+
+			return true;
 		});
 		return true;
 	});
@@ -139,19 +146,28 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 
 	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", xGetDefaultFont(), 200, window2_about);
 
-	vWindowSetOnCloseRequestHandler(window, &bGUIOnWindowCloseHandlerMain);
+	vWindowSetOnCloseRequestHandler(window, &MainWindowCloseRequestHdl);
 
 	vWindowManagerOpenWindow(WINDOW_MENU);
 	return true;
 }
 
-bool bGUIOnWindowCloseHandlerMain(xWidget *) {
-	auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "");
-	vModalDialogSetHandler(dial, 'y', []() {
+bool MainWindowCloseRequestHdl(xWidget *) {
+	auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "You are about to close main app! Are you sure?");
+	ctx = std::make_shared<std::wstring>(L"Context close");
+	vModalDialogSetHandler(dial, &ctx, [](char cBtn, void* ctx) -> bool {
+
+		shared_ptr<wstring> *ctx_restore = (shared_ptr<wstring> *) ctx;
+
+		if (cBtn != 'y')
+			return true;  // dialog can close on this button
+
 		HWND hWnd = GetActiveWindow();
 		DestroyWindow(hWnd);
+		return true; // dialog can close on this button
 	});
-	return false;
+
+	return false; //suppress window close!
 }
 
 void vGUIUpdateCurrentMonitor() {
