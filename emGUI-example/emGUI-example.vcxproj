@@ -203,7 +203,6 @@
     <ClInclude Include="..\libraries\emGUI\options\opts.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Button.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Console.h" />
-    <ClInclude Include="..\libraries\emGUI\Widgets\Interface.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\KeyBoard.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\KeyRow.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Label.h" />
@@ -214,6 +213,7 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\StatusBar.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Widget.h" />
     <ClInclude Include="..\libraries\emGUI\Widgets\Window.h" />
+    <ClInclude Include="..\libraries\emGUI\Widgets\WindowManager.h" />
     <ClInclude Include="..\libraries\FIR-filter-class\filt.h" />
     <ClInclude Include="emGUI-example.h" />
     <ClInclude Include="emGUIGlue.h" />
@@ -228,7 +228,6 @@
     <ClCompile Include="..\libraries\emGUI\Draw\Draw.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Button.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Console.c" />
-    <ClCompile Include="..\libraries\emGUI\Widgets\Interface.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\KeyBoard.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\KeyRow.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Label.c" />
@@ -239,6 +238,7 @@
     <ClCompile Include="..\libraries\emGUI\Widgets\StatusBar.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Widget.c" />
     <ClCompile Include="..\libraries\emGUI\Widgets\Window.c" />
+    <ClCompile Include="..\libraries\emGUI\Widgets\WindowManager.c" />
     <ClCompile Include="..\libraries\FIR-filter-class\filt.cpp" />
     <ClCompile Include="emGUI-example.cpp" />
     <ClCompile Include="emGUIGlue.cpp" />

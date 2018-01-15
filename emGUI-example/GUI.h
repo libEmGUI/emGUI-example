@@ -22,7 +22,7 @@ bool bGUI_InitInterfce();
 bool bGUIOnWindowCloseHandlerMain(xWidget *);
 bool bGUIOnWindowCloseHandler(xWidget *);
 void vGUIUpdateCurrentMonitor();
-bool bGUIonInterfaceCreateHandler(xWidget *);
+bool bGUIonWindowManagerCreateHandler(xWidget *);
 
 xPlotData_t * pxGUIGetPlotData();
 extraParams_t * pxGUIGetExtraParams();

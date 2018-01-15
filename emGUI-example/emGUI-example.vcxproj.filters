@@ -60,9 +60,6 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\Button.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\libraries\emGUI\Widgets\Interface.h">
-      <Filter>libraries\emGUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\libraries\emGUI\Widgets\Label.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
@@ -270,6 +267,9 @@
     <ClInclude Include="..\libraries\emGUI\Draw\Draw.h">
       <Filter>libraries\emGUI\tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\libraries\emGUI\Widgets\WindowManager.h">
+      <Filter>libraries\emGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -285,9 +285,6 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\Button.c">
-      <Filter>libraries\emGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libraries\emGUI\Widgets\Interface.c">
       <Filter>libraries\emGUI</Filter>
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\Label.c">
@@ -331,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Draw\Draw.c">
       <Filter>libraries\emGUI\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libraries\emGUI\Widgets\WindowManager.c">
+      <Filter>libraries\emGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -263,12 +263,12 @@ void vGUIpushClickHandler(LPARAM lParam) {
 	currentTouch.eventTouchScreen = pushTs;
 	currentTouch.xTouchScreen = LOWORD(lParam);
 	currentTouch.yTouchScreen = HIWORD(lParam);
-	bInterfaceCheckTouchScreenEvent(&currentTouch);
+	bWindowManagerCheckTouchScreenEvent(&currentTouch);
 
 }
 void vGUIpopClickHandler(LPARAM lParam) {
 	currentTouch.eventTouchScreen = popTs;
 	currentTouch.xTouchScreen = LOWORD(lParam);
 	currentTouch.yTouchScreen = HIWORD(lParam);
-	bInterfaceCheckTouchScreenEvent(&currentTouch);
+	bWindowManagerCheckTouchScreenEvent(&currentTouch);
 }

@@ -38,7 +38,7 @@ bool btnMagicHDLR(xWidget *) {
 }
 
 // Action on interface creatings
-bool bGUIonInterfaceCreateHandler(xWidget *) {
+bool bGUIonWindowManagerCreateHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
 	vWindowSetHeader(window, "Main menu");
 	mouseMonitor = pxLabelCreate(1, 200, 238, 0, "Magic count: 0", xGetDefaultFont(), 500, window);
@@ -53,25 +53,25 @@ bool bGUIonInterfaceCreateHandler(xWidget *) {
 	auto menuBut = pxButtonCreateFromImageWithText(column1, row1, EM_GUI_PIC_WRENCH, "Curr. mon.", window);
 	vButtonSetOnClickHandler(menuBut, 
 		[](xWidget *) {
-		vInterfaceOpenWindow(WINDOW_ECG);
+		vWindowManagerOpenWindow(WINDOW_ECG);
 		return true;
 	});
 	auto menuButAbout = pxButtonCreateFromImageWithText(column2, row1, EM_GUI_PIC_HELP, "Info", window);
 	vButtonSetOnClickHandler(menuButAbout,
 		[](xWidget *) {
-		vInterfaceOpenWindow(WINDOW_ABOUT);
+		vWindowManagerOpenWindow(WINDOW_ABOUT);
 		return true;
 	});
 	auto menuButLabel = pxButtonCreateFromImageWithText(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", window);
 	vButtonSetOnClickHandler(menuButLabel,
 		[](xWidget *) {
-		vInterfaceOpenWindow(WINDOW_NOTES);
+		vWindowManagerOpenWindow(WINDOW_NOTES);
 		return true;
 	});
 	auto menuButFolder = pxButtonCreateFromImageWithText(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", window);
 	vButtonSetOnClickHandler(menuButFolder,
 		[](xWidget *) {
-		vInterfaceOpenWindow(WINDOW_ARCHIVE);
+		vWindowManagerOpenWindow(WINDOW_ARCHIVE);
 		return true;
 	});
 
@@ -86,13 +86,13 @@ bool bGUIonInterfaceCreateHandler(xWidget *) {
 	auto menuButAbout2 = pxButtonCreateFromImageWithText(column1, row1, EM_GUI_PIC_HELP, "Info", window_show_folder);
 	vButtonSetOnClickHandler(menuButAbout2,
 		[](xWidget *) {
-		vInterfaceOpenWindow(WINDOW_ABOUT);
+		vWindowManagerOpenWindow(WINDOW_ABOUT);
 		return true;
 	});
 	auto menuButLabel2 = pxButtonCreateFromImageWithText(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", window_show_folder);
 	vButtonSetOnClickHandler(menuButLabel2,
 		[](xWidget *) {
-		vInterfaceOpenWindow(WINDOW_NOTES);
+		vWindowManagerOpenWindow(WINDOW_NOTES);
 		return true;
 	});
 
@@ -141,7 +141,7 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 
 	vWindowSetOnCloseRequestHandler(window, &bGUIOnWindowCloseHandlerMain);
 	auto dialog1 = pxModalDialogWindowCreate();
-	vInterfaceOpenWindow(WINDOW_MENU);
+	vWindowManagerOpenWindow(WINDOW_MENU);
 	return true;
 }
 
