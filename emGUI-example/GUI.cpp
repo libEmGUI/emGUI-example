@@ -10,6 +10,10 @@
 
 #include "emGUIGlue.h"
 
+#define xstr(a) str(a)
+#define str(a) #a
+
+
 using namespace std;
 using namespace Gdiplus;
 
@@ -31,7 +35,7 @@ xPlotData_t * pxGUIGetPlotData() {
 bool bGUIonWindowManagerCreateHandler(xWidget *) {
 	auto window = pxWindowCreate(WINDOW_MENU);
 	vWindowSetHeader(window, "Main menu");
-	mouseMonitor = pxLabelCreate(1, 190, 238, 0, "Magic count: 0", xGetDefaultFont(), 500, window);
+	mouseMonitor = pxLabelCreate(1, 190, 238, 0, "EmGUI v" xstr(EMGUI_VERSION), xGetDefaultFont(), 500, window);
 	uint8_t offset = 15;
 
 	uint8_t row1 = offset;
@@ -120,7 +124,7 @@ the Associated Press (AP), American Football Coaches Association \
 News (TSN), and the Walter Camp Football Foundation (WCFF),   \
 to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_label);
 
-	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI. 2017", xGetDefaultFont(), 200, window2_about);
+	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI v" xstr(EMGUI_VERSION) ". 2017", xGetDefaultFont(), 200, window2_about);
 
 	vWindowSetOnCloseRequestHandler(window, &MainWindowCloseRequestHdl);
 
