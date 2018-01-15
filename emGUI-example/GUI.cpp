@@ -21,7 +21,7 @@ static int stride = 0;
 static xPlotData_t plotLead;
 static extraParams_t extraP;
 
-static std::shared_ptr<std::wstring> ctx;
+//static std::shared_ptr<std::wstring> ctx;
 
 xPlotData_t * pxGUIGetPlotData() {
 	return &plotLead;
@@ -87,31 +87,7 @@ bool bGUIonWindowManagerCreateHandler(xWidget *) {
 	});
 
 	auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
-	vWindowSetOnOpenRequestHandler(window_show_ampermeter, [](xWidget *) {
 
-		ctx = std::make_shared<std::wstring>(L"Context amp");
-
-		auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "You are about to close main app! Are you sure?");
-		vModalDialogSetHandler(dial, &ctx, [](char cBtn, void* ctx) -> bool {
-
-			shared_ptr<wstring> *ctx_restore = (shared_ptr<wstring> *) ctx;
-
-			MessageBox(
-				NULL,
-				ctx_restore->get()->c_str(),
-				L"Confirm Save As",
-				MB_ICONEXCLAMATION | MB_YESNO
-			);
-
-			if (cBtn != 'y')
-				return true;
-			HWND hWnd = GetActiveWindow();
-			DestroyWindow(hWnd);
-
-			return true;
-		});
-		return true;
-	});
 	vWindowSetHeader(window_show_ampermeter, "Ampermeter, uA");
 
 	plotLead.bDataFilled = false;
@@ -154,10 +130,8 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 
 bool MainWindowCloseRequestHdl(xWidget *) {
 	auto dial = iModalDialogOpen(EMGUI_MODAL_AUTO, "ny", "Close?", "You are about to close main app! Are you sure?");
-	ctx = std::make_shared<std::wstring>(L"Context close");
-	vModalDialogSetHandler(dial, &ctx, [](char cBtn, void* ctx) -> bool {
-
-		shared_ptr<wstring> *ctx_restore = (shared_ptr<wstring> *) ctx;
+	
+	vModalDialogSetHandler(dial, NULL, [](char cBtn, void* ctx) -> bool {
 
 		if (cBtn != 'y')
 			return true;  // dialog can close on this button
