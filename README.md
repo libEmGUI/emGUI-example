@@ -5,8 +5,8 @@ Example project of [emGUI UI library](https://github.com/libEmGUI/emGUI) port to
 
 ![Main Window](/Doc/main-wnd.png)
 ![Modal Dialog](/Doc/modal-dialog.png)
-![Modal Dialog](/Doc/plot.png)
-![Modal Dialog](/Doc/fullscreen.png)
+![Plot](/Doc/plot.png)
+![Fullscreen window](/Doc/fullscreen.png)
 ![Label Widget](/Doc/label.png)
 
 ## Keyboard shortcuts
