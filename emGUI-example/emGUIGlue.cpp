@@ -128,6 +128,9 @@ static xPicture prvGetPicture(const char * picName) {
 	if (strcmp(picName, "Cancel") == 0)
 		return "DemoImages/undo.png";
 
+	if (strcmp(picName, "Yes") == 0)
+		return "DemoImages/ok.png";
+
 	if (strcmp(picName, "OK") == 0)
 		return "DemoImages/ok.png";
 
@@ -143,8 +146,8 @@ static xModalDialogPictureSet prvGetPicSet(char cType) {
 	case 'c':
 		xPicSet.strLabel = "Cancel";
 		break;
-	case 'o':
-		xPicSet.strLabel = "OK";
+	case 'y':
+		xPicSet.strLabel = "Yes";
 		break;
 	default:
 		xPicSet.strLabel = "OK";

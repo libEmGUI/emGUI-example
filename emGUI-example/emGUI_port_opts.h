@@ -11,13 +11,6 @@
 
 //#define EMGUI_STATUS_BAR_HEIGHT	40
 
-#define EM_GUI_PIC_WRENCH		"DemoImages/wrench.png"
-#define EM_GUI_PIC_OPENFOLDER	"DemoImages/folder.png"
-#define EM_GUI_PIC_PROCESS		"DemoImages/process.png"
-#define EM_GUI_PIC_MAGIC		"DemoImages/magic.png"
-#define EM_GUI_PIC_HELP			"DemoImages/help.png"
-
-
 // TODO: MAKE RETURN BUTTON !!
 #ifndef EM_GUI_PIC_RETURN 
 #define EM_GUI_PIC_RETURN				"DemoImages/undo.png"

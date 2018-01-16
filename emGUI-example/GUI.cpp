@@ -33,81 +33,62 @@ xPlotData_t * pxGUIGetPlotData() {
 
 // Action on interface creatings
 bool bGUIonWindowManagerCreateHandler(xWidget *) {
+
+	// ============= Main Menu ==============
 	auto window = pxWindowCreate(WINDOW_MENU);
 	vWindowSetHeader(window, "Main menu");
 	mouseMonitor = pxLabelCreate(1, 190, 238, 0, "EmGUI v" xstr(EMGUI_VERSION), xGetDefaultFont(), 500, window);
-	uint8_t offset = 15;
+	uint8_t offset = 10;
 
 	uint8_t row1 = offset;
-	uint8_t row2 = row1 + 60 + offset;
-	uint8_t row3 = row2 + 60 + offset;
+	uint8_t row2 = row1 + 80 + offset;
 	uint8_t column1 = offset;
 	uint8_t column2 = SCREEN_WIDTH / 2 - 30;
 	uint8_t column3 = SCREEN_WIDTH - offset - 60;
-	auto menuBut = pxButtonCreateFromImageWithText(column1, row1, EM_GUI_PIC_WRENCH, "Curr. mon.", window);
+	auto menuBut = pxButtonCreateFromImageWithText(column1, row1, "DemoImages/plot.png", "Plot", window);
 	vButtonSetOnClickHandler(menuBut, 
 		[](xWidget *) {
-		vWindowManagerOpenWindow(WINDOW_ECG);
+		vWindowManagerOpenWindow(WINDOW_PLOT);
 		return true;
 	});
-	auto menuButAbout = pxButtonCreateFromImageWithText(column2, row1, EM_GUI_PIC_HELP, "Info", window);
+
+	auto menuButAbout = pxButtonCreateFromImageWithText(column2, row1, "DemoImages/about.png", "About", window);
 	vButtonSetOnClickHandler(menuButAbout,
 		[](xWidget *) {
 		vWindowManagerOpenWindow(WINDOW_ABOUT);
 		return true;
 	});
-	auto menuButLabel = pxButtonCreateFromImageWithText(column3, row1, EM_GUI_PIC_PROCESS, "Test Label", window);
+
+	auto menuButLabel = pxButtonCreateFromImageWithText(column3, row1, "DemoImages/label.png", "Label", window);
 	vButtonSetOnClickHandler(menuButLabel,
 		[](xWidget *) {
-		vWindowManagerOpenWindow(WINDOW_NOTES);
+		vWindowManagerOpenWindow(WINDOW_LABEL);
 		return true;
 	});
-	auto menuButFolder = pxButtonCreateFromImageWithText(column1, row2, EM_GUI_PIC_OPENFOLDER, "Windows", window);
+
+	auto menuButFolder = pxButtonCreateFromImageWithText(column1, row2, "DemoImages/folder.png", "Windows", window);
 	vButtonSetOnClickHandler(menuButFolder,
 		[](xWidget *) {
-		vWindowManagerOpenWindow(WINDOW_ARCHIVE);
+		vWindowManagerOpenWindow(WINDOW_SUBMENU);
 		return true;
 	});
+
+	vWindowSetOnCloseRequestHandler(window, &MainWindowCloseRequestHdl);
+
+	vWindowManagerOpenWindow(WINDOW_MENU);
+
+	// ============= About ==============
 
 	auto window2_about = pxWindowCreate(WINDOW_ABOUT);
 	vWindowSetHeader(window2_about, "About");
 
-	auto window_show_label = pxWindowCreate(WINDOW_NOTES);
+	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI v" xstr(EMGUI_VERSION) ". 2017", xGetDefaultFont(), 200, window2_about);
+
+	// ============= Multiline Label ==============
+
+	auto window_show_label = pxWindowCreate(WINDOW_LABEL);
 	vWindowSetHeader(window_show_label, "Big label");
 
-	auto window_show_folder = pxWindowCreate(WINDOW_ARCHIVE);
-	vWindowSetHeader(window_show_folder, "Labels");
-	auto menuButAbout2 = pxButtonCreateFromImageWithText(column1, row1, EM_GUI_PIC_HELP, "Info", window_show_folder);
-	vButtonSetOnClickHandler(menuButAbout2,
-		[](xWidget *) {
-		vWindowManagerOpenWindow(WINDOW_ABOUT);
-		return true;
-	});
-	auto menuButLabel2 = pxButtonCreateFromImageWithText(column2, row1, EM_GUI_PIC_PROCESS, "Test Label", window_show_folder);
-	vButtonSetOnClickHandler(menuButLabel2,
-		[](xWidget *) {
-		vWindowManagerOpenWindow(WINDOW_NOTES);
-		return true;
-	});
-
-	auto window_show_ampermeter = pxWindowCreate(WINDOW_ECG);
-
-	vWindowSetHeader(window_show_ampermeter, "Ampermeter, uA");
-
-	plotLead.bDataFilled = false;
-	plotLead.bWriteEnabled = false;
-	plotLead.sDataDCOffset = -500;
-	plotLead.sName = "Test";
-	plotLead.ulElemCount = AFE_DATA_RATE * 10;
-	plotLead.psData = (short *)malloc(sizeof(*plotLead.psData)*plotLead.ulElemCount);
-	plotLead.ulWritePos = 0;
-
-
-	xPlot * plot = pxPlotCreate(0, 0, EMGUI_LCD_WIDTH, EMGUI_LCD_HEIGHT - EMGUI_STATUS_BAR_HEIGHT -20, window_show_ampermeter, &plotLead);
-	vPlotSetScale(plot, 250);
-	currentMonitor = pxLabelCreate(10, EMGUI_LCD_HEIGHT - EMGUI_STATUS_BAR_HEIGHT - 20, EMGUI_LCD_WIDTH, 20, "I: _ (0.1 mA)", xGetDefaultFont(), 100, window_show_ampermeter);
-	vLabelSetTextAlign(currentMonitor, LABEL_ALIGN_CENTER);
-	vLabelSetVerticalAlign(currentMonitor, LABEL_ALIGN_MIDDLE);
 	auto big_label = pxLabelCreate(1, 1, 238, 238, "Sample text: hypothetical rosters of players \
 considered the best in the nation at their respective positions\
 The National Collegiate Athletic Association, a college sports \
@@ -124,11 +105,48 @@ the Associated Press (AP), American Football Coaches Association \
 News (TSN), and the Walter Camp Football Foundation (WCFF),   \
 to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_label);
 
-	auto labelAbout = pxLabelCreate(1, 1, 238, 60, "This is Demo for emGUI v" xstr(EMGUI_VERSION) ". 2017", xGetDefaultFont(), 200, window2_about);
+	// ============= Submenu ==============
 
-	vWindowSetOnCloseRequestHandler(window, &MainWindowCloseRequestHdl);
+	auto window_show_folder = pxWindowCreate(WINDOW_SUBMENU);
+	vWindowSetFullScreen(window_show_folder, true);
+	vWindowSetHeader(window_show_folder, "Labels");
+	auto menuButAbout2 = pxButtonCreateFromImageWithText(column1, row1, "DemoImages/about.png", "About", window_show_folder);
+	vButtonSetOnClickHandler(menuButAbout2,
+		[](xWidget *) {
+		vWindowManagerOpenWindow(WINDOW_ABOUT);
+		return true;
+	});
 
-	vWindowManagerOpenWindow(WINDOW_MENU);
+	auto menuButLabel2 = pxButtonCreateFromImageWithText(column2, row1, "DemoImages/label.png", "Label", window_show_folder);
+	vButtonSetOnClickHandler(menuButLabel2,
+		[](xWidget *) {
+		vWindowManagerOpenWindow(WINDOW_LABEL);
+		return true;
+	});
+
+	auto lab = pxLabelCreate(10, 100, 200, 100, "Window is in FullScreen mode! Use ESC to go back.", xGetDefaultFont(), 0, window_show_folder);
+	bLabelSetMultiline(lab, true);
+
+	// ============= Plot ==============
+
+	auto window_show_ampermeter = pxWindowCreate(WINDOW_PLOT);
+
+	vWindowSetHeader(window_show_ampermeter, "Plot, uA");
+
+	plotLead.bDataFilled = false;
+	plotLead.bWriteEnabled = false;
+	plotLead.sDataDCOffset = -500;
+	plotLead.sName = "Test";
+	plotLead.ulElemCount = AFE_DATA_RATE * 10;
+	plotLead.psData = (short *)malloc(sizeof(*plotLead.psData)*plotLead.ulElemCount);
+	plotLead.ulWritePos = 0;
+
+	xPlot * plot = pxPlotCreate(0, 0, EMGUI_LCD_WIDTH, EMGUI_LCD_HEIGHT - EMGUI_STATUS_BAR_HEIGHT -20, window_show_ampermeter, &plotLead);
+	vPlotSetScale(plot, 250);
+	currentMonitor = pxLabelCreate(10, EMGUI_LCD_HEIGHT - EMGUI_STATUS_BAR_HEIGHT - 20, EMGUI_LCD_WIDTH, 20, "I: _ (0.1 mA)", xGetDefaultFont(), 100, window_show_ampermeter);
+	vLabelSetTextAlign(currentMonitor, LABEL_ALIGN_CENTER);
+	vLabelSetVerticalAlign(currentMonitor, LABEL_ALIGN_MIDDLE);
+	
 	return true;
 }
 

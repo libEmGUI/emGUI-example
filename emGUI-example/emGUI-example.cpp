@@ -19,8 +19,6 @@
 #define TIMEOUT 1000
 #define AFE_DATA_RATE 700
 
-
-
 using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
