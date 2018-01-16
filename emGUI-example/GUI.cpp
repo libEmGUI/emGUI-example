@@ -131,7 +131,7 @@ to determine consensus All-Americans.[5]", xGetDefaultFont(), 1010, window_show_
 
 	auto window_show_ampermeter = pxWindowCreate(WINDOW_PLOT);
 
-	vWindowSetHeader(window_show_ampermeter, "Plot, uA");
+	vWindowSetHeader(window_show_ampermeter, "Plot, mA");
 
 	plotLead.bDataFilled = false;
 	plotLead.bWriteEnabled = false;

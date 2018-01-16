@@ -54,6 +54,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	
 	logger->info("Hello!");
 
+	GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR           gdiplusToken;
+
+	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
+	bGUI_InitInterfce(); //TODO: check false
+
+	pxWindowManagerCreate(bGUIonWindowManagerCreateHandler);
+
 	serialThreadParams_t threadParams;
 
 	threadParams.portName = L"COM9";
@@ -63,13 +72,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	threadParams.extraParams = pxGUIGetExtraParams();
 
 	PlotDataCollectorStart(&threadParams);
-	
-	GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR           gdiplusToken;
-
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
-
-	bGUI_InitInterfce(); //TODO: check false
 
 	// Инициализация глобальных строк
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -85,8 +87,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_EMGUIEXAMPLE));
 
 	MSG msg;
-
-	pxWindowManagerCreate(bGUIonWindowManagerCreateHandler);
 
 	// Цикл основного сообщения:
 	while (GetMessage(&msg, nullptr, 0, 0))

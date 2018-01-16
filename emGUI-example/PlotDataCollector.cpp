@@ -87,7 +87,14 @@ unsigned __stdcall SecondThreadFunc(void* pArguments) {
 		0,
 		NULL);
 	if (serialPort == INVALID_HANDLE_VALUE) {
-		return 2;
+		while (!prm->exitFlag) {
+			static float arg = 0.f;
+
+			arg += 3.14f / 1000;
+			handleData(int(sin(arg) * 100.f) + 100, prm);
+			Sleep(1);
+		}
+		return 0;
 	}
 
 	// Serial port settings
@@ -131,7 +138,7 @@ bool PlotDataCollectorStart(serialThreadParams_t* params) {
 		NULL,                   // default security attributes
 		0,                      // use default stack size  
 		&SecondThreadFunc,       // thread function name
-		&params,                   // argument to thread function 
+		params,                   // argument to thread function 
 		0,                      // use default creation flags 
 		&dwThreadId);   // returns the thread identifier 
 
