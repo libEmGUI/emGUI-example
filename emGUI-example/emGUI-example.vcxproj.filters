@@ -270,6 +270,9 @@
     <ClInclude Include="..\libraries\emGUI\Widgets\WindowManager.h">
       <Filter>libraries\emGUI</Filter>
     </ClInclude>
+    <ClInclude Include="PlotDataCollector.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -331,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="..\libraries\emGUI\Widgets\WindowManager.c">
       <Filter>libraries\emGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlotDataCollector.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
