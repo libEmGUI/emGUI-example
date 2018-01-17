@@ -96,13 +96,13 @@ static void bPicture(int16_t sX0, int16_t sY0, xPicture pusPicture) {
 	Image img(pwcsName);
 	delete[] pwcsName;
 	uint16_t we, he;
-	if (usGetPictureW(pusPicture) < 220 && usGetPictureH(pusPicture) < 220) {
+	if (usGetPictureW(pusPicture) < EMGUI_LCD_WIDTH && usGetPictureH(pusPicture) < EMGUI_LCD_HEIGHT) {
 		we = usGetPictureW(pusPicture);
 		he = usGetPictureH(pusPicture);
 	}
 	else {
-		we = 220;
-		he = 220;
+		we = EMGUI_LCD_WIDTH;
+		he = EMGUI_LCD_HEIGHT;
 	}
 	Rect destRect(sX0, sY0, we, he);
 	graphics->DrawImage(&img, destRect);
