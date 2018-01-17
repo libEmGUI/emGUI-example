@@ -206,7 +206,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_LBUTTONDOWN:
-		vGUIpushClickHandler(lParam);
+		vGUIMouseHandler(lParam, pushTs);
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
@@ -214,8 +214,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;
+	case WM_MOUSEMOVE:
+		vGUIMouseHandler(lParam, updateTs);
+		return 0;
 	case WM_LBUTTONUP:
-		vGUIpopClickHandler(lParam);
+		vGUIMouseHandler(lParam, popTs);
 		InvalidateRect(hWnd, NULL, FALSE);
 		SendMessage(hWnd, WM_PAINT, NULL, NULL);
 		return 0;

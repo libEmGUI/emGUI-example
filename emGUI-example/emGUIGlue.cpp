@@ -259,19 +259,10 @@ void vGUIsetCurrentHDC(Graphics *gr) {
 	graphics->SetInterpolationMode(InterpolationModeDefault);
 }
 
-void vGUIpushClickHandler(LPARAM lParam) {
-	char outString[25];
-	sprintf_s(outString, "x: %d y: %d\n", LOWORD(lParam), HIWORD(lParam));
-	//pcLabelSetText(mouseMonitor, outStri);
-	currentTouch.eventTouchScreen = pushTs;
+void vGUIMouseHandler(LPARAM lParam, xTouchEventType ev) {
+	currentTouch.eventTouchScreen = ev;
 	currentTouch.xTouchScreen = LOWORD(lParam);
 	currentTouch.yTouchScreen = HIWORD(lParam);
 	bWindowManagerCheckTouchScreenEvent(&currentTouch);
 
-}
-void vGUIpopClickHandler(LPARAM lParam) {
-	currentTouch.eventTouchScreen = popTs;
-	currentTouch.xTouchScreen = LOWORD(lParam);
-	currentTouch.yTouchScreen = HIWORD(lParam);
-	bWindowManagerCheckTouchScreenEvent(&currentTouch);
 }
