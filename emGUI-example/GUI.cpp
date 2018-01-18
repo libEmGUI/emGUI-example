@@ -4,8 +4,6 @@
 */
 #include "GUI.h"
 
-#include <windows.h>
-#include <iostream>
 #include <memory>
 
 #include "emGUIGlue.h"
@@ -13,14 +11,8 @@
 #define xstr(a) str(a)
 #define str(a) #a
 
-
-using namespace std;
-using namespace Gdiplus;
-
 static xLabel * mouseMonitor;
 static xLabel * currentMonitor;
-
-static int stride = 0;
 
 static xPlotData_t plotLead;
 static extraParams_t extraP;
@@ -43,8 +35,8 @@ bool bGUIonWindowManagerCreateHandler(xWidget *) {
 	uint8_t row1 = offset;
 	uint8_t row2 = row1 + 80 + offset;
 	uint8_t column1 = offset;
-	uint8_t column2 = SCREEN_WIDTH / 2 - 30;
-	uint8_t column3 = SCREEN_WIDTH - offset - 60;
+	uint8_t column2 = EMGUI_LCD_WIDTH / 2 - 30;
+	uint8_t column3 = EMGUI_LCD_HEIGHT - offset - 60;
 	auto menuBut = pxButtonCreateFromImageWithText(column1, row1, "DemoImages/plot.png", "Plot", window);
 	vButtonSetOnClickHandler(menuBut, 
 		[](xWidget *) {
