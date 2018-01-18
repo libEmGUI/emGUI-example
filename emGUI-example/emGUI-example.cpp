@@ -146,7 +146,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hInst = hInstance; // —охранить дескриптор экземпл€ра в глобальной переме
 	DWORD dwStyle = WS_BORDER;
 	HWND hWnd = CreateWindowW(szWindowClass, 0, dwStyle,
-		CW_USEDEFAULT, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInstance, nullptr);
+		CW_USEDEFAULT, 0, EMGUI_LCD_WIDTH, EMGUI_LCD_HEIGHT, nullptr, nullptr, hInstance, nullptr);
 	SetWindowLong(hWnd, GWL_STYLE, WS_BORDER);     // stupid winapi maigic. You should reset all styles and set style again
 	RECT rc;
 

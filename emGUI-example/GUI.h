@@ -3,7 +3,7 @@
 
 #include "emGUI/emGUI.h"
 
-#include <Windows.h>
+#include "emGUIGlue.h"
 
 typedef struct {
 	float averageCurrent;

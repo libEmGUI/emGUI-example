@@ -5,9 +5,17 @@
 #include <windows.h>
 #include <objidl.h>
 #include <gdiplus.h>
+#include <windows.h>
+#include <iostream>
 
-#define SCREEN_WIDTH EMGUI_LCD_WIDTH
-#define SCREEN_HEIGHT EMGUI_LCD_HEIGHT
+#include <Windows.h>
+
+#ifndef F_WRP(x)
+#define F_WRP(x) x
+#endif
+
+using namespace std;
+using namespace Gdiplus;
 
 xFont xGetDefaultFont();
 
